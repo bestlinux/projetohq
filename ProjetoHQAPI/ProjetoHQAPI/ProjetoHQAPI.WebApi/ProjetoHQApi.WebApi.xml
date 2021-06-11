@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ProjetoHQApi.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Get(ProjetoHQApi.Application.Features.Editoras.Queries.GetEditoraQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Get(System.Guid)" -->
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Post(ProjetoHQApi.Application.Features.Editoras.Commands.CreateEditoraCommand)">
+            <summary>
+            POST api/controller
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Delete(System.Guid)">
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EmployeesController.Get(ProjetoHQApi.Application.Features.Employees.Queries.GetEmployees.GetEmployeesQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(ProjetoHQApi.Application.Features.HQs.Queries.GetHQQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.Guid)">
+            <summary>
+            GET api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.String)">
+            <summary>
+            GET api/controller/5
+            </summary>
+            <param name="editora"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Post(ProjetoHQApi.Application.Features.HQs.Commands.CreateHQCommand[])">
+            <summary>
+            POST api/controller
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Paged(ProjetoHQApi.Application.Features.HQs.Queries.PagedHQsQuery)">
+            <summary>
+            Support Angular 11 CRUD story on Medium
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Put(System.Guid,ProjetoHQApi.Application.Features.HQs.Commands.UpdateHQCommand)">
+            <summary>
+            PUT api/controller/5
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.Get(ProjetoHQApi.Application.Features.Positions.Queries.GetPositions.GetPositionsQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.Get(System.Guid)">
+            <summary>
+            GET api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.Post(ProjetoHQApi.Application.Features.Positions.Commands.CreatePosition.CreatePositionCommand)">
+            <summary>
+            POST api/controller
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.AddMock(ProjetoHQApi.Application.Features.Positions.Commands.CreatePosition.InsertMockPositionCommand)">
+            <summary>
+            Bulk insert fake data by specifying number of rows
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.Paged(ProjetoHQApi.Application.Features.Positions.Queries.GetPositions.PagedPositionsQuery)">
+            <summary>
+            Support Angular 11 CRUD story on Medium
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.Put(System.Guid,ProjetoHQApi.Application.Features.Positions.Commands.UpdatePosition.UpdatePositionCommand)">
+            <summary>
+            PUT api/controller/5
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.Delete(System.Guid)">
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
