@@ -13,7 +13,7 @@ namespace ProjetoHQApi.WebApi.Controllers
             var lastUpdate = System.IO.File.GetLastWriteTime(assembly.Location);
             var version = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
 
-            return Ok($"Version: {version}, Last Updated: {lastUpdate}");
+            return Ok($"Version: {version}, Last Updateda: {lastUpdate}");
         }
     }
 }
