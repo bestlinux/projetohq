@@ -18,11 +18,10 @@ using System.Threading.Tasks;
 
 namespace ProjetoHQApi.WebApi.Controllers.v1
 {
-    [Produces("application/json")]
+
     [ApiVersion("1.0")]
     public class HqController : BaseApiController
     {
-        private static readonly string DIRETORIO_IMAGENS = @"D:\ProjetoHQS\Frases\";
         /// <summary>
         /// GET: api/controller
         /// </summary>
@@ -101,31 +100,13 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
             return Ok(await Mediator.Send(new GetHQInWeb { Titulo = titulo, AnoLancamento = anoLancamento, NumeroEdicao = numeroEdicao, Editora = editora, Categoria = categoria, Genero = genero, Status = status, Formato = formato }));
         }
 
-        [HttpPost]
-        [Route("UploadImage")]
-        public ObjectResult UploadImage()
+        [HttpGet]
+        [Route("BuscaAvancada/{categoria=0}/{genero=0}/{status=0}/{formato=0}/{lido=0}/{numeroEdicao=0}/{anoLancamento=null}/{titulo=null}/{roteiro=null}/{personagens=null}/{editora=null}")]
+        public async Task<IActionResult> BuscaAvancada(int categoria, int genero, int status, int formato, int lido, int numeroEdicao, string anoLancamento, string titulo, string roteiro, string personagens, string editora)
         {
-            var file = Request.Form.Files[0];
-
-            string newPath = Path.Combine(DIRETORIO_IMAGENS);
-
-            if (!Directory.Exists(newPath))
-            {
-                Directory.CreateDirectory(newPath);
-            }
-            string fileName = "";
-            if (file.Length > 0)
-            {
-                fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                string fullPath = Path.Combine(newPath, fileName);
-                using (var stream = new FileStream(fullPath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
-
-            return Ok(fileName);
+            return Ok(await Mediator.Send(new GetHQAdvancedSearchQuery { Titulo = titulo, AnoLancamento = anoLancamento, NumeroEdicao = numeroEdicao, Editora = editora, Categoria = categoria, Genero = genero, Status = status, Formato = formato, Lido = lido, Roteiro = roteiro, Personagens = personagens}));
         }
+
 
         /// <summary>
         /// PUT api/controller/5

@@ -141,6 +141,126 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
             hqs = hqs.Where(predicate);
         }
 
+        private void FilterByColumnAdvancedSearch(ref IQueryable<HQ> hqs,
+           string hqTitulo,
+           string hqEditora,
+           int hqStatus,
+           int hqFormato,
+           string hqRoteiro,
+           string hqAnoLancamento,
+           int hqCategoria,
+           int hqGenero,
+           int hqLido,
+           string hqPersonagens,
+           int hqNumeroEdicao
+           )
+        {
+            if (!hqs.Any())
+                return;
+
+            var predicate = PredicateBuilder.New<HQ>();
+
+            if (!string.IsNullOrEmpty(hqTitulo) && !hqTitulo.Equals("null"))
+                predicate = predicate.And(p => p.Titulo.Contains(hqTitulo.Trim()));
+
+            if (!string.IsNullOrEmpty(hqEditora) && !hqEditora.Equals("null"))
+                predicate = predicate.And(p => p.Editora.Contains(hqEditora.Trim()));
+
+            if (!string.IsNullOrEmpty(hqRoteiro) && !hqRoteiro.Equals("null"))
+                predicate = predicate.And(p => p.DesenhosRoteirosArteFinalCores.Contains(hqRoteiro.Trim()));
+
+            if (!string.IsNullOrEmpty(hqPersonagens) && !hqPersonagens.Equals("null"))
+                predicate = predicate.And(p => p.Personagens.Contains(hqPersonagens.Trim()));
+
+            if (!string.IsNullOrEmpty(hqAnoLancamento) && !hqAnoLancamento.Equals("null"))
+                predicate = predicate.And(p => p.DataPublicacao.Contains(hqAnoLancamento.Trim()));
+            
+            if (hqNumeroEdicao != 0)
+                predicate = predicate.And(p => p.NumeroEdicao == hqNumeroEdicao);
+
+            if (hqStatus != 0)
+                predicate = predicate.And(p => p.Status == hqStatus);
+
+            if (hqFormato != 0)
+                predicate = predicate.And(p => p.Formato == hqFormato);
+
+            if (hqCategoria != 0)
+                predicate = predicate.And(p => p.Categoria == hqCategoria);
+
+            if (hqGenero != 0)
+                predicate = predicate.And(p => p.Genero == hqGenero);
+
+            predicate = predicate.And(p => p.Lido == hqLido);
+
+            hqs = hqs.Where(predicate);
+        }
+
+        public async Task<(IEnumerable<Entity> data, RecordsCount recordsCount)> GetPagedHQAdvancedSearchReponseAsync(GetHQAdvancedSearchQuery requestParameters)
+        {
+            var hqTitulo = requestParameters.Titulo;
+            var hqEditora = requestParameters.Editora;
+            var hqStatus = requestParameters.Status;
+            var hqFormato = requestParameters.Formato;
+            var hqRoteiro = requestParameters.Roteiro;
+            var hqAnoLancamento = requestParameters.AnoLancamento;
+            var hqCategoria = requestParameters.Categoria;
+            var hqGenero = requestParameters.Genero;
+            var hqLido = requestParameters.Lido;
+            var hqPersonagens = requestParameters.Personagens;
+            var hqNumeroEdicao = requestParameters.NumeroEdicao;
+
+            var pageNumber = requestParameters.PageNumber;
+            var pageSize = requestParameters.PageSize;
+            var orderBy = requestParameters.OrderBy;
+            var fields = requestParameters.Fields;
+
+            int recordsTotal, recordsFiltered;
+
+            // Setup IQueryable
+            var result = _hqs
+                .AsNoTracking()
+                .AsExpandable();
+
+            // Count records total
+            recordsTotal = await result.CountAsync();
+
+            // filter data
+            FilterByColumnAdvancedSearch(ref result, hqTitulo, hqEditora, hqStatus, hqFormato, hqRoteiro, hqAnoLancamento, hqCategoria, hqGenero, hqLido, hqPersonagens, hqNumeroEdicao);
+
+            // Count records after filter
+            recordsFiltered = await result.CountAsync();
+
+            //set Record counts
+            var recordsCount = new RecordsCount
+            {
+                RecordsFiltered = recordsFiltered,
+                RecordsTotal = recordsTotal
+            };
+
+            // set order by
+            if (!string.IsNullOrWhiteSpace(orderBy))
+            {
+                result = result.OrderBy(orderBy);
+            }
+
+            // select columns
+            if (!string.IsNullOrWhiteSpace(fields))
+            {
+                result = result.Select<HQ>("new(" + fields + ")");
+            }
+            // paging
+            result = result
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize);
+
+            // retrieve data to list
+            var resultData = await result.ToListAsync();
+            // shape data
+            var shapeData = _dataShaper.ShapeData(resultData, fields);
+
+            return (shapeData, recordsCount);
+        }
+
         public async Task<(IEnumerable<Entity> data, RecordsCount recordsCount)> GetPagedHQInWebReponseAsync(GetHQInWeb requestParameters)
         {
            
@@ -197,6 +317,8 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
 
             var htmlNodes = doc.DocumentNode.SelectNodes("//*[@*[contains(@id, 'products')]]");
 
+            int index = 0;
+
             if (htmlNodes != null)
             {
                 foreach (var node in htmlNodes)
@@ -240,7 +362,9 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
                                     {
                                         StringWriter myWriter = new();
                                         HttpUtility.HtmlDecode(f.ToString(), myWriter);
-                                        hqEncontrada.Titulo = myWriter.ToString();
+
+                                        index = myWriter.ToString().LastIndexOf(@"-");
+                                        hqEncontrada.Titulo = myWriter.ToString().Substring(0, index).Trim();
                                         break;
                                     }
 

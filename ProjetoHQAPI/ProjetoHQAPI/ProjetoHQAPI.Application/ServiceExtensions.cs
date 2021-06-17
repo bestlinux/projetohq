@@ -22,6 +22,8 @@ namespace ProjetoHQApi.Application
             services.AddScoped<IDataShapeHelper<Employee>, DataShapeHelper<Employee>>();
             services.AddScoped<IDataShapeHelper<HQ>, DataShapeHelper<HQ>>();
             services.AddScoped<IDataShapeHelper<Editora>, DataShapeHelper<Editora>>();
+            services.AddScoped<IDataShapeHelper<Frase>, DataShapeHelper<Frase>>();
+
 
             services.AddScoped<IModelHelper, ModelHelper>();
             //services.AddScoped<IMockData, MockData>();

@@ -33,6 +33,20 @@
             <param name="filter"></param>
             <returns></returns>
         </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Get(ProjetoHQApi.Application.Features.Frases.Queries.GetFrasesQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Delete(System.Guid)">
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(ProjetoHQApi.Application.Features.HQs.Queries.GetHQQuery)">
             <summary>
             GET: api/controller

@@ -7,6 +7,8 @@ using ProjetoHQApi.Application.Features.Positions.Commands.CreatePosition;
 using ProjetoHQApi.Application.Features.Positions.Queries.GetPositions;
 using ProjetoHQApi.Domain.Entities;
 using AutoMapper;
+using ProjetoHQApi.Application.Features.Frases.Commands;
+using ProjetoHQApi.Application.Features.Frases.Queries;
 
 namespace ProjetoHQApi.Application.Mappings
 {
@@ -18,10 +20,12 @@ namespace ProjetoHQApi.Application.Mappings
             CreateMap<Employee, GetEmployeesViewModel>().ReverseMap();
             CreateMap<HQ, GetHQViewModel>().ReverseMap();
             CreateMap<Editora, GetEditoraViewModel>().ReverseMap();
+            CreateMap<Frase, GetFrasesViewModel>().ReverseMap();
 
             CreateMap<CreatePositionCommand, Position>();
             CreateMap<CreateHQCommand, HQ>();
             CreateMap<CreateEditoraCommand, Editora>();
+            CreateMap<CreateFraseCommand, Frase>();
         }
     }
 }

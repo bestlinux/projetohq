@@ -33,6 +33,7 @@ namespace ProjetoHQApi.Infrastructure.Persistence
             services.AddTransient<IEmployeeRepositoryAsync, EmployeeRepositoryAsync>();
             services.AddTransient<IHQRepositoryAsync, HQRepositoryAsync>();
             services.AddTransient<IEditoraRepositoryAsync, EditoraRepositoryAsync>();
+            services.AddTransient<IFraseRepositoryAsync, FraseRepositoryAsync>();
 
             #endregion Repositories
         }

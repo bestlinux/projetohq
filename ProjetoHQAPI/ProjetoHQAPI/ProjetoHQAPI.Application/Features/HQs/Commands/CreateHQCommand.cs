@@ -46,7 +46,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
     public class CreateHQCommandHandler : IRequestHandler<CreateHQCommand, Response<Guid>>
     {
-        private static readonly string DIRETORIO_IMAGENS = @"D:\ProjetoHQS\Capas\";
+        private static readonly string DIRETORIO_IMAGENS = @"D:\projetohqrepositorio\Capas\";
         private static readonly string FORMATO_IMAGEM = @".jpg";
 
         private readonly IHQRepositoryAsync _hqRepository;
