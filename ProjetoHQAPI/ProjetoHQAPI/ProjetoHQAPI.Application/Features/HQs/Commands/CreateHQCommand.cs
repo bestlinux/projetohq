@@ -46,9 +46,6 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
     public class CreateHQCommandHandler : IRequestHandler<CreateHQCommand, Response<Guid>>
     {
-        private static readonly string DIRETORIO_IMAGENS = @"D:\projetohqrepositorio\Capas\";
-        private static readonly string FORMATO_IMAGEM = @".jpg";
-
         private readonly IHQRepositoryAsync _hqRepository;
         private readonly IMapper _mapper;
 
@@ -186,7 +183,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
                 }
 
-                string capaBancoDados = Guid.NewGuid().ToString() + FORMATO_IMAGEM;
+                string capaBancoDados = Guid.NewGuid().ToString() + Constantes.Constantes.GetFORMATO_IMAGEM();
 
                 WebClient client1 = new();
                 Stream stream = client1.OpenRead(capaEndereco.ToString());
@@ -194,7 +191,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
                 if (bitmap != null)
                 {
-                    bitmap.Save(DIRETORIO_IMAGENS + capaBancoDados, ImageFormat.Jpeg);
+                    bitmap.Save(Constantes.Constantes.GetDIRETORIO_IMAGENS() + capaBancoDados, ImageFormat.Jpeg);
                 }
 
                 stream.Flush();

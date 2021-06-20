@@ -9,6 +9,7 @@ using ProjetoHQApi.Domain.Entities;
 using AutoMapper;
 using ProjetoHQApi.Application.Features.Frases.Commands;
 using ProjetoHQApi.Application.Features.Frases.Queries;
+using ProjetoHQApi.Application.Features.Login.Queries;
 
 namespace ProjetoHQApi.Application.Mappings
 {
@@ -21,6 +22,7 @@ namespace ProjetoHQApi.Application.Mappings
             CreateMap<HQ, GetHQViewModel>().ReverseMap();
             CreateMap<Editora, GetEditoraViewModel>().ReverseMap();
             CreateMap<Frase, GetFrasesViewModel>().ReverseMap();
+            CreateMap<Usuario, GetLoginViewModel>().ReverseMap();
 
             CreateMap<CreatePositionCommand, Position>();
             CreateMap<CreateHQCommand, HQ>();

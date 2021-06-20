@@ -51,4 +51,10 @@
     <ProjectReference Include="..\ProjetoHQAPI.Infrastructure.Shared\ProjetoHQApi.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ProjetoHQApi.WebApi.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

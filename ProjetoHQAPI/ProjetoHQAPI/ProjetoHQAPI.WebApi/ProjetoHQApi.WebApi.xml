@@ -90,6 +90,21 @@
             <param name="command"></param>
             <returns></returns>
         </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Delete(System.Guid)">
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LoginController.Get(System.String,System.String)">
+            <summary>
+            GET api/controller/5
+            </summary>
+            <param name="usuario"></param>
+            <param name="senha"></param>
+            <returns></returns>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.PositionsController.Get(ProjetoHQApi.Application.Features.Positions.Queries.GetPositions.GetPositionsQuery)">
             <summary>
             GET: api/controller

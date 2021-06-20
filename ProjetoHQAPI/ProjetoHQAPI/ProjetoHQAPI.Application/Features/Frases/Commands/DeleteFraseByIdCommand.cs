@@ -14,8 +14,6 @@ namespace ProjetoHQApi.Application.Features.Frases.Commands
 {
     public class DeleteFraseByIdCommand : IRequest<Response<Guid>>
     {
-        private static readonly string DIRETORIO_IMAGENS = @"D:\projetohqrepositorio\Frases\";
-
         public Guid Id { get; set; }
 
         public class DeleteFraseByIdCommandHandler : IRequestHandler<DeleteFraseByIdCommand, Response<Guid>>
@@ -35,7 +33,7 @@ namespace ProjetoHQApi.Application.Features.Frases.Commands
                 {
                     if (frase == null) throw new ApiException($"Frase Not Found.");
 
-                    string arquivo = Path.Combine(DIRETORIO_IMAGENS, frase.Arquivo);
+                    string arquivo = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_FRASES(), frase.Arquivo);
 
                     File.Delete(arquivo);
 

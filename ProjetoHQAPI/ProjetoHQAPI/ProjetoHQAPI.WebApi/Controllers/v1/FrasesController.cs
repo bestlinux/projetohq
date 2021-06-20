@@ -15,8 +15,6 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
 	[Produces("application/json")]
 	public class FrasesController : BaseApiController
 	{
-        private static readonly string DIRETORIO_IMAGENS = @"D:\projetohqrepositorio\Frases\";
-
         /// <summary>
         /// GET: api/controller
         /// </summary>
@@ -50,7 +48,7 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
             command.NomeHQ = NomeHQ[0];
             command.Autor = Autor[0];
 
-            string newPath = Path.Combine(DIRETORIO_IMAGENS);
+            string newPath = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_FRASES());
 
             if (!Directory.Exists(newPath))
             {

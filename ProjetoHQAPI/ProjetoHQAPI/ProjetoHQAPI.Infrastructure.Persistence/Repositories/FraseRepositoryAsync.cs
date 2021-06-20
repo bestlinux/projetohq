@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
 {
-	class FraseRepositoryAsync : GenericRepositoryAsync<Frase>, IFraseRepositoryAsync
+	public class FraseRepositoryAsync : GenericRepositoryAsync<Frase>, IFraseRepositoryAsync
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly DbSet<Frase> _frases;

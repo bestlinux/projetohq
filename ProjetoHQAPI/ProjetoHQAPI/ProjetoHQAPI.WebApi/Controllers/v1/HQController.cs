@@ -129,10 +129,10 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /*[HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await Mediator.Send(new DeletePositionByIdCommand { Id = id }));
-        }*/
+            return Ok(await Mediator.Send(new DeleteHQByIdCommand { Id = id }));
+        }
     }
 }
