@@ -34,6 +34,8 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
 
         public DbSet<Frase> Frases { get; set; }
 
+        public DbSet<Colecao> Colecao { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())

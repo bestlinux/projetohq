@@ -4,6 +4,20 @@
         <name>ProjetoHQApi.WebApi</name>
     </assembly>
     <members>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ColecaoController.Get(ProjetoHQApi.Application.Features.Colecoes.Queries.GetColecaoQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ColecaoController.Delete(System.Guid)">
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Get(ProjetoHQApi.Application.Features.Editoras.Queries.GetEditoraQuery)">
             <summary>
             GET: api/controller

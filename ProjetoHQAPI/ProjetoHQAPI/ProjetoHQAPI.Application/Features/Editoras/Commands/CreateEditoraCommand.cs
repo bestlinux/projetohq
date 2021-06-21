@@ -10,8 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-
-
 namespace ProjetoHQApi.Application.Features.Editoras.Commands
 {
     public partial class CreateEditoraCommand : IRequest<Response<Guid>>
