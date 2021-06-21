@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using ProjetoHQApi.Application.Features.Positions.Queries.GetPositions;
 using ProjetoHQApi.Application.Interfaces;
 using ProjetoHQApi.Application.Interfaces.Repositories;
 using ProjetoHQApi.Application.Parameters;

@@ -18,8 +18,6 @@ namespace ProjetoHQApi.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             
-            services.AddScoped<IDataShapeHelper<Position>, DataShapeHelper<Position>>();
-            services.AddScoped<IDataShapeHelper<Employee>, DataShapeHelper<Employee>>();
             services.AddScoped<IDataShapeHelper<HQ>, DataShapeHelper<HQ>>();
             services.AddScoped<IDataShapeHelper<Editora>, DataShapeHelper<Editora>>();
             services.AddScoped<IDataShapeHelper<Frase>, DataShapeHelper<Frase>>();

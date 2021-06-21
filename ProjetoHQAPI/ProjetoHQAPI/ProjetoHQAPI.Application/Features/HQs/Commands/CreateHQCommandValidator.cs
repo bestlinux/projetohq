@@ -1,5 +1,4 @@
-﻿using ProjetoHQApi.Application.Features.Positions.Commands.CreatePosition;
-using ProjetoHQApi.Application.Interfaces.Repositories;
+﻿using ProjetoHQApi.Application.Interfaces.Repositories;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

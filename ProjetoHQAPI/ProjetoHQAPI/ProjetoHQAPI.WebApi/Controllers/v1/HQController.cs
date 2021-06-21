@@ -1,8 +1,5 @@
 ﻿using ProjetoHQApi.Application.Features.HQs.Commands;
 using ProjetoHQApi.Application.Features.HQs.Queries;
-using ProjetoHQApi.Application.Features.Positions.Commands.CreatePosition;
-using ProjetoHQApi.Application.Features.Positions.Commands.DeletePositionById;
-using ProjetoHQApi.Application.Features.Positions.Commands.UpdatePosition;
 using ProjetoHQApi.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

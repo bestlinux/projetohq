@@ -24,10 +24,6 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
             _loggerFactory = loggerFactory;
         }
 
-        public DbSet<Position> Positions { get; set; }
-
-        public DbSet<Employee> Employees { get; set; }
-
         public DbSet<HQ> HQs { get; set; }
 
         public DbSet<Editora> Editoras { get; set; }
@@ -57,12 +53,8 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
             var _mockData = this.Database.GetService<IMockService>();
-            var seedPositions = _mockData.SeedPositions(100000);
-            var seedEmploys = _mockData.GetEmployees(100000);
             var seedHQs = _mockData.SeedHQS(10);
 
-            builder.Entity<Position>().HasData(seedPositions);
-            builder.Entity<Employee>().HasData(seedEmploys);
             builder.Entity<HQ>().HasData(seedHQs);
 
             base.OnModelCreating(builder);

@@ -29,8 +29,6 @@ namespace ProjetoHQApi.Infrastructure.Persistence
             #region Repositories
 
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
-            services.AddTransient<IPositionRepositoryAsync, PositionRepositoryAsync>();
-            services.AddTransient<IEmployeeRepositoryAsync, EmployeeRepositoryAsync>();
             services.AddTransient<IHQRepositoryAsync, HQRepositoryAsync>();
             services.AddTransient<IEditoraRepositoryAsync, EditoraRepositoryAsync>();
             services.AddTransient<IFraseRepositoryAsync, FraseRepositoryAsync>();
