@@ -54,7 +54,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
             public async Task<PagedResponse<IEnumerable<Entity>>> Handle(GetHQAdvancedSearchQuery request, CancellationToken cancellationToken)
             {
                 request.PageNumber = 1;
-                request.PageSize = 100;
+                request.PageSize = 5000;
 
                 var validFilter = request;
 

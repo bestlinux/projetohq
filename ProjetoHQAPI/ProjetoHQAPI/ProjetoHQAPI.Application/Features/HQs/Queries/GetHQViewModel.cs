@@ -39,5 +39,11 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
         public string DesenhosRoteirosArteFinalCores { get; set; }
 
         public int Lido { get; set; }
-    }
+
+        public DateTime Created
+		{
+			get { return Created.Date; }
+            set { }
+		}
+	}
 }
