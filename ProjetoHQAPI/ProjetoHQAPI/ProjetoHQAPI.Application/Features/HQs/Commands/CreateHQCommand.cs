@@ -155,6 +155,16 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
                     hq.DataPublicacao = myWriter.ToString();
                 }
 
+                if (await _hqRepository.IsExistsTituloAndAnoInHQAsync(request.Titulo, hq.DataPublicacao))
+                {
+					Response<Guid> response = new()
+					{
+						Message = "Já existe o titulo " + request.Titulo + " com a data de publicação " + hq.DataPublicacao
+					};
+					return response;
+                }
+
+
                 var capaNode = doc1.DocumentNode.SelectNodes("//*[@*[contains(@id, 'cover')]]");
 
                 var capaLink = capaNode.Descendants("a");

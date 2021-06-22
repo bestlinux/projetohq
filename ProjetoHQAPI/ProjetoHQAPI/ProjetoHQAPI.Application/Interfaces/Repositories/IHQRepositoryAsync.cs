@@ -17,6 +17,8 @@ namespace ProjetoHQApi.Application.Interfaces.Repositories
 
         Task<bool> IsExistsEditoraInHQAsync(string editora);
 
+        Task<bool> IsExistsTituloAndAnoInHQAsync(string editora, string ano);
+
         Task<(IEnumerable<Entity> data, RecordsCount recordsCount)> GetPagedHQAdvancedSearchReponseAsync(GetHQAdvancedSearchQuery requestParameters);
 
         Task<(IEnumerable<Entity> data, RecordsCount recordsCount)> GetPagedHQReponseAsync(GetHQQuery requestParameters);

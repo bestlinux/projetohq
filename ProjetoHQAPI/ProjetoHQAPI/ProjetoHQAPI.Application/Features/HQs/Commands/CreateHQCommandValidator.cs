@@ -20,8 +20,11 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
             RuleFor(p => p.Titulo)
               .NotEmpty().WithMessage("{PropertyName} is required.")
               .NotNull()
-              .MaximumLength(100).WithMessage("{PropertyName} must not exceed 50 characters.")
-              .MustAsync(IsUniqueHQTituloAsync).WithMessage("{PropertyValue} já existe");
+              .MaximumLength(100).WithMessage("{PropertyName} must not exceed 50 characters.");
+              //.MustAsync(IsUniqueHQTituloAsync).WithMessage("{PropertyValue} já existe");
+
+
+            //RuleFor(p => p.Titulo).
 
         }
 

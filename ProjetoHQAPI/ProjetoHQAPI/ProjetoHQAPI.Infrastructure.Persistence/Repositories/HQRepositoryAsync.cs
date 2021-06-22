@@ -42,6 +42,16 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
                 .AllAsync(p => p.Titulo != hqTitulo);
         }
 
+        public async Task<bool> IsExistsTituloAndAnoInHQAsync(string hqTitulo, string ano)
+        {
+            var data2 = await _hqs.Where(d => d.Titulo.ToLower().Contains(hqTitulo.ToLower()) && d.DataPublicacao.ToLower().Contains(ano)).ToListAsync();
+
+            if (data2.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
         public async Task<bool> IsExistsEditoraInHQAsync(string editora)
         {
             var data2 = await _hqs.Where(d => d.Editora.ToLower().Contains(editora.ToLower())).ToListAsync();
