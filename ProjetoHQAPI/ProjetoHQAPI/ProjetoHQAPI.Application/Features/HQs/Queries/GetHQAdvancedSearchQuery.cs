@@ -54,7 +54,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
             public async Task<PagedResponse<IEnumerable<Entity>>> Handle(GetHQAdvancedSearchQuery request, CancellationToken cancellationToken)
             {
                 request.PageNumber = 1;
-                request.PageSize = 5000;
+                request.PageSize = 50000;
 
                 var validFilter = request;
 
@@ -75,7 +75,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
                 RecordsCount recordCount = entityHQs.recordsCount;
 
                 // response wrapper
-                return new PagedResponse<IEnumerable<Entity>>(data, validFilter.PageNumber, validFilter.PageSize, recordCount);
+                return new PagedResponse<IEnumerable<Entity>>(data, validFilter.PageNumber, request.PageSize, recordCount);
             }
         }
     }
