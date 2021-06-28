@@ -48,6 +48,9 @@ namespace ProjetoHQApi.Application.Features.Editoras.Queries
                 //default fields from view model
                 validFilter.Fields = _modelHelper.GetModelFields<GetEditoraViewModel>();
             }
+
+            validFilter.OrderBy = "Nome";
+
             // query based on filter
             var entityEditora = await _editoraRepository.GetPagedEditoraReponseAsync(validFilter);
             var data = entityEditora.data;
