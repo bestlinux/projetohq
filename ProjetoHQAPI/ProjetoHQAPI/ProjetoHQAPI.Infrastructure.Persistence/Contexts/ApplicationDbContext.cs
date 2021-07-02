@@ -26,11 +26,15 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
 
         public DbSet<HQ> HQs { get; set; }
 
+        public DbSet<Desejo> Desejos { get; set; }
+
         public DbSet<Editora> Editoras { get; set; }
 
         public DbSet<Frase> Frases { get; set; }
 
         public DbSet<Colecao> Colecao { get; set; }
+
+        public DbSet<Leitura> Leituras { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

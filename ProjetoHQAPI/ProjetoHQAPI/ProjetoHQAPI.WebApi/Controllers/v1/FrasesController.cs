@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using ProjetoHQApi.Application.Features.Frases.Commands;
 using ProjetoHQApi.Application.Features.Frases.Queries;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -15,6 +17,13 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
 	[Produces("application/json")]
 	public class FrasesController : BaseApiController
 	{
+        private readonly ILogger<FrasesController> _logger;
+
+        public FrasesController(ILogger<FrasesController> logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// GET: api/controller
         /// </summary>
@@ -23,7 +32,26 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetFrasesQuery filter)
         {
-            return Ok(await Mediator.Send(filter));
+            try
+            {
+                return Ok(await Mediator.Send(filter));
+            }
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
+
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
         }
 
 
@@ -31,44 +59,82 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         [Route("Paged")]
         public async Task<IActionResult> Paged(PagedFrasesQuery query)
         {
-            return Ok(await Mediator.Send(query));
+            try
+            {
+                return Ok(await Mediator.Send(query));
+            }
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
+
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
         }
 
         [HttpPost]
         [Route("UploadImage")]
         public async Task<ObjectResult> UploadImageAsync()
         {
-            CreateFraseCommand command = new();
-            var file = Request.Form.Files[0];
-
-
-			Request.Form.TryGetValue("NomeHQ", out StringValues NomeHQ);
-			Request.Form.TryGetValue("Autor", out StringValues Autor);
-
-            command.NomeHQ = NomeHQ[0];
-            command.Autor = Autor[0];
-
-            string newPath = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_FRASES());
-
-            if (!Directory.Exists(newPath))
+            try
             {
-                Directory.CreateDirectory(newPath);
-            }
-            string fileName = "";
-            if (file.Length > 0)
-            {
-                fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                string fullPath = Path.Combine(newPath, fileName);
-                using (var stream = new FileStream(fullPath, FileMode.Create))
+                CreateFraseCommand command = new();
+                var file = Request.Form.Files[0];
+
+
+                Request.Form.TryGetValue("NomeHQ", out StringValues NomeHQ);
+                Request.Form.TryGetValue("Autor", out StringValues Autor);
+
+                command.NomeHQ = NomeHQ[0];
+                command.Autor = Autor[0];
+
+                string newPath = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_FRASES());
+
+                if (!Directory.Exists(newPath))
                 {
-                    file.CopyTo(stream);
+                    Directory.CreateDirectory(newPath);
+                }
+                string fileName = "";
+                if (file.Length > 0)
+                {
+                    fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    string fullPath = Path.Combine(newPath, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    command.Arquivo = fileName;
+                    await Mediator.Send(command);
                 }
 
-                command.Arquivo = fileName;                
-                await Mediator.Send(command);
+                return Ok(fileName);
             }
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
 
-            return Ok(fileName);
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
         }
 
         /// <summary>
@@ -79,7 +145,26 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await Mediator.Send(new DeleteFraseByIdCommand { Id = id }));
+            try
+            {
+                return Ok(await Mediator.Send(new DeleteFraseByIdCommand { Id = id }));
+            }
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
+
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
         }
     }
 }

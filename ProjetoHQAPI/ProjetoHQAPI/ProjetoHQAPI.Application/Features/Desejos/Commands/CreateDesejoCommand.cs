@@ -1,11 +1,10 @@
-﻿using ProjetoHQApi.Application.Features.HQs.Constants;
-using ProjetoHQApi.Application.Interfaces.Repositories;
-using ProjetoHQApi.Application.Parameters;
-using ProjetoHQApi.Application.Wrappers;
-using ProjetoHQApi.Domain.Entities;
-using AutoMapper;
+﻿using AutoMapper;
 using HtmlAgilityPack;
 using MediatR;
+using ProjetoHQApi.Application.Features.HQs.Constants;
+using ProjetoHQApi.Application.Interfaces.Repositories;
+using ProjetoHQApi.Application.Wrappers;
+using ProjetoHQApi.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,9 +17,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace ProjetoHQApi.Application.Features.HQs.Commands
+namespace ProjetoHQApi.Application.Features.Desejos.Commands
 {
-    public partial class CreateHQCommand : IRequest<Response<Guid>>
+    public partial class CreateDesejoCommand : IRequest<Response<Guid>>
     {
         public string Editora { get; set; }
 
@@ -44,20 +43,20 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
     }
 
-    public class CreateHQCommandHandler : IRequestHandler<CreateHQCommand, Response<Guid>>
+    public class CreateDesejoCommandHandler : IRequestHandler<CreateDesejoCommand, Response<Guid>>
     {
-        private readonly IHQRepositoryAsync _hqRepository;
+        private readonly IDesejoRepositoryAsync _desejoRepository;
         private readonly IMapper _mapper;
 
-        public CreateHQCommandHandler(IHQRepositoryAsync hqRepository, IMapper mapper)
+        public CreateDesejoCommandHandler(IDesejoRepositoryAsync desejoRepository, IMapper mapper)
         {
-            _hqRepository = hqRepository;
+            _desejoRepository = desejoRepository;
             _mapper = mapper;
         }
 
-        public async Task<Response<Guid>> Handle(CreateHQCommand request, CancellationToken cancellationToken)
+        public async Task<Response<Guid>> Handle(CreateDesejoCommand request, CancellationToken cancellationToken)
         {
-            var hq = _mapper.Map<HQ>(request);
+            var hq = _mapper.Map<Desejo>(request);
             var doc1 = new HtmlAgilityPack.HtmlDocument();
             HtmlWeb web1 = new();
 
@@ -158,13 +157,13 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
                     hq.DataPublicacao = myWriter.ToString();
                 }
 
-                if (await _hqRepository.IsExistsTituloAndAnoInHQAsync(request.Titulo, hq.DataPublicacao))
+                if (await _desejoRepository.IsExistsTituloAndAnoInDesejoAsync(request.Titulo, hq.DataPublicacao))
                 {
-					Response<Guid> response = new()
-					{
-						Message = "Já existe o titulo " + request.Titulo + " com a data de publicação " + hq.DataPublicacao
-					};
-					return response;
+                    Response<Guid> response = new()
+                    {
+                        Message = "Já existe o titulo " + request.Titulo + " com a data de publicação " + hq.DataPublicacao
+                    };
+                    return response;
                 }
 
 
@@ -192,7 +191,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
                                             .Where(s => !String.IsNullOrEmpty(s));
 
                     foreach (var item in capaLinkOutros)
-                         capaEndereco = item.ToString();
+                        capaEndereco = item.ToString();
 
                 }
 
@@ -204,7 +203,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
                 if (bitmap != null)
                 {
-                    bitmap.Save(Constantes.Constantes.GetDIRETORIO_IMAGENS() + capaBancoDados, ImageFormat.Jpeg);
+                    bitmap.Save(Constantes.Constantes.GetDIRETORIO_IMAGENS_DESEJO() + capaBancoDados, ImageFormat.Jpeg);
                 }
 
                 stream.Flush();
@@ -247,7 +246,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
                 hq.Lido = 1;
                 //******************
 
-                await _hqRepository.AddAsync(hq);
+                await _desejoRepository.AddAsync(hq);
             }
             catch (Exception)
             {
@@ -256,5 +255,5 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
             return new Response<Guid>(hq.Id);
         }
-    }
+	}
 }

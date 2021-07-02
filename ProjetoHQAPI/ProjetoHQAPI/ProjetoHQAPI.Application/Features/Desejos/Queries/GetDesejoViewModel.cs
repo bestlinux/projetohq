@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetoHQApi.Application.Features.HQs.Queries
+namespace ProjetoHQApi.Application.Features.Desejos.Queries
 {
     public class GetDesejoViewModel
     {
@@ -40,10 +40,6 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
 
         public int Lido { get; set; }
 
-        public DateTime Created
-		{
-			get { return Created.Date; }
-            set { }
-		}
-	}
+        public DateTime Created { get; set; }
+    }
 }

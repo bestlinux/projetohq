@@ -23,6 +23,8 @@ namespace ProjetoHQApi.Application
             services.AddScoped<IDataShapeHelper<Frase>, DataShapeHelper<Frase>>();
             services.AddScoped<IDataShapeHelper<Usuario>, DataShapeHelper<Usuario>>();
             services.AddScoped<IDataShapeHelper<Colecao>, DataShapeHelper<Colecao>>();
+            services.AddScoped<IDataShapeHelper<Desejo>, DataShapeHelper<Desejo>>();
+            services.AddScoped<IDataShapeHelper<Leitura>, DataShapeHelper<Leitura>>();
 
 
             services.AddScoped<IModelHelper, ModelHelper>();

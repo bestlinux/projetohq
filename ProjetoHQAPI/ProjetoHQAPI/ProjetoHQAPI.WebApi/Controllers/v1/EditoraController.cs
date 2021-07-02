@@ -5,12 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Serilog;
+using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjetoHQApi.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
     public class EditoraController : BaseApiController
     {
+        private readonly ILogger<EditoraController> _logger;
+
+        public EditoraController(ILogger<EditoraController> logger)
+        {
+            _logger = logger;
+        }
         /// <summary>
         /// GET: api/controller
         /// </summary>
@@ -19,7 +29,26 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetEditoraQuery filter)
         {
-            return Ok(await Mediator.Send(filter));
+            try
+            {
+                return Ok(await Mediator.Send(filter));
+            }
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
+
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
         }
 
         /// GET api/controller/5
@@ -29,7 +58,26 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            return Ok(await Mediator.Send(new GetEditoraByIdQuery { Id = id }));
+            try
+            {
+                return Ok(await Mediator.Send(new GetEditoraByIdQuery { Id = id }));
+            }
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
+
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
         }
 
         /// <summary>
@@ -40,28 +88,68 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         [HttpPost]
         public async Task<IActionResult> Post(CreateEditoraCommand command)
         {
-            Application.Wrappers.Response<Guid> response = new Application.Wrappers.Response<Guid>();
             try
             {
-                response = await Mediator.Send(command);               
+                //Read Configuration from appSettings
+                Application.Wrappers.Response<Guid> response = new Application.Wrappers.Response<Guid>();
+                try
+                {
+                    response = await Mediator.Send(command);
+                }
+                catch (Exception e)
+                {
+                    string erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                    response.Message = erro;
+                    response.Succeeded = false;
+                    _logger.LogError("Erro ao incluir editora " + erro);
+                    return Ok(response);
+                }
+
+                return Ok(response);
             }
             catch (Exception e)
             {
-                string erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                Application.Wrappers.Response<Guid> response = new();
+
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
                 response.Message = erro;
                 response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
                 return Ok(response);
             }
-
-            return Ok(response);
         }
 
        [HttpPost]
        [Route("Paged")]
        public async Task<IActionResult> Paged(PagedEditorasQuery query)
        {
-          return Ok(await Mediator.Send(query));
-       }
+            try
+            {
+                return Ok(await Mediator.Send(query));
+            }
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
+
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
+        }
 
         /// <summary>
         /// DELETE api/controller/5
@@ -71,86 +159,26 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await Mediator.Send(new DeleteEditoraByIdCommand { Id = id }));
-        }
-
-      /*/// <summary>
-        /// GET api/controller/5
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            return Ok(await Mediator.Send(new GetHQByIdQuery { Id = id }));
-        }
-
-        /// <summary>
-        /// POST api/controller
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> Post(CreateHQCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
-
-        /// <summary>
-        /// Bulk insert fake data by specifying number of rows
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        /*[HttpPost]
-        [Route("AddMock")]
-        public async Task<IActionResult> AddMock(InsertMockPositionCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }*/
-
-        /// <summary>
-        /// Support Angular 11 CRUD story on Medium
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        /*[HttpPost]
-        [Route("Paged")]
-        public async Task<IActionResult> Paged(PagedHQsQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
-
-        [HttpGet("SearchWeb/{titulo}/{anoLancamento}")]
-        public async Task<IActionResult> SearchWeb(string titulo, string anoLancamento)
-        {
-            return Ok(await Mediator.Send(new GetHQInWeb { Titulo = titulo }));
-        }*/
-
-        /// <summary>
-        /// PUT api/controller/5
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        /*[HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, UpdatePositionCommand command)
-        {
-            if (id != command.Id)
+            try
             {
-                return BadRequest();
+                return Ok(await Mediator.Send(new DeleteEditoraByIdCommand { Id = id }));
             }
-            return Ok(await Mediator.Send(command));
-        }*/
+            catch (Exception e)
+            {
+                Application.Wrappers.Response<Guid> response = new();
 
-        /// <summary>
-        /// DELETE api/controller/5
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /*[HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            return Ok(await Mediator.Send(new DeletePositionByIdCommand { Id = id }));
-        }*/
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                _logger.LogError("Erro " + erro);
+                return Ok(response);
+            }
+        }
     }
 }

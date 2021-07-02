@@ -62,12 +62,12 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
                 if (!string.IsNullOrEmpty(validFilter.Fields))
                 {
                     //limit to fields in view model
-                    validFilter.Fields = _modelHelper.ValidateModelFields<GetHQViewModel>(validFilter.Fields);
+                    validFilter.Fields = _modelHelper.ValidateModelFields<GetDesejoViewModel>(validFilter.Fields);
                 }
                 if (string.IsNullOrEmpty(validFilter.Fields))
                 {
                     //default fields from view model
-                    validFilter.Fields = _modelHelper.GetModelFields<GetHQViewModel>();
+                    validFilter.Fields = _modelHelper.GetModelFields<GetDesejoViewModel>();
                 }
                 // query based on filter
                 var entityHQs = await _hqRepository.GetPagedHQAdvancedSearchReponseAsync(validFilter);

@@ -18,6 +18,34 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Get(ProjetoHQApi.Application.Features.Desejos.Queries.GetDesejoQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post(ProjetoHQApi.Application.Features.Desejos.Commands.CreateDesejoCommand)">
+            <summary>
+            POST api/controller
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Paged(ProjetoHQApi.Application.Features.Desejos.Queries.PagedDesejoQuery)">
+            <summary>
+            Support Angular 11 CRUD story on Medium
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Delete(System.Guid)">
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Get(ProjetoHQApi.Application.Features.Editoras.Queries.GetEditoraQuery)">
             <summary>
             GET: api/controller
@@ -102,6 +130,42 @@
             DELETE api/controller/5
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Get(ProjetoHQApi.Application.Features.Leituras.Queries.GetLeituraQuery)">
+            <summary>
+            GET: api/controller
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Post(ProjetoHQApi.Application.Features.Leituras.Commands.CreateLeituraCommand)">
+            <summary>
+            POST api/controller
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Paged(ProjetoHQApi.Application.Features.Leituras.Queries.PagedLeituraQuery)">
+            <summary>
+            Support Angular 11 CRUD story on Medium
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Delete(System.Guid)">
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Put(System.Guid,ProjetoHQApi.Application.Features.Leituras.Commands.UpdateLeituraCommand)">
+            <summary>
+            PUT api/controller/5
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
             <returns></returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LoginController.Get(System.String,System.String)">

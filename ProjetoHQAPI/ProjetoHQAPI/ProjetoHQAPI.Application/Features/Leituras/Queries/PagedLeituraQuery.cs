@@ -1,10 +1,10 @@
-﻿using ProjetoHQApi.Application.Interfaces;
+﻿using AutoMapper;
+using MediatR;
+using ProjetoHQApi.Application.Interfaces;
 using ProjetoHQApi.Application.Interfaces.Repositories;
 using ProjetoHQApi.Application.Parameters;
 using ProjetoHQApi.Application.Wrappers;
 using ProjetoHQApi.Domain.Entities;
-using AutoMapper;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProjetoHQApi.Application.Features.HQs.Queries
+namespace ProjetoHQApi.Application.Features.Leituras.Queries
 {
-    public partial class PagedHQsQuery : IRequest<PagedDataTableResponse<IEnumerable<Entity>>>
+    public partial class PagedLeituraQuery : IRequest<PagedDataTableResponse<IEnumerable<Entity>>>
     {
         //strong type input parameters
         public int Draw { get; set; } //page number
@@ -26,22 +26,22 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
         public IList<Column> Columns { get; set; } //select fields
     }
 
-    public class PagedHQsQueryHandler : IRequestHandler<PagedHQsQuery, PagedDataTableResponse<IEnumerable<Entity>>>
+    public class PagedLeituraQueryHandler : IRequestHandler<PagedLeituraQuery, PagedDataTableResponse<IEnumerable<Entity>>>
     {
-        private readonly IHQRepositoryAsync _hqRepository;
+        private readonly ILeituraRepositoryAsync _leituraRepository;
         private readonly IMapper _mapper;
         private readonly IModelHelper _modelHelper;
 
-        public PagedHQsQueryHandler(IHQRepositoryAsync hqRepository, IMapper mapper, IModelHelper modelHelper)
+        public PagedLeituraQueryHandler(ILeituraRepositoryAsync leituraRepository, IMapper mapper, IModelHelper modelHelper)
         {
-            _hqRepository = hqRepository;
+            _leituraRepository = leituraRepository;
             _mapper = mapper;
             _modelHelper = modelHelper;
         }
 
-        public async Task<PagedDataTableResponse<IEnumerable<Entity>>> Handle(PagedHQsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedDataTableResponse<IEnumerable<Entity>>> Handle(PagedLeituraQuery request, CancellationToken cancellationToken)
         {
-            var validFilter = new GetHQQuery();
+            var validFilter = new GetLeituraQuery();
 
             // Draw map to PageNumber
             validFilter.PageNumber = (request.Start / request.Length) + 1;
@@ -59,9 +59,6 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
                     validFilter.OrderBy = colOrder.Dir == "asc" ? "Titulo" : "Titulo DESC";
                     break;
 
-                case 1:
-                    validFilter.OrderBy = colOrder.Dir == "asc" ? "Editora" : "Editora DESC";
-                    break;
             }
 
             // Map Search > searchable columns
@@ -75,10 +72,10 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
             if (string.IsNullOrEmpty(validFilter.Fields))
             {
                 //default fields from view model
-                validFilter.Fields = _modelHelper.GetModelFields<GetDesejoViewModel>();
+                validFilter.Fields = _modelHelper.GetModelFields<GetLeituraViewModel>();
             }
             // query based on filter
-            var entityPositions = await _hqRepository.GetPagedHQReponseAsync(validFilter);
+            var entityPositions = await _leituraRepository.GetPagedLeituraReponseAsync(validFilter);
             var data = entityPositions.data;
             RecordsCount recordCount = entityPositions.recordsCount;
 

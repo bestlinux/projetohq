@@ -48,6 +48,11 @@ namespace ProjetoHQApi.WebApi.Middlewares
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
 
+                    case FormatException e:
+                        // not found error
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+
                     default:
                         // unhandled error
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProjetoHQApi.Domain.Common;
 
-namespace ProjetoHQApi.Application.Features.HQs.Queries
+namespace ProjetoHQApi.Domain.Entities
 {
-    public class GetDesejoViewModel
+    public class Desejo : AuditableBaseEntity
     {
-        public Guid Id { get; set; }
-        public string Titulo { get; set; }
         public string Editora { get; set; }
+
+        public string Titulo { get; set; }
+
         public int NumeroEdicao { get; set; }
 
         public int Categoria { get; set; }
@@ -20,6 +17,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
         public int Status { get; set; }
 
         public int Formato { get; set; }
+
         public string LinkDetalhes { get; set; }
 
         public string ThumbCapa { get; set; }
@@ -40,10 +38,6 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
 
         public int Lido { get; set; }
 
-        public DateTime Created
-		{
-			get { return Created.Date; }
-            set { }
-		}
-	}
+    }
 }
+

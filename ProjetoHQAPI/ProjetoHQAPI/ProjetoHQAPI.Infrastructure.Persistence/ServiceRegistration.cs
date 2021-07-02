@@ -34,6 +34,8 @@ namespace ProjetoHQApi.Infrastructure.Persistence
             services.AddTransient<IFraseRepositoryAsync, FraseRepositoryAsync>();
             services.AddTransient<ILoginRepositoryAsync, LoginRepositoryAsync>();
             services.AddTransient<IColecaoRepositoryAsync, ColecaoRepositoryAsync>();
+            services.AddTransient<IDesejoRepositoryAsync, DesejoRepositoryAsync>();
+            services.AddTransient<ILeituraRepositoryAsync, LeituraRepositoryAsync>();
 
             #endregion Repositories
         }

@@ -12,6 +12,7 @@ namespace ProjetoHQApi.Application.Constantes
 		private const string DIRETORIO_IMAGENS_FRASES = @"D:\projetohqrepositorio\Frases\";
 		private const string DIRETORIO_IMAGENS_COLECAO = @"D:\projetohqrepositorio\Colecao\";
 		private const string DIRETORIO_IMAGENS_AZURE = @"C:\projetohqrepositorio\Capas\";
+		private const string DIRETORIO_IMAGENS_DESEJOS = @"D:\projetohqrepositorio\Desejos\";
 
 		private const string FORMATO_IMAGEM = @".jpg";
 
@@ -36,6 +37,11 @@ namespace ProjetoHQApi.Application.Constantes
 		public static string GetDIRETORIO_IMAGENS_COLECAO()
 		{
 			return DIRETORIO_IMAGENS_COLECAO;
+		}
+
+		public static string GetDIRETORIO_IMAGENS_DESEJO()
+		{
+			return DIRETORIO_IMAGENS_DESEJOS;
 		}
 	}
 }

@@ -5,26 +5,29 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.IO;
 
 namespace ProjetoHQApi.WebApi
 {
     public static class Program
     {
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .Build();
+
         public static void Main(string[] args)
         {
             //Read Configuration from appSettings
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
+          
 
             //Initialize Logger
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(config)
-                .WriteTo.Console()
+                .ReadFrom.Configuration(Configuration)
                 .CreateLogger();
 
             var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
+            /*using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
@@ -40,15 +43,17 @@ namespace ProjetoHQApi.WebApi
                 {
                     Log.CloseAndFlush();
                 }
-            }
+            }*/
             host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .UseSerilog() //Uses Serilog instead of default .NET Logger
+            .UseSerilog()
             .ConfigureWebHostDefaults(webBuilder =>
             {
+                webBuilder.UseConfiguration(Configuration);
+                webBuilder.ConfigureLogging(log => { log.AddSerilog(Log.Logger); });
                 webBuilder.UseStartup<Startup>();
             });
     }

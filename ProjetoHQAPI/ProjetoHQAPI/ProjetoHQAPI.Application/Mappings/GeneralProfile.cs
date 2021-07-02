@@ -9,6 +9,9 @@ using ProjetoHQApi.Application.Features.Frases.Queries;
 using ProjetoHQApi.Application.Features.Login.Queries;
 using ProjetoHQApi.Application.Features.Colecoes.Queries;
 using ProjetoHQApi.Application.Features.Colecoes.Commands;
+using ProjetoHQApi.Application.Features.Desejos.Commands;
+using ProjetoHQApi.Application.Features.Leituras.Queries;
+using ProjetoHQApi.Application.Features.Leituras.Commands;
 
 namespace ProjetoHQApi.Application.Mappings
 {
@@ -16,16 +19,20 @@ namespace ProjetoHQApi.Application.Mappings
     {
         public GeneralProfile()
         {
-            CreateMap<HQ, GetHQViewModel>().ReverseMap();
+            CreateMap<HQ, GetDesejoViewModel>().ReverseMap();
             CreateMap<Editora, GetEditoraViewModel>().ReverseMap();
             CreateMap<Frase, GetFrasesViewModel>().ReverseMap();
             CreateMap<Usuario, GetLoginViewModel>().ReverseMap();
             CreateMap<Colecao, GetColecaoViewModel>().ReverseMap();
+            CreateMap<Desejo, GetDesejoViewModel>().ReverseMap();
+            CreateMap<Leitura, GetLeituraViewModel>().ReverseMap();
 
             CreateMap<CreateHQCommand, HQ>();
             CreateMap<CreateEditoraCommand, Editora>();
             CreateMap<CreateFraseCommand, Frase>();
             CreateMap<CreateColecaoCommand, Colecao>();
+            CreateMap<CreateDesejoCommand, Desejo>();
+            CreateMap<CreateLeituraCommand, Leitura>();
         }
     }
 }

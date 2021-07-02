@@ -1,26 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
-using ProjetoHQApi.Application.Features.Colecoes.Commands;
-using ProjetoHQApi.Application.Features.Colecoes.Queries;
-using Serilog;
+using ProjetoHQApi.Application.Features.Desejos.Commands;
+using ProjetoHQApi.Application.Features.Desejos.Queries;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ProjetoHQApi.WebApi.Controllers.v1
 {
-    [Produces("application/json")]
-    public class ColecaoController : BaseApiController
+    [ApiVersion("1.0")]
+    public class DesejoController : BaseApiController
     {
-        private readonly ILogger<ColecaoController> _logger;
+        private readonly ILogger<DesejoController> _logger;
 
-        public ColecaoController(ILogger<ColecaoController> logger)
+        public DesejoController(ILogger<DesejoController> logger)
         {
             _logger = logger;
         }
@@ -31,38 +26,11 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// <param name="filter"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetColecaoQuery filter)
-        {
-			try
-			{
-                return Ok(await Mediator.Send(filter));
-            }
-            catch (Exception e)
-            {
-				Application.Wrappers.Response<Guid> response = new();
-
-				string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
-        }
-
-
-        [HttpPost]
-        [Route("Paged")]
-        public async Task<IActionResult> Paged(PagedColecaoQuery query)
+        public async Task<IActionResult> Get([FromQuery] GetDesejoQuery filter)
         {
             try
             {
-                return Ok(await Mediator.Send(query));
+                return Ok(await Mediator.Send(filter));
             }
             catch (Exception e)
             {
@@ -82,41 +50,49 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
             }
         }
 
+        /// <summary>
+        /// POST api/controller
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("UploadImage")]
-        public async Task<ObjectResult> UploadImageAsync()
+        [Route("Desejo")]
+        public async Task<IActionResult> Post(CreateDesejoCommand command)
+        {
+            Application.Wrappers.Response<Guid> response = new Application.Wrappers.Response<Guid>();
+            try
+            {
+                response = await Mediator.Send(command);
+            }
+            catch (Exception e)
+            {
+                string erro;
+
+                if (e.GetType() == typeof(ValidationException))
+                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
+                else
+                    erro = e.StackTrace.ToString();
+
+                response.Message = erro;
+                response.Succeeded = false;
+                return Ok(response);
+            }
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Support Angular 11 CRUD story on Medium
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Paged")]
+        public async Task<IActionResult> Paged(PagedDesejoQuery query)
         {
             try
             {
-                CreateColecaoCommand command = new();
-                var file = Request.Form.Files[0];
-
-
-                Request.Form.TryGetValue("Descricao", out StringValues Descricao);
-
-                command.Descricao = Descricao[0];
-
-                string newPath = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_COLECAO());
-
-                if (!Directory.Exists(newPath))
-                {
-                    Directory.CreateDirectory(newPath);
-                }
-                string fileName = "";
-                if (file.Length > 0)
-                {
-                    fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    string fullPath = Path.Combine(newPath, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-
-                    command.Arquivo = fileName;
-                    await Mediator.Send(command);
-                }
-
-                return Ok(fileName);
+                return Ok(await Mediator.Send(query));
             }
             catch (Exception e)
             {
@@ -146,7 +122,7 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         {
             try
             {
-                return Ok(await Mediator.Send(new DeleteColecaoByIdCommand { Id = id }));
+                return Ok(await Mediator.Send(new DeleteDesejoByIdCommand { Id = id }));
             }
             catch (Exception e)
             {

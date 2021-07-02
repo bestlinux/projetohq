@@ -1,10 +1,10 @@
-﻿using ProjetoHQApi.Application.Interfaces;
+﻿using AutoMapper;
+using MediatR;
+using ProjetoHQApi.Application.Interfaces;
 using ProjetoHQApi.Application.Interfaces.Repositories;
 using ProjetoHQApi.Application.Parameters;
 using ProjetoHQApi.Application.Wrappers;
 using ProjetoHQApi.Domain.Entities;
-using AutoMapper;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +12,28 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProjetoHQApi.Application.Features.HQs.Queries
-{ 
-    public class GetHQQuery : QueryParameter, IRequest<PagedResponse<IEnumerable<Entity>>>
+namespace ProjetoHQApi.Application.Features.Desejos.Queries
+{
+    public class GetDesejoQuery : QueryParameter, IRequest<PagedResponse<IEnumerable<Entity>>>
     {
         public string Titulo { get; set; }
         public string Editora { get; set; }
     }
 
-    public class GetAllHQsQueryHandler : IRequestHandler<GetHQQuery, PagedResponse<IEnumerable<Entity>>>
+    public class GetAllDesejoQueryHandler : IRequestHandler<GetDesejoQuery, PagedResponse<IEnumerable<Entity>>>
     {
-        private readonly IHQRepositoryAsync _hqRepository;
+        private readonly IDesejoRepositoryAsync _desejoRepository;
         private readonly IMapper _mapper;
         private readonly IModelHelper _modelHelper;
 
-        public GetAllHQsQueryHandler(IHQRepositoryAsync hqRepository, IMapper mapper, IModelHelper modelHelper)
+        public GetAllDesejoQueryHandler(IDesejoRepositoryAsync desejoRepository, IMapper mapper, IModelHelper modelHelper)
         {
-            _hqRepository = hqRepository;
+            _desejoRepository = desejoRepository;
             _mapper = mapper;
             _modelHelper = modelHelper;
         }
 
-        public async Task<PagedResponse<IEnumerable<Entity>>> Handle(GetHQQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<IEnumerable<Entity>>> Handle(GetDesejoQuery request, CancellationToken cancellationToken)
         {
             var validFilter = request;
             var pagination = request;
@@ -49,9 +49,9 @@ namespace ProjetoHQApi.Application.Features.HQs.Queries
                 validFilter.Fields = _modelHelper.GetModelFields<GetDesejoViewModel>();
             }
             // query based on filter
-            var entityHQs = await _hqRepository.GetPagedHQReponseAsync(validFilter);
-            var data = entityHQs.data;
-            RecordsCount recordCount = entityHQs.recordsCount;
+            var desejo = await _desejoRepository.GetPagedDesejoReponseAsync(validFilter);
+            var data = desejo.data;
+            RecordsCount recordCount = desejo.recordsCount;
             // response wrapper
             return new PagedResponse<IEnumerable<Entity>>(data, validFilter.PageNumber, validFilter.PageSize, recordCount);
         }
