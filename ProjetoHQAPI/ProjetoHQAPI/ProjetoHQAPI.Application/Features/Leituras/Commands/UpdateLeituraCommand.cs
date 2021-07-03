@@ -17,6 +17,8 @@ namespace ProjetoHQApi.Application.Features.Leituras.Commands
         
         public int Lido { get; set; }
 
+        public DateTime DataLeitura { get; set; }
+
         public class UpdateLeituraCommandHandler : IRequestHandler<UpdateLeituraCommand, Response<Guid>>
         {
             private readonly ILeituraRepositoryAsync _leituraRepository;
@@ -38,6 +40,12 @@ namespace ProjetoHQApi.Application.Features.Leituras.Commands
                 {
 
                     hq.Lido = command.Lido;
+
+                    if (command.Lido == 0)
+                        hq.DataLeitura = null;
+                    else
+                        hq.DataLeitura = command.DataLeitura;
+
                     await _leituraRepository.UpdateAsync(hq);
                     return new Response<Guid>(hq.Id);
                 }

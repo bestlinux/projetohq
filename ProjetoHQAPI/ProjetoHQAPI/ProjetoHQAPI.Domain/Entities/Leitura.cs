@@ -17,5 +17,7 @@ namespace ProjetoHQApi.Domain.Entities
 
         public string DataPublicacao { get; set; }
 
+        public DateTime? DataLeitura { get; set; }
+
     }
 }

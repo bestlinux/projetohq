@@ -22,5 +22,10 @@ namespace ProjetoHQApi.Application.Features.Leituras.Queries
             get { return LastModified.Date; }
             set { }
         }
+        public DateTime DataLeitura
+        {
+            get { return DataLeitura.Date; }
+            set { }
+        }
     }
 }
