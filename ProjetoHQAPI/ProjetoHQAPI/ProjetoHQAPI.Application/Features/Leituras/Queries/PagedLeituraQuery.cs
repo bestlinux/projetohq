@@ -56,7 +56,7 @@ namespace ProjetoHQApi.Application.Features.Leituras.Queries
                 //    validFilter.OrderBy = colOrder.Dir == "asc" ? "Id" : "Id DESC";
                 //    break;
                 case 0:
-                    validFilter.OrderBy = colOrder.Dir == "asc" ? "Titulo" : "Titulo DESC";
+                    validFilter.OrderBy = colOrder.Dir == "asc" ? "Lido" : "Lido DESC";
                     break;
 
             }
