@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\projetohqapi</_PublishTargetUrl>
+    <History>True|2023-01-06T20:39:20.5002195Z;False|2023-01-06T17:28:35.2440232-03:00;False|2023-01-06T17:26:25.5687132-03:00;True|2021-11-29T09:40:40.0574100-03:00;True|2021-07-03T20:21:25.9084769-03:00;True|2021-07-02T15:59:14.1416322-03:00;True|2021-06-30T07:51:14.8849814-03:00;True|2021-06-28T20:15:53.4715345-03:00;True|2021-06-22T18:06:13.3691914-03:00;True|2021-06-22T16:46:34.0496298-03:00;True|2021-06-22T08:15:35.0787962-03:00;True|2021-06-21T17:14:00.2225069-03:00;True|2021-06-20T10:23:24.9567607-03:00;True|2021-06-17T14:51:53.4395541-03:00;True|2021-06-17T13:15:29.5898980-03:00;True|2021-06-17T13:10:42.9585450-03:00;True|2021-06-17T12:30:47.9258149-03:00;True|2021-06-17T12:28:09.4312770-03:00;False|2021-06-17T12:26:02.9785811-03:00;True|2021-06-17T12:08:19.5865564-03:00;</History>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

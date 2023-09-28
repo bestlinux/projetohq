@@ -1,0 +1,3 @@
+2021-07-02T07:41:36.0993201-03:00 [INF] () Application Starting
+2021-07-02T08:51:47.2900939-03:00 [FTL] () Erro ao incluir editora dsdsds já existe.
+2021-07-02T08:51:47.3168693-03:00 [INF] (Serilog.AspNetCore.RequestLoggingMiddleware) HTTP "POST" "/api/v1/Editora" responded 200 in 970.8583 ms

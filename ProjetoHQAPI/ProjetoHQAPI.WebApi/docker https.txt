@@ -1,0 +1,125 @@
+dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\ProjetoHQWebApi.pfx -p 20032014@
+
+dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\WeatherAPI.pfx -p 20032014@ 
+
+dotnet dev-certs https --trust
+
+dotnet user-secrets set "Kernel:Certificates:Development:Password" "20032014@"
+
+ 
+ C:\Users\bestl\.aspnet\https
+ 
+ C:\Users\bestl\AppData\Roaming\Microsoft\UserSecrets
+ 
+ 
+ docker build -t projetohqwebapi .
+ 
+ docker build -t weatherapi .
+  
+ docker-compose up
+ 
+  $env:USERPROFILE
+  
+   $env:APPDATA
+   
+   
+   
+   C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI\ProjetoHQAPI.Application\ProjetoHQApi.Application.csproj
+   
+   
+   
+   
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build-env
+WORKDIR /app
+
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "WeatherAPI.dll"]
+
+
+
+
+
+services: 
+  projetohq:
+    container_name: webapi
+    build: 
+      context: .
+	  dockerfile: WeatherAPI/Dockerfile
+    ports:
+    - "8000:80"
+    - "8001:44378"
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "8001"
+      ASPNETCORE_ENVIRONMENT: Development
+      Kestrel:Certificates:Default:Path: :/root/.aspnet/https/WeatherAPI.pfx
+      Kestrel:Certificates:Default:Password: 20032014@
+    volumes:
+      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
+      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/ 
+	  
+	  
+	  
+	  
+==docker-compose
+
+services: 
+  projetohq:
+    container_name: projetohqwebapi
+    build: 
+      context: .
+      dockerfile: ProjetoHQApi.WebApi/Dockerfile
+    ports:
+    - "8000:80"
+    - "8001:443"
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "8001"
+      ASPNETCORE_ENVIRONMENT: Development
+      Kestrel:Certificates:Default:Path: /root/.aspnet/https/ProjetoHQWebApi.pfx
+      Kestrel:Certificates:Default:Password: 20032014@
+    volumes:
+      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
+      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/ 
+
+==docker-file
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /app/ProjetoHQAPI
+
+# copy csproj and restore as distinct layers
+COPY *.sln . 
+COPY ProjetoHQAPI.WebApi/*.csproj ./ProjetoHQAPI.WebApi/
+COPY ProjetoHQAPI.Application/*.csproj ./ProjetoHQAPI.Application/
+COPY ProjetoHQAPI.Domain/*.csproj ./ProjetoHQAPI.Domain/
+COPY ProjetoHQAPI.Infrastructure.Persistence/*.csproj ./ProjetoHQAPI.Infrastructure.Persistence/
+COPY ProjetoHQAPI.Infrastructure.Shared/*.csproj ./ProjetoHQAPI.Infrastructure.Shared/
+
+RUN dotnet restore
+
+# copy everything else and build app
+COPY ProjetoHQAPI.WebApi/. ./ProjetoHQAPI.WebApi/
+COPY ProjetoHQAPI.Application/. ./ProjetoHQAPI.Application/
+COPY ProjetoHQAPI.Domain/. ./ProjetoHQAPI.Domain/
+COPY ProjetoHQAPI.Infrastructure.Persistence/. ./ProjetoHQAPI.Infrastructure.Persistence/
+COPY ProjetoHQAPI.Infrastructure.Shared/. ./ProjetoHQAPI.Infrastructure.Shared/
+
+WORKDIR /app/ProjetoHQAPI
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+WORKDIR /app
+
+COPY --from=build /app/ProjetoHQAPI/out ./
+ENTRYPOINT ["dotnet", "ProjetoHQApi.WebApi.dll"]

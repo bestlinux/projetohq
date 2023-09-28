@@ -45,26 +45,25 @@ namespace ProjetoHQApi.WebApi
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-            }
+                app.UseDeveloperExceptionPage();			
+			}
             else
             {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
-            //dbContext.Database.EnsureCreated();
-
-            // Add this line; you'll need `using Serilog;` up the top, too
-            app.UseSerilogRequestLogging();
+			//dbContext.Database.EnsureCreated();
+			app.UseSwaggerExtension();
+			// Add this line; you'll need `using Serilog;` up the top, too
+			app.UseSerilogRequestLogging();
             loggerFactory.AddSerilog();
             app.UseHttpsRedirection();
             app.UseRouting();
             //Enable CORS
             app.UseCors("AllowAll");
             app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseSwaggerExtension();
+            app.UseAuthorization();           
             app.UseErrorHandlingMiddleware();
             app.UseHealthChecks("/health");
 

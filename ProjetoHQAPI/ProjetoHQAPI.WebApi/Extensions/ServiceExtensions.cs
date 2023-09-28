@@ -24,9 +24,9 @@ namespace ProjetoHQApi.WebApi.Extensions
                     Description = "This Api will be responsible for overall data distribution and authorization.",
                     Contact = new OpenApiContact
                     {
-                        Name = "Jane Doe",
-                        Email = "jdoe@janedoe.com",
-                        Url = new Uri("https://janedoe.com/contact"),
+                        Name = "Diego Machado",
+                        Email = "bestlinux@gmail.com",
+                        Url = new Uri("https://google.com"),
                     }
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

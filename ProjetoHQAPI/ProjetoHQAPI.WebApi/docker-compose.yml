@@ -1,0 +1,20 @@
+services: 
+  projetohq:
+    container_name: projetohqwebapi
+    build: 
+      context: .
+      dockerfile: ProjetoHQApi.WebApi/Dockerfile
+    ports:
+    - "8000:80"
+    - "8001:443"
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "8001"
+      ASPNETCORE_ENVIRONMENT: Development
+      Kestrel:Certificates:Default:Path: /root/.aspnet/https/ProjetoHQWebApi.pfx
+      Kestrel:Certificates:Default:Password: 20032014@
+    volumes:
+      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets
+      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/ 
+ 
+        
