@@ -1,2 +1,2 @@
 # projetohq
-WebAPI desenvolvida em .Net Core 5
+WebAPI desenvolvida em .Net 8
