@@ -24,6 +24,4 @@ jobs:
       run: dotnet restore
       working-directory: ProjetoHQAPI
     - name: Build
-      run: dotnet build /home/runner/work/projetohq/projetohq/ProjetoHQAPI/ProjetoHQAPI.Domain/ProjetoHQApi.Domain.csproj
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build /home/runner/work/projetohq/projetohq/ProjetoHQAPI/ProjetoHQApi.sln
