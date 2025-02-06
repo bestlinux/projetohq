@@ -33,7 +33,7 @@ namespace ProjetoHQApi.Application.Features.Colecoes.Commands
                 {
                     if (colecao == null) throw new ApiException($"Colecao Not Found.");
 
-                    string arquivo = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_COLECAO(), colecao.Arquivo);
+                    string arquivo = Path.Combine(Constantes.ConstantesProjetoHQ.DIRETORIO_IMAGENS_COLECAO, colecao.Arquivo);
 
                     File.Delete(arquivo);
 

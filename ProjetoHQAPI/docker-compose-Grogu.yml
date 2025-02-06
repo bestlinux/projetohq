@@ -26,3 +26,23 @@ services:
       - SA_PASSWORD=20032014Amor@@
     volumes:
       - C:\Users\bestl\OneDrive\PROJETOHQATUAL\SQLServer:/var/opt/mssql/data
+      
+  projetohqfront:
+    container_name: projetohqfrontend
+    build:
+      context: C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohqweb
+      dockerfile: C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohqweb\Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 4200:4200
+      
+  nginx:
+    container_name: nginx
+    build:
+      context: C:\Users\bestl\OneDrive\PROJETOHQATUAL\nginx
+      dockerfile: C:\Users\bestl\OneDrive\PROJETOHQATUAL\nginx\Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - "8010:90"

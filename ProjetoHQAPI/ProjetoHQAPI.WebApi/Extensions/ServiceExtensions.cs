@@ -20,8 +20,8 @@ namespace ProjetoHQApi.WebApi.Extensions
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Clean Architecture - ProjetoHQApi.WebApi",
-                    Description = "This Api will be responsible for overall data distribution and authorization.",
+                    Title = "ProjetoHQApi.WebApi",
+                    Description = "API responsável pelo sistema de administração de hqs",
                     Contact = new OpenApiContact
                     {
                         Name = "Diego Machado",
@@ -76,13 +76,13 @@ namespace ProjetoHQApi.WebApi.Extensions
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll",
-                builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                });
+                options.AddDefaultPolicy(
+                  policy =>
+                  {
+                      policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                  });
             });
         }
 
@@ -113,7 +113,7 @@ namespace ProjetoHQApi.WebApi.Extensions
             get
             {
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+                var fileName = typeof(Program).GetTypeInfo().Assembly.GetName().Name + ".xml";
                 return Path.Combine(basePath, fileName);
             }
         }

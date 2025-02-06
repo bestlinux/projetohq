@@ -33,7 +33,7 @@ namespace ProjetoHQApi.Application.Features.Frases.Commands
                 {
                     if (frase == null) throw new ApiException($"Frase Not Found.");
 
-                    string arquivo = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_FRASES(), frase.Arquivo);
+                    string arquivo = Path.Combine(Constantes.ConstantesProjetoHQ.DIRETORIO_IMAGENS_FRASES, frase.Arquivo);
 
                     File.Delete(arquivo);
 

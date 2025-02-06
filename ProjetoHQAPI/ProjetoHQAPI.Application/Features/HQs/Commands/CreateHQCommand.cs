@@ -196,7 +196,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
                 }
 
-                string capaBancoDados = Guid.NewGuid().ToString() + Constantes.Constantes.GetFORMATO_IMAGEM();
+                string capaBancoDados = Guid.NewGuid().ToString() + Constantes.ConstantesProjetoHQ.FORMATO_IMAGEM;
 
                 WebClient client1 = new();
                 Stream stream = client1.OpenRead(capaEndereco.ToString());
@@ -204,7 +204,7 @@ namespace ProjetoHQApi.Application.Features.HQs.Commands
 
                 if (bitmap != null)
                 {
-                    bitmap.Save(Constantes.Constantes.GetDIRETORIO_IMAGENS() + capaBancoDados, ImageFormat.Jpeg);
+                    bitmap.Save(Constantes.ConstantesProjetoHQ.DIRETORIO_IMAGENS + capaBancoDados, ImageFormat.Jpeg);
                 }
 
                 stream.Flush();
