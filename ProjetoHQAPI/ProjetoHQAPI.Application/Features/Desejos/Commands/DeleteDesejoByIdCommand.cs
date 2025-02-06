@@ -33,7 +33,7 @@ namespace ProjetoHQApi.Application.Features.Desejos.Commands
                 {
                     if (hq == null) throw new ApiException($"Desejo Not Found.");
 
-                    string arquivo = Path.Combine(Constantes.Constantes.GetDIRETORIO_IMAGENS_DESEJO(), hq.Capa);
+                    string arquivo = Path.Combine(Constantes.ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS, hq.Capa);
 
                     File.Delete(arquivo);
 

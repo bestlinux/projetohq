@@ -6,42 +6,15 @@ using System.Threading.Tasks;
 
 namespace ProjetoHQApi.Application.Constantes
 {
-	public static class Constantes
+	public static class ConstantesProjetoHQ
 	{
-		private const string DIRETORIO_IMAGENS = @"D:\projetohqrepositorio\Capas\";
-		private const string DIRETORIO_IMAGENS_FRASES = @"D:\projetohqrepositorio\Frases\";
-		private const string DIRETORIO_IMAGENS_COLECAO = @"D:\projetohqrepositorio\Colecao\";
-		private const string DIRETORIO_IMAGENS_AZURE = @"C:\projetohqrepositorio\Capas\";
-		private const string DIRETORIO_IMAGENS_DESEJOS = @"D:\projetohqrepositorio\Desejos\";
+        public const string DIRETORIO_IMAGENS = @"D:\projetohqrepositorio\Capas\";
+        public const string DIRETORIO_IMAGENS_FRASES = @"D:\projetohqrepositorio\Frases\";
+		public const string DIRETORIO_IMAGENS_COLECAO = @"D:\projetohqrepositorio\Colecao\";
+        public const string DIRETORIO_IMAGENS_AZURE = @"C:\projetohqrepositorio\Capas\";
+        public const string DIRETORIO_IMAGENS_DESEJOS = @"D:\projetohqrepositorio\Desejos\";
 
-		private const string FORMATO_IMAGEM = @".jpg";
+        public const string FORMATO_IMAGEM = @".jpg";
 
-		
-		public static string DIRETORIO_IMAGENS1 => DIRETORIO_IMAGENS;
-
-		public static string GetFORMATO_IMAGEM()
-		{
-			return FORMATO_IMAGEM;
-		}
-
-		public static string GetDIRETORIO_IMAGENS()
-		{
-			return DIRETORIO_IMAGENS;
-		}
-
-		public static string GetDIRETORIO_IMAGENS_FRASES()
-		{
-			return DIRETORIO_IMAGENS_FRASES;
-		}
-
-		public static string GetDIRETORIO_IMAGENS_COLECAO()
-		{
-			return DIRETORIO_IMAGENS_COLECAO;
-		}
-
-		public static string GetDIRETORIO_IMAGENS_DESEJO()
-		{
-			return DIRETORIO_IMAGENS_DESEJOS;
-		}
 	}
 }

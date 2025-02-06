@@ -195,7 +195,7 @@ namespace ProjetoHQApi.Application.Features.Desejos.Commands
 
                 }
 
-                string capaBancoDados = Guid.NewGuid().ToString() + Constantes.Constantes.GetFORMATO_IMAGEM();
+                string capaBancoDados = Guid.NewGuid().ToString() + Constantes.ConstantesProjetoHQ.FORMATO_IMAGEM;
 
                 WebClient client1 = new();
                 Stream stream = client1.OpenRead(capaEndereco.ToString());
@@ -203,7 +203,7 @@ namespace ProjetoHQApi.Application.Features.Desejos.Commands
 
                 if (bitmap != null)
                 {
-                    bitmap.Save(Constantes.Constantes.GetDIRETORIO_IMAGENS_DESEJO() + capaBancoDados, ImageFormat.Jpeg);
+                    bitmap.Save(Constantes.ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS + capaBancoDados, ImageFormat.Jpeg);
                 }
 
                 stream.Flush();
