@@ -1,27 +1,22 @@
-﻿using ProjetoHQApi.Application.Interfaces;
-using ProjetoHQApi.Domain.Common;
+﻿using ProjetoHQApi.Domain.Common;
 using ProjetoHQApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
 
 namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        private readonly IDateTimeService _dateTime;
-        private readonly ILoggerFactory _loggerFactory;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
-            IDateTimeService dateTime,
-            ILoggerFactory loggerFactory
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             ) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            _dateTime = dateTime;
-            _loggerFactory = loggerFactory;
         }
 
         public DbSet<HQ> HQs { get; set; }
@@ -35,38 +30,16 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
         public DbSet<Colecao> Colecao { get; set; }
 
         public DbSet<Leitura> Leituras { get; set; }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.Created = _dateTime.NowUtc;
-                        break;
-
-                    case EntityState.Modified:
-                        entry.Entity.LastModified = _dateTime.NowUtc;
-                        break;
-                }
-            }
-            return base.SaveChangesAsync(cancellationToken);
-        }
-
+       
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            var _mockData = this.Database.GetService<IMockService>();
-            var seedHQs = _mockData.SeedHQS(10);
-
-            builder.Entity<HQ>().HasData(seedHQs);
-
             base.OnModelCreating(builder);
-        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLoggerFactory(_loggerFactory);
+            // aplica as configurações de mapeamento das entidades
+            // do banco de dados contidas em uma determinada assembly
+            // (conjunto de classes) ao objeto ModelBuilder durante a
+            // criação do modelo.
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }
 }

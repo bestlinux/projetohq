@@ -1,44 +1,21 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
+using ProjetoHQApi.Application.Services;
 using System.Text.Json.Serialization;
-using ProjetoHQApi.WebApi.Extensions;
-using ProjetoHQApi.Application;
-using ProjetoHQApi.Infrastructure;
-using ProjetoHQApi.Infrastructure.Persistence;
-using ProjetoHQApi.Infrastructure.Shared;
-using System.Configuration;
-using Microsoft.AspNetCore.Authentication.Certificate;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
+using ProjetoHQApi.Infrastructure.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ProjetoHQApi.Domain.Entities;
+using ProjetoHQApi.Infrastructure.Persistence.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(
-        CertificateAuthenticationDefaults.AuthenticationScheme)
-    .AddCertificate();
-
-builder.Services.AddApplicationLayer();
-builder.Services.AddPersistenceInfrastructure(builder.Configuration);
-builder.Services.AddSharedInfrastructure(builder.Configuration);
-builder.Services.AddSwaggerExtension();
-builder.Services.AddControllersExtension();
-// CORS
-builder.Services.AddCorsExtension();
-builder.Services.AddHealthChecks();
-// API version
-builder.Services.AddApiVersioningExtension();
-// API explorer
-builder.Services.AddMvcCore()
-    .AddApiExplorer();
-// API explorer version
-builder.Services.AddVersionedApiExplorerExtension();
+builder.Services.ConfigurePersistenceApp(builder.Configuration);
+builder.Services.ConfigureApplicationApp();
 
 builder.Services.AddCors(options =>
 {
@@ -51,8 +28,75 @@ builder.Services.AddCors(options =>
       });
 });
 
+// Add services to the container.
+builder.Services.AddControllers().AddJsonOptions(x =>
+  x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "projetohq", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = @"JWT Authorization header usando o schema Bearer
+                       \r\n\r\n Informe 'Bearer'[space].
+                       Examplo: \'Bearer 12345abcdef\'",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                          {
+                              Reference = new OpenApiReference
+                              {
+                                  Type = ReferenceType.SecurityScheme,
+                                  Id = "Bearer"
+                              }
+                          },
+                         new string[] {}
+                    }
+                });
+});
+
+
+
+//builder.Services.AddAutoMapper(typeof(DomainToDTOProfile));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
+
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -66,58 +110,3 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
-
-
-/*
-namespace ProjetoHQApi.WebApi
-{
-    public static class Program
-    {
-        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .Build();
-
-        public static void Main(string[] args)
-        {
-            //Read Configuration from appSettings
-          
-
-            //Initialize Logger
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-                .CreateLogger();
-
-            var host = CreateHostBuilder(args).Build();
-            /*using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                try
-                {
-                    Log.Information("Application Starting");
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning(ex, "An error occurred starting the application");
-                }
-                finally
-                {
-                    Log.CloseAndFlush();
-                }
-            }
-            host.Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-            .UseSerilog()
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseConfiguration(Configuration);
-                webBuilder.ConfigureLogging(log => { log.AddSerilog(Log.Logger); });
-                webBuilder.UseStartup<Startup>();
-            });
-    }
-}
-*/

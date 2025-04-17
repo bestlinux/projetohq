@@ -4,177 +4,180 @@
         <name>ProjetoHQApi.WebApi</name>
     </assembly>
     <members>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ColecaoController.Get(ProjetoHQApi.Application.Features.Colecoes.Queries.GetColecaoQuery)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ColecaoController.GetAll(ProjetoHQApi.Application.UseCases.Colecoes.Queries.GetColecaoQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
             </summary>
             <param name="filter"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ColecaoController.Delete(System.Guid)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ColecaoController.Remove(System.Guid,System.Threading.CancellationToken)">
             <summary>
             DELETE api/controller/5
             </summary>
             <param name="id"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Get(ProjetoHQApi.Application.Features.Desejos.Queries.GetDesejoQuery)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.GetAll(ProjetoHQApi.Application.UseCases.Desejos.Queries.GetDesejoQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
             </summary>
             <param name="filter"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post(ProjetoHQApi.Application.Features.Desejos.Commands.CreateDesejoCommand)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post(ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand,System.Threading.CancellationToken)">
             <summary>
             POST api/controller
             </summary>
             <param name="command"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Paged(ProjetoHQApi.Application.Features.Desejos.Queries.PagedDesejoQuery)">
-            <summary>
-            Support Angular 11 CRUD story on Medium
-            </summary>
-            <param name="query"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Delete(System.Guid)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
             DELETE api/controller/5
             </summary>
             <param name="id"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Get(ProjetoHQApi.Application.Features.Editoras.Queries.GetEditoraQuery)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.GetAll(ProjetoHQApi.Application.UseCases.Editoras.Queries.GetEditoraQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
             </summary>
             <param name="filter"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Get(System.Guid)" -->
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Post(ProjetoHQApi.Application.Features.Editoras.Commands.CreateEditoraCommand)">
+        <!-- Badly formed XML comment ignored for member "M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Get(System.Guid,System.Threading.CancellationToken)" -->
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Post(ProjetoHQApi.Application.UseCases.Editoras.Commands.CreateEditoraCommand,System.Threading.CancellationToken)">
             <summary>
             POST api/controller
             </summary>
             <param name="command"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Delete(System.Guid)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
             DELETE api/controller/5
             </summary>
             <param name="id"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Get(ProjetoHQApi.Application.Features.Frases.Queries.GetFrasesQuery)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.GetAll(ProjetoHQApi.Application.UseCases.Frases.Queries.GetFrasesQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
             </summary>
             <param name="filter"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Delete(System.Guid)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
             DELETE api/controller/5
             </summary>
             <param name="id"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(ProjetoHQApi.Application.Features.HQs.Queries.GetHQQuery)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.GetAll(ProjetoHQApi.Application.UseCases.HQs.Queries.GetHQQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
             </summary>
             <param name="filter"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.Guid)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.Guid,System.Threading.CancellationToken)">
             <summary>
             GET api/controller/5
             </summary>
             <param name="id"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.String)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.String,System.Threading.CancellationToken)">
             <summary>
             GET api/controller/5
             </summary>
             <param name="editora"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Post(ProjetoHQApi.Application.Features.HQs.Commands.CreateHQCommand[])">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Post(ProjetoHQApi.Application.UseCases.HQs.Commands.CreateHQCommand[],System.Threading.CancellationToken)">
             <summary>
             POST api/controller
             </summary>
             <param name="command"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Paged(ProjetoHQApi.Application.Features.HQs.Queries.PagedHQsQuery)">
-            <summary>
-            Support Angular 11 CRUD story on Medium
-            </summary>
-            <param name="query"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Put(System.Guid,ProjetoHQApi.Application.Features.HQs.Commands.UpdateHQCommand)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Put(System.Guid,ProjetoHQApi.Application.UseCases.HQs.Commands.UpdateHQCommand,System.Threading.CancellationToken)">
             <summary>
             PUT api/controller/5
             </summary>
             <param name="id"></param>
             <param name="command"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Delete(System.Guid)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
             DELETE api/controller/5
             </summary>
             <param name="id"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Get(ProjetoHQApi.Application.Features.Leituras.Queries.GetLeituraQuery)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.GetAll(ProjetoHQApi.Application.UseCases.Leituras.Queries.GetLeituraQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
             </summary>
             <param name="filter"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Post(ProjetoHQApi.Application.Features.Leituras.Commands.CreateLeituraCommand)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Post(ProjetoHQApi.Application.UseCases.Leituras.Commands.CreateLeituraCommand,System.Threading.CancellationToken)">
             <summary>
             POST api/controller
             </summary>
             <param name="command"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Paged(ProjetoHQApi.Application.Features.Leituras.Queries.PagedLeituraQuery)">
-            <summary>
-            Support Angular 11 CRUD story on Medium
-            </summary>
-            <param name="query"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Delete(System.Guid)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
             DELETE api/controller/5
             </summary>
             <param name="id"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Put(System.Guid,ProjetoHQApi.Application.Features.Leituras.Commands.UpdateLeituraCommand)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Put(System.Guid,ProjetoHQApi.Application.UseCases.Leituras.Commands.UpdateLeituraCommand,System.Threading.CancellationToken)">
             <summary>
             PUT api/controller/5
             </summary>
             <param name="id"></param>
             <param name="command"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LoginController.Get(System.String,System.String)">
-            <summary>
-            GET api/controller/5
-            </summary>
-            <param name="usuario"></param>
-            <param name="senha"></param>
-            <returns></returns>
+        <member name="T:ProjetoHQApi.WebApi.Migrations.Identity">
+            <inheritdoc />
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Migrations.Identity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Migrations.Identity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Migrations.Identity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
         </member>
     </members>
 </doc>
