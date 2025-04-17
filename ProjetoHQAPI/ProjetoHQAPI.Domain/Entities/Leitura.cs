@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProjetoHQApi.Domain.Entities
 {
-	public class Leitura : AuditableBaseEntity
+	public class Leitura : Entity
     {
+        public Guid Id { get; set; }
         public string Titulo { get; set; }
 
         public string Capa { get; set; }

@@ -1,9 +1,12 @@
-﻿using ProjetoHQApi.Domain.Common;
+﻿
+using ProjetoHQApi.Domain.Common;
 
 namespace ProjetoHQApi.Domain.Entities
 {
-    public class Desejo : AuditableBaseEntity
+    public class Desejo : Entity
     {
+        public Guid Id { get; set; }
+
         public string Editora { get; set; }
 
         public string Titulo { get; set; }

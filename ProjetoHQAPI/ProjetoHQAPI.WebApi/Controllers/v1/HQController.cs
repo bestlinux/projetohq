@@ -1,7 +1,4 @@
-﻿using ProjetoHQApi.Application.Features.HQs.Commands;
-using ProjetoHQApi.Application.Features.HQs.Queries;
-using ProjetoHQApi.WebApi.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,224 +11,88 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ProjetoHQApi.Application.Features.Desejos.Commands;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using MediatR;
+using ProjetoHQApi.Application.UseCases.HQs.Queries;
+using ProjetoHQApi.Application.UseCases.HQs.Commands;
 
 namespace ProjetoHQApi.WebApi.Controllers.v1
 {
 
-    [ApiVersion("1.0")]
-    public class HqController : BaseApiController
+    [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [ApiController]
+    public class HqController(ILogger<HqController> logger, IMediator mediator) : ControllerBase
     {
-        private readonly ILogger<HqController> _logger;
-
-        public HqController(ILogger<HqController> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<HqController> _logger = logger;
+        private readonly IMediator _mediator = mediator;
 
         /// <summary>
         /// GET: api/controller
         /// </summary>
         /// <param name="filter"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetHQQuery filter)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAll([FromQuery] GetHQQuery filter, CancellationToken cancellationToken)
         {
-            try
-            {
-                return Ok(await Mediator.Send(filter));
-            }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
 
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
+            return Ok(await _mediator.Send(filter, cancellationToken));
         }
 
         /// <summary>
         /// GET api/controller/5
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
         {
-            try
-            {
-                return Ok(await Mediator.Send(new GetHQByIdQuery { Id = id }));
-            }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
 
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
+            return Ok(await _mediator.Send(new GetHQByIdQuery { Id = id }, cancellationToken));
         }
 
         /// <summary>
         /// GET api/controller/5
         /// </summary>
         /// <param name="editora"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet("BuscaPorEditora/{editora}")]
-        public async Task<IActionResult> Get(string editora)
+        public async Task<IActionResult> Get(string editora, CancellationToken cancellationToken)
         {
-            try
-            {
-                return Ok(await Mediator.Send(new GetHQByEditoraQuery { Editora = editora }));
-            }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
-
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
+            return Ok(await _mediator.Send(new GetHQByEditoraQuery { Editora = editora }, cancellationToken));
         }
 
         /// <summary>
         /// POST api/controller
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post(CreateHQCommand[] command)
+        public async Task<IActionResult> Post(CreateHQCommand[] command, CancellationToken cancellationToken)
         {
-            Application.Wrappers.Response<Guid> response = new Application.Wrappers.Response<Guid>();
-            try
-            {
-                foreach (CreateHQCommand commandHQ in command)
-                {
-                    response = await Mediator.Send(commandHQ);                   
-                }
-            }
-            catch (Exception e)
-            {
-				string erro;
+            var response = new Guid();
 
-				if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                return Ok(response);
+            foreach (CreateHQCommand commandHQ in command)
+            {
+                response = (Guid)await _mediator.Send(commandHQ, cancellationToken);
             }
 
             return Ok(response);
-        }        
-
-        /// <summary>
-        /// Support Angular 11 CRUD story on Medium
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Paged")]
-        public async Task<IActionResult> Paged(PagedHQsQuery query)
-        {
-            try
-            {
-                return Ok(await Mediator.Send(query));
-            }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
-
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
         }
 
         [HttpGet("BuscaWeb/{titulo}/{editora}/{categoria}/{genero}/{status}/{formato}/{numeroEdicao?}/{anoLancamento?}")]
         public async Task<IActionResult> BuscaWeb(string titulo, string editora, int categoria, int genero, int status, int formato, int numeroEdicao = 0, string anoLancamento = null)
         {
-            try
-            {
-                return Ok(await Mediator.Send(new GetHQInWeb { Titulo = titulo, AnoLancamento = anoLancamento, NumeroEdicao = numeroEdicao, Editora = editora, Categoria = categoria, Genero = genero, Status = status, Formato = formato }));
-            }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
-
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
+           
+           return Ok(await _mediator.Send(new GetHQInWeb { Titulo = titulo, AnoLancamento = anoLancamento, NumeroEdicao = numeroEdicao, Editora = editora, Categoria = categoria, Genero = genero, Status = status, Formato = formato }));
         }
 
-        [HttpGet]
-        [Route("BuscaAvancada/{categoria=0}/{genero=0}/{status=0}/{formato=0}/{lido=0}/{numeroEdicao=0}/{anoLancamento=null}/{titulo=null}/{roteiro=null}/{personagens=null}/{editora=null}")]
-        public async Task<IActionResult> BuscaAvancada(int categoria, int genero, int status, int formato, int lido, int numeroEdicao, string anoLancamento, string titulo, string roteiro, string personagens, string editora)
-        {
-            try
-            {
-                return Ok(await Mediator.Send(new GetHQAdvancedSearchQuery { Titulo = titulo, AnoLancamento = anoLancamento, NumeroEdicao = numeroEdicao, Editora = editora, Categoria = categoria, Genero = genero, Status = status, Formato = formato, Lido = lido, Roteiro = roteiro, Personagens = personagens }));
-            }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
-
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
-        }
 
 
         /// <summary>
@@ -239,64 +100,29 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// </summary>
         /// <param name="id"></param>
         /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, UpdateHQCommand command)
+        public async Task<IActionResult> Put(Guid id, UpdateHQCommand command, CancellationToken cancellationToken)
         {
-            try
+            if (id != command.Id)
             {
-                if (id != command.Id)
-                {
-                    return BadRequest();
-                }
-                return Ok(await Mediator.Send(command));
+                return BadRequest();
             }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
+            return Ok(await _mediator.Send(command, cancellationToken));
 
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
         }
 
         /// <summary>
         /// DELETE api/controller/5
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            try
-            {
-                return Ok(await Mediator.Send(new DeleteHQByIdCommand { Id = id }));
-            }
-            catch (Exception e)
-            {
-                Application.Wrappers.Response<Guid> response = new();
-
-                string erro;
-
-                if (e.GetType() == typeof(ValidationException))
-                    erro = ((ProjetoHQApi.Application.Exceptions.ValidationException)e).Errors[0];
-                else
-                    erro = e.StackTrace.ToString();
-
-                response.Message = erro;
-                response.Succeeded = false;
-                _logger.LogError("Erro " + erro);
-                return Ok(response);
-            }
+           return Ok(await _mediator.Send(new DeleteHQByIdCommand { Id = id }, cancellationToken));           
         }
     }
 }

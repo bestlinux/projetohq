@@ -2,8 +2,9 @@
 
 namespace ProjetoHQApi.Domain.Entities
 {
-    public class HQ : AuditableBaseEntity
+    public class HQ : Entity
     {
+        public Guid Id { get; set; }
         public string Editora { get; set; }
 
         public string Titulo { get; set; }
