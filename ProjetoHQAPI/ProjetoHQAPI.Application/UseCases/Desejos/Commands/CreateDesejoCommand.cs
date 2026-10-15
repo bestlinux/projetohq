@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HtmlAgilityPack;
 using MediatR;
 using ProjetoHQApi.Application.Constantes;
@@ -50,25 +50,27 @@ namespace ProjetoHQApi.Application.UseCases.Desejos.Commands
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
+        private readonly IWebScraperService _webScraperService;
 
-        public CreateDesejoCommandHandler(IDesejoRepository desejoRepository, IMapper mapper, IUnitOfWork unitOfWork, IMediator mediator)
+        public CreateDesejoCommandHandler(IDesejoRepository desejoRepository, IMapper mapper, IUnitOfWork unitOfWork, IMediator mediator, IWebScraperService webScraperService)
         {
             _desejoRepository = desejoRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _mediator = mediator;
+            _webScraperService = webScraperService;
         }
 
         public async Task<Nullable<Guid>> Handle(CreateDesejoCommand request, CancellationToken cancellationToken)
         {
             var desejo = _mapper.Map<Desejo>(request);
             var doc1 = new HtmlAgilityPack.HtmlDocument();
-            HtmlWeb web1 = new();
 
             try
             {
                 //BUSCA DADOS DA WEB
-                doc1 = web1.Load(request.LinkDetalhes);
+                var htmlContent = await _webScraperService.GetHtmlAsync(request.LinkDetalhes, cancellationToken);
+                doc1.LoadHtml(htmlContent);
 
                 var licenciadorNode = doc1.DocumentNode.SelectNodes("//*[@*[contains(@id, 'licenciador')]]");
 

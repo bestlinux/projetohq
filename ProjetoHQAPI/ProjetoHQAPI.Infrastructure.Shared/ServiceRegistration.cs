@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProjetoHQApi.Domain.Interfaces;
 using ProjetoHQApi.Infrastructure.Shared.Services;
@@ -15,6 +15,7 @@ namespace ProjetoHQApi.Infrastructure.Shared
         public static void ConfigureSharedInfrastructure(this IServiceCollection services)
         {
             services.AddTransient<IDateTimeService, DateTimeService>();
+            services.AddSingleton<IWebScraperService, WebScraperService>();
         }
     }
 }

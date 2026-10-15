@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Domain.Entities;
+using ProjetoHQApi.Domain.Entities;
 using AutoMapper;
 using HtmlAgilityPack;
 using MediatR;
@@ -51,25 +51,27 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
+        private readonly IWebScraperService _webScraperService;
 
-        public CreateHQCommandHandler(IHQRepository hqRepository, IMapper mapper, IUnitOfWork unitOfWork, IMediator mediator)
+        public CreateHQCommandHandler(IHQRepository hqRepository, IMapper mapper, IUnitOfWork unitOfWork, IMediator mediator, IWebScraperService webScraperService)
         {
             _hqRepository = hqRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _mediator = mediator;
+            _webScraperService = webScraperService;
         }
 
         public async Task<Nullable<Guid>> Handle(CreateHQCommand request, CancellationToken cancellationToken)
         {
             var hq = _mapper.Map<HQ>(request);
             var doc1 = new HtmlAgilityPack.HtmlDocument();
-            HtmlWeb web1 = new();
 
             try
             {
                 //BUSCA DADOS DA WEB
-                doc1 = web1.Load(request.LinkDetalhes);
+                var htmlContent = await _webScraperService.GetHtmlAsync(request.LinkDetalhes, cancellationToken);
+                doc1.LoadHtml(htmlContent);
 
                 var licenciadorNode = doc1.DocumentNode.SelectNodes("//*[@*[contains(@id, 'licenciador')]]");
 

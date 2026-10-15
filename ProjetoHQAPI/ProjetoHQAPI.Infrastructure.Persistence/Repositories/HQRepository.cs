@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Domain.Entities;
+using ProjetoHQApi.Domain.Entities;
 using ProjetoHQApi.Infrastructure.Persistence.Contexts;
 using ProjetoHQApi.Infrastructure.Persistence.Repository;
 using HtmlAgilityPack;
@@ -19,7 +19,7 @@ using ProjetoHQApi.Application.UseCases.Desejos.Queries;
 
 namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
 {
-    public class HQRepository(ApplicationDbContext context) : Repository<HQ>(context), IHQRepository
+    public class HQRepository(ApplicationDbContext context, IWebScraperService webScraperService) : Repository<HQ>(context), IHQRepository
     {
         public async Task<bool> IsUniqueHQTituloAsync(string hqTitulo)
         {
@@ -97,10 +97,8 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
 
 
             var doc = new HtmlAgilityPack.HtmlDocument();
-
-            HtmlWeb web = new();
-
-            doc = web.Load(GuiaDosQuadrinhos.ToString());
+            var htmlContent = await webScraperService.GetHtmlAsync(GuiaDosQuadrinhos.ToString());
+            doc.LoadHtml(htmlContent);
 
             var htmlNodes = doc.DocumentNode.SelectNodes("//*[@*[contains(@id, 'products')]]");
 
@@ -134,7 +132,12 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
                                 {
                                     var hqEncontrada = new HQ
                                     {
-                                        Editora = editora.Trim()
+                                        Editora = editora.Trim(),
+                                        Categoria = categoria,
+                                        Genero = genero,
+                                        Status = status,
+                                        Formato = formato,
+                                        DataPublicacao = anoLancamento?.Trim()
                                     };
 
                                     string procura = @"'MainContent_lstProfileView_div_box_msg_" + j + "'";
@@ -152,6 +155,19 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
 
                                         index = myWriter.ToString().LastIndexOf(@"-");
                                         hqEncontrada.Titulo = myWriter.ToString().Substring(0, index).Trim();
+
+                                        if (numeroEdicao != 0)
+                                        {
+                                            hqEncontrada.NumeroEdicao = numeroEdicao;
+                                        }
+                                        else
+                                        {
+                                            var matchEdicao = System.Text.RegularExpressions.Regex.Match(hqEncontrada.Titulo ?? "", @"n[°º\.]?\s*(\d+)", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                            if (matchEdicao.Success && int.TryParse(matchEdicao.Groups[1].Value, out int parsedNum))
+                                            {
+                                                hqEncontrada.NumeroEdicao = parsedNum;
+                                            }
+                                        }
                                         break;
                                     }
 

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using ProjetoHQApi.Domain.Common;
 using ProjetoHQApi.Domain.Interfaces;
@@ -35,7 +35,7 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Queries
 
         public async Task<IReadOnlyCollection<GetHQResponse>> Handle(GetHQInWeb request, CancellationToken cancellationToken)
         {
-            var leitura = await _hqRepository.GetPagedHQInWebReponseAsync(request.Titulo, request.Editora, request.Categoria, request.Genero, request.Status, request.Formato, request.NumeroEdicao);
+            var leitura = await _hqRepository.GetPagedHQInWebReponseAsync(request.Titulo, request.Editora, request.Categoria, request.Genero, request.Status, request.Formato, request.NumeroEdicao, request.AnoLancamento);
 
             return leitura.Select(_mapper.Map<GetHQResponse>).ToList();
         }
