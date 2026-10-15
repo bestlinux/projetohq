@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using ProjetoHQApi.Application.UseCases.Frases.Queries;
 using ProjetoHQApi.Application.UseCases.Leituras.Queries;
@@ -27,8 +27,8 @@ namespace ProjetoHQApi.Application.UseCases.Leituras.Queries
         {
             IEnumerable<Leitura>? leitura = null;
 
-            if (request is not null)
-                leitura = await _leituraRepository.LocalizaTodasLeiturasPorTitulo(request.Titulo!, cancellationToken);
+            if (request is not null && !string.IsNullOrWhiteSpace(request.Titulo))
+                leitura = await _leituraRepository.LocalizaTodasLeiturasPorTitulo(request.Titulo, cancellationToken);
             else
                 leitura = await _leituraRepository.GetAllAsync(cancellationToken);
 

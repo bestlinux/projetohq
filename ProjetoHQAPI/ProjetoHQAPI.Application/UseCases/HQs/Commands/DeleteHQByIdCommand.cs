@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using ProjetoHQApi.Application.Constantes;
 using ProjetoHQApi.Application.Services.Notifications;
 using ProjetoHQApi.Domain.Entities;
@@ -30,10 +30,10 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
 
         public async Task<bool> Handle(DeleteHQByIdCommand command, CancellationToken cancellationToken)
         {
-            var hq = await _hqRepositoryAsync.GetByIdAsync(command.Id);
-
             try
             {
+                var hq = await _hqRepositoryAsync.GetByIdAsync(command.Id);
+
                 if (hq == null)
                 {
                     await _mediator.Publish(new ErrorNotification
@@ -43,11 +43,17 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
                     return false;
                 }
 
-                string arquivo = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS, hq.Capa);
-
-                File.Delete(arquivo);
+                if (!string.IsNullOrWhiteSpace(hq.Capa))
+                {
+                    string arquivo = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS, hq.Capa);
+                    if (File.Exists(arquivo))
+                    {
+                        File.Delete(arquivo);
+                    }
+                }
 
                 await _hqRepositoryAsync.RemoveAsync(command.Id);
+                return true;
             }
             catch (Exception ex)
             {
@@ -58,8 +64,6 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
                 }, cancellationToken);
                 return false;
             }
-
-            return true;
         }
     }
 

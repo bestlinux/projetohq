@@ -21,6 +21,14 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
 {
     public class HQRepository(ApplicationDbContext context, IWebScraperService webScraperService) : Repository<HQ>(context), IHQRepository
     {
+        public override async Task<IEnumerable<HQ>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            return await _db.HQs
+                .FromSqlRaw("SELECT * FROM [HQs] WITH (NOLOCK)")
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<bool> IsUniqueHQTituloAsync(string hqTitulo)
         {
             return await _db.HQs

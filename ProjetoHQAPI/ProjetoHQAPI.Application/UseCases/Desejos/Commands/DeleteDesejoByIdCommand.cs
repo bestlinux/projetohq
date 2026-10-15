@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using ProjetoHQApi.Application.Constantes;
 using ProjetoHQApi.Application.Services.Notifications;
 using ProjetoHQApi.Domain.Interfaces;
@@ -36,9 +36,14 @@ namespace ProjetoHQApi.Application.Features.Desejos.Commands
                     return false;
                 }
 
-                string arquivo = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS, desejo.Capa);
-
-                File.Delete(arquivo);
+                if (!string.IsNullOrWhiteSpace(desejo.Capa))
+                {
+                    string arquivo = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS, desejo.Capa);
+                    if (File.Exists(arquivo))
+                    {
+                        File.Delete(arquivo);
+                    }
+                }
 
                 await _desejoRepositoryAsync.RemoveAsync(desejo.Id);
             }

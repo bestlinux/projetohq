@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using ProjetoHQApi.Application.UseCases.Editoras.Queries;
 using ProjetoHQApi.Application.UseCases.Frases.Queries;
@@ -28,7 +28,7 @@ namespace ProjetoHQApi.Application.UseCases.Frases.Queries
         {
             IEnumerable<Frase>? frases = null;
 
-            if (request.Autor is not null || request.NomeHQ is not null)
+            if (request is not null && (!string.IsNullOrWhiteSpace(request.Autor) || !string.IsNullOrWhiteSpace(request.NomeHQ)))
                 frases = await _frasesRepository.LocalizaTodasFrasesPorNomeHQAutor(request.NomeHQ, request.Autor, cancellationToken);
             else
                 frases = await _frasesRepository.GetAllAsync(cancellationToken);

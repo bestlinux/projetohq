@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +56,30 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         public async Task<IActionResult> Post(CreateEditoraCommand command, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// PUT api/controller/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, UpdateEditoraCommand command, CancellationToken cancellationToken)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest("O ID da rota não coincide com o ID informado no corpo");
+            }
+
+            var response = await _mediator.Send(command, cancellationToken);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
             return Ok(response);
         }
 

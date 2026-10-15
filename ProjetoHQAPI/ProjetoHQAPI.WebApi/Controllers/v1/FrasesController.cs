@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +27,8 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         private readonly IMediator _mediator = mediator;
 
         /// <summary>
-        /// GET: api/controller
+        /// GET: api/frases
         /// </summary>
-        /// <param name="filter"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -40,20 +37,55 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
             return Ok(await _mediator.Send(filter, cancellationToken));
         }
 
+        /// <summary>
+        /// GET: api/frases/{id}
+        /// </summary>
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetFraseByIdQuery { Id = id }, cancellationToken);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            return Ok(response);
+        }
 
+        /// <summary>
+        /// POST: api/frases (JSON)
+        /// </summary>
+        [HttpPost]
+        [Route("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] CreateFraseCommand command, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(command, cancellationToken);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// POST: api/frases/UploadImage (Multipart/form-data)
+        /// </summary>
         [HttpPost]
         [Route("UploadImage")]
-        public async Task<ObjectResult> UploadImageAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> UploadImageAsync(CancellationToken cancellationToken)
         {
             CreateFraseCommand command = new();
-            var file = Request.Form.Files[0];
+            if (Request.Form.Files.Count == 0)
+            {
+                return BadRequest("Nenhum arquivo enviado.");
+            }
 
+            var file = Request.Form.Files[0];
 
             Request.Form.TryGetValue("NomeHQ", out StringValues NomeHQ);
             Request.Form.TryGetValue("Autor", out StringValues Autor);
 
-            command.NomeHQ = NomeHQ[0];
-            command.Autor = Autor[0];
+            command.NomeHQ = NomeHQ.Count > 0 ? NomeHQ[0] : "";
+            command.Autor = Autor.Count > 0 ? Autor[0] : "";
 
             string newPath = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS_FRASES);
 
@@ -61,6 +93,7 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
             {
                 Directory.CreateDirectory(newPath);
             }
+
             string fileName = "";
             if (file.Length > 0)
             {
@@ -68,23 +101,46 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
                 string fullPath = Path.Combine(newPath, fileName);
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    file.CopyTo(stream);
+                    await file.CopyToAsync(stream, cancellationToken);
                 }
 
                 command.Arquivo = fileName;
-                await _mediator.Send(command, cancellationToken);
+                var id = await _mediator.Send(command, cancellationToken);
+                return Ok(new { id, fileName });
             }
 
-            return Ok(fileName);
+            return BadRequest("Arquivo vazio.");
         }
 
         /// <summary>
-        /// DELETE api/controller/5
+        /// PUT: api/frases/{id}
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        [HttpPut("{id:guid}")]
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromRoute] Guid? id, [FromBody] UpdateFraseCommand command, CancellationToken cancellationToken)
+        {
+            if (id.HasValue && id.Value != Guid.Empty)
+            {
+                command.Id = id.Value;
+            }
+
+            if (command == null || command.Id == Guid.Empty)
+            {
+                return BadRequest("O ID da frase é obrigatório.");
+            }
+
+            return Ok(await _mediator.Send(command, cancellationToken));
+        }
+
+        /// <summary>
+        /// DELETE: api/frases/{id}
+        /// </summary>
+        [HttpDelete("{id:guid}")]
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             return Ok(await _mediator.Send(new DeleteFraseByIdCommand { FraseId = id }, cancellationToken));

@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Domain.Entities;
+using ProjetoHQApi.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using System;
@@ -15,7 +15,7 @@ namespace ProjetoHQApi.Application.UseCases.Editoras.Queries
 {
     public class GetEditoraQuery : IRequest<IReadOnlyCollection<GetEditoraResponse>>
     {
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
     }
 
     public class GetEditoraQueryQueryHandler(IEditoraRepository editoraRepository, IMapper mapper) : IRequestHandler<GetEditoraQuery, IReadOnlyCollection<GetEditoraResponse>>

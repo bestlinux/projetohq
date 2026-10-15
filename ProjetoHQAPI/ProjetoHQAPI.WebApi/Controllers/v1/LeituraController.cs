@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -37,49 +37,66 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         }
 
         /// <summary>
-        /// POST api/controller
+        /// GET: api/leitura/{id}
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Leitura")]
-        public async Task<IActionResult> Post(CreateLeituraCommand command, CancellationToken cancellationToken)
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
         {
-
-            var response = await _mediator.Send(command, cancellationToken);
-
+            var response = await _mediator.Send(new GetLeituraByIdQuery { Id = id }, cancellationToken);
+            if (response == null)
+            {
+                return NotFound();
+            }
             return Ok(response);
         }
 
         /// <summary>
-        /// DELETE api/controller/5
+        /// POST api/leitura
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        [HttpPost]
+        [Route("")]
+        [Route("Leitura")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Post([FromBody] CreateLeituraCommand command, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(command, cancellationToken);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// DELETE api/leitura/{id}
+        /// </summary>
+        [HttpDelete("{id:guid}")]
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             return Ok(await _mediator.Send(new DeleteLeituraByIdCommand { Id = id }, cancellationToken));
         }
 
         /// <summary>
-        /// PUT api/controller/5
+        /// PUT api/leitura/{id}
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="command"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        [HttpPut("{id:guid}")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put(Guid id, UpdateLeituraCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Put([FromRoute] Guid? id, [FromBody] UpdateLeituraCommand command, CancellationToken cancellationToken)
         {
-            if (id != command.Id)
+            if (id.HasValue && id.Value != Guid.Empty)
             {
-                return BadRequest();
+                command.Id = id.Value;
             }
+
+            if (command == null || command.Id == Guid.Empty)
+            {
+                return BadRequest("O ID da leitura é obrigatório.");
+            }
+
             return Ok(await _mediator.Send(command, cancellationToken));
         }
     }

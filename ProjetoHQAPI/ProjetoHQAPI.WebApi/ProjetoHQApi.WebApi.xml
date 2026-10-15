@@ -50,6 +50,12 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.GetCapa(System.String)">
+            <summary>
+            GET api/desejo/capa/{id}
+            Carrega a imagem da capa a partir do ID/nome de arquivo em projetohqrepositorio\Desejos
+            </summary>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.GetAll(ProjetoHQApi.Application.UseCases.Editoras.Queries.GetEditoraQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
@@ -67,6 +73,15 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Put(System.Guid,ProjetoHQApi.Application.UseCases.Editoras.Commands.UpdateEditoraCommand,System.Threading.CancellationToken)">
+            <summary>
+            PUT api/controller/5
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
             DELETE api/controller/5
@@ -77,19 +92,33 @@
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.GetAll(ProjetoHQApi.Application.UseCases.Frases.Queries.GetFrasesQuery,System.Threading.CancellationToken)">
             <summary>
-            GET: api/controller
+            GET: api/frases
             </summary>
-            <param name="filter"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.GetById(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            GET: api/frases/{id}
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Post(ProjetoHQApi.Application.UseCases.Frases.Commands.CreateFraseCommand,System.Threading.CancellationToken)">
+            <summary>
+            POST: api/frases (JSON)
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.UploadImageAsync(System.Threading.CancellationToken)">
+            <summary>
+            POST: api/frases/UploadImage (Multipart/form-data)
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Put(System.Nullable{System.Guid},ProjetoHQApi.Application.UseCases.Frases.Commands.UpdateFraseCommand,System.Threading.CancellationToken)">
+            <summary>
+            PUT: api/frases/{id}
+            </summary>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.FrasesController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
-            DELETE api/controller/5
+            DELETE: api/frases/{id}
             </summary>
-            <param name="id"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.GetAll(ProjetoHQApi.Application.UseCases.HQs.Queries.GetHQQuery,System.Threading.CancellationToken)">
             <summary>
@@ -106,39 +135,35 @@
             <param name="id"></param>
             <param name="cancellationToken"></param>
             <returns></returns>
+            <summary>
+            GET api/hq/{id}
+            </summary>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.String,System.Threading.CancellationToken)">
             <summary>
-            GET api/controller/5
+            GET api/hq/BuscaPorEditora/{editora}
             </summary>
-            <param name="editora"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Post(ProjetoHQApi.Application.UseCases.HQs.Commands.CreateHQCommand[],System.Threading.CancellationToken)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Post(System.Text.Json.JsonElement,System.Threading.CancellationToken)">
             <summary>
-            POST api/controller
+            POST api/hq (aceita tanto objeto único quanto array de comandos)
             </summary>
-            <param name="command"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Put(System.Guid,ProjetoHQApi.Application.UseCases.HQs.Commands.UpdateHQCommand,System.Threading.CancellationToken)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Put(System.Nullable{System.Guid},ProjetoHQApi.Application.UseCases.HQs.Commands.UpdateHQCommand,System.Threading.CancellationToken)">
             <summary>
-            PUT api/controller/5
+            PUT api/hq/{id}
             </summary>
-            <param name="id"></param>
-            <param name="command"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
-            DELETE api/controller/5
+            DELETE api/hq/{id}
             </summary>
-            <param name="id"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.GetCapa(System.String)">
+            <summary>
+            GET api/hq/capa/{id}
+            Carrega a imagem da capa a partir do ID/nome de arquivo em projetohqrepositorio\Capas
+            </summary>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.GetAll(ProjetoHQApi.Application.UseCases.Leituras.Queries.GetLeituraQuery,System.Threading.CancellationToken)">
             <summary>
@@ -148,30 +173,25 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.GetById(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            GET: api/leitura/{id}
+            </summary>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Post(ProjetoHQApi.Application.UseCases.Leituras.Commands.CreateLeituraCommand,System.Threading.CancellationToken)">
             <summary>
-            POST api/controller
+            POST api/leitura
             </summary>
-            <param name="command"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
-            DELETE api/controller/5
+            DELETE api/leitura/{id}
             </summary>
-            <param name="id"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Put(System.Guid,ProjetoHQApi.Application.UseCases.Leituras.Commands.UpdateLeituraCommand,System.Threading.CancellationToken)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.Put(System.Nullable{System.Guid},ProjetoHQApi.Application.UseCases.Leituras.Commands.UpdateLeituraCommand,System.Threading.CancellationToken)">
             <summary>
-            PUT api/controller/5
+            PUT api/leitura/{id}
             </summary>
-            <param name="id"></param>
-            <param name="command"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
         </member>
         <member name="T:ProjetoHQApi.WebApi.Migrations.Identity">
             <inheritdoc />
