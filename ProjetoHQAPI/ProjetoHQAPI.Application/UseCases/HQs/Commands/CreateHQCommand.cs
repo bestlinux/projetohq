@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Domain.Entities;
+using ProjetoHQApi.Domain.Entities;
 using AutoMapper;
 using HtmlAgilityPack;
 using MediatR;
@@ -17,17 +17,19 @@ using ProjetoHQApi.Domain.Interfaces;
 using ProjetoHQApi.Application.UseCases.Leituras.Commands;
 using ProjetoHQApi.Application.Services.Notifications;
 using ProjetoHQApi.Application.Constantes;
+using ProjetoHQApi.Application.Common.Converters;
+using System.Text.Json.Serialization;
 
 namespace ProjetoHQApi.Application.UseCases.HQs.Commands
 {
     public partial class CreateHQCommand : IRequest<Nullable<Guid>>
     {
         public Guid Id { get; set; }
-        public string Editora { get; set; }
+        public string? Editora { get; set; }
 
-        public string Titulo { get; set; }
+        public string? Titulo { get; set; }
 
-        public string AnoLancamento { get; set; }
+        public string? AnoLancamento { get; set; }
 
         public int NumeroEdicao { get; set; }
 
@@ -39,10 +41,22 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
 
         public int Formato { get; set; }
 
-        public string LinkDetalhes { get; set; }
+        public string? LinkDetalhes { get; set; }
 
-        public string ThumbCapa { get; set; }
+        public string? ThumbCapa { get; set; }
 
+        public string? Preco { get; set; }
+
+        public string? Licenciador { get; set; }
+
+        public string? Personagens { get; set; }
+
+        public string? DesenhosRoteirosArteFinalCores { get; set; }
+
+        public int NumeroPaginas { get; set; }
+
+        [JsonConverter(typeof(BoolOrIntJsonConverter))]
+        public int Lido { get; set; }
     }
 
     public class CreateHQCommandHandler : IRequestHandler<CreateHQCommand, Nullable<Guid>>
@@ -51,25 +65,50 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
+        private readonly IWebScraperService _webScraperService;
 
-        public CreateHQCommandHandler(IHQRepository hqRepository, IMapper mapper, IUnitOfWork unitOfWork, IMediator mediator)
+        public CreateHQCommandHandler(IHQRepository hqRepository, IMapper mapper, IUnitOfWork unitOfWork, IMediator mediator, IWebScraperService webScraperService)
         {
             _hqRepository = hqRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _mediator = mediator;
+            _webScraperService = webScraperService;
         }
 
         public async Task<Nullable<Guid>> Handle(CreateHQCommand request, CancellationToken cancellationToken)
         {
             var hq = _mapper.Map<HQ>(request);
+
+            if (string.IsNullOrWhiteSpace(request.LinkDetalhes))
+            {
+                if (string.IsNullOrWhiteSpace(hq.DataPublicacao))
+                {
+                    hq.DataPublicacao = request.AnoLancamento ?? DateTime.Now.Year.ToString();
+                }
+                if (string.IsNullOrWhiteSpace(hq.Capa))
+                {
+                    hq.Capa = request.ThumbCapa ?? "";
+                }
+                if (!string.IsNullOrWhiteSpace(request.Preco)) hq.Preco = request.Preco;
+                if (!string.IsNullOrWhiteSpace(request.Licenciador)) hq.Licenciador = request.Licenciador;
+                if (!string.IsNullOrWhiteSpace(request.Personagens)) hq.Personagens = request.Personagens;
+                if (!string.IsNullOrWhiteSpace(request.DesenhosRoteirosArteFinalCores)) hq.DesenhosRoteirosArteFinalCores = request.DesenhosRoteirosArteFinalCores;
+                if (request.NumeroPaginas > 0) hq.NumeroPaginas = request.NumeroPaginas;
+                hq.Lido = request.Lido;
+
+                await _hqRepository.AddAsync(hq);
+                await _unitOfWork.Commit(cancellationToken);
+                return hq.Id;
+            }
+
             var doc1 = new HtmlAgilityPack.HtmlDocument();
-            HtmlWeb web1 = new();
 
             try
             {
                 //BUSCA DADOS DA WEB
-                doc1 = web1.Load(request.LinkDetalhes);
+                var htmlContent = await _webScraperService.GetHtmlAsync(request.LinkDetalhes, cancellationToken);
+                doc1.LoadHtml(htmlContent);
 
                 var licenciadorNode = doc1.DocumentNode.SelectNodes("//*[@*[contains(@id, 'licenciador')]]");
 

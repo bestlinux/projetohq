@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using ProjetoHQApi.Application.Services.Notifications;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,17 @@ namespace ProjetoHQApi.Application.Services.Events
     public class LogEventDesejoHandler : INotificationHandler<DesejoActionNotification>,
                INotificationHandler<ErrorNotification>
     {
+        private readonly ILogger<LogEventDesejoHandler> _logger;
+
+        public LogEventDesejoHandler(ILogger<LogEventDesejoHandler> logger)
+        {
+            _logger = logger;
+        }
         public Task Handle(ErrorNotification notification, CancellationToken cancellationToken)
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"ERROR : '{notification.Error} \n {notification.Stack}'");
+                _logger.LogError($"ERROR : '{notification.Error} \n {notification.Stack}'");
             }, cancellationToken);
         }
 
@@ -23,7 +30,7 @@ namespace ProjetoHQApi.Application.Services.Events
         {
             return Task.Run(() =>
             {
-                Console.WriteLine($"Desejo {notification.ColecaoId} - foi {notification.Action.ToString().ToLower()} com sucesso !");
+                _logger.LogInformation($"Desejo {notification.DesejoId} - foi {notification.Action.ToString().ToLower()} com sucesso !");
             }, cancellationToken);
         }
     }

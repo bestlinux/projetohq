@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Infrastructure.Persistence.Contexts;
+using ProjetoHQApi.Infrastructure.Persistence.Contexts;
 using ProjetoHQApi.Infrastructure.Persistence.Repositories;
 using ProjetoHQApi.Infrastructure.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,13 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Services
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
-                     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ProjetoHQApi.WebApi")));
+            {
+                options.UseSqlServer(connectionString, b => {
+                    b.MigrationsAssembly("ProjetoHQApi.WebApi");
+                    b.CommandTimeout(180);
+                });
+                options.ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+            });
 
             #region Repositories
 

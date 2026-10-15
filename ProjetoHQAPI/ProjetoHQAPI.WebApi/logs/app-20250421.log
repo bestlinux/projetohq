@@ -1,0 +1,436 @@
+2025-04-21 16:33:27.340 -03:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2025-04-21 16:33:27.704 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserRole<string>' as the properties are already covered by the index {'UserId', 'RoleId'}.
+2025-04-21 16:33:27.713 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserToken<string>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}.
+2025-04-21 16:33:27.916 -03:00 [DBG] Entity Framework Core 8.0.15 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.15' with options: MigrationsAssembly=ProjetoHQApi.WebApi 
+2025-04-21 16:33:27.926 -03:00 [DBG] Creating DbConnection.
+2025-04-21 16:33:27.966 -03:00 [DBG] Created DbConnection. (38ms).
+2025-04-21 16:33:27.972 -03:00 [DBG] Migrating using database 'projetohq' on server 'GROGU'.
+2025-04-21 16:33:27.977 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:35:14.822 -03:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2025-04-21 16:35:15.160 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserRole<string>' as the properties are already covered by the index {'UserId', 'RoleId'}.
+2025-04-21 16:35:15.165 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserToken<string>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}.
+2025-04-21 16:35:15.350 -03:00 [DBG] Entity Framework Core 8.0.15 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.15' with options: MigrationsAssembly=ProjetoHQApi.WebApi 
+2025-04-21 16:35:15.360 -03:00 [DBG] Creating DbConnection.
+2025-04-21 16:35:15.401 -03:00 [DBG] Created DbConnection. (38ms).
+2025-04-21 16:35:15.408 -03:00 [DBG] Migrating using database 'projetohq' on server 'GROGU'.
+2025-04-21 16:35:15.414 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:35:29.682 -03:00 [DBG] An error occurred using the connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:35:30.186 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:35:44.196 -03:00 [DBG] An error occurred using the connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:35:44.706 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:04.484 -03:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2025-04-21 16:36:04.761 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserRole<string>' as the properties are already covered by the index {'UserId', 'RoleId'}.
+2025-04-21 16:36:04.766 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserToken<string>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}.
+2025-04-21 16:36:04.913 -03:00 [DBG] Entity Framework Core 8.0.15 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.15' with options: MigrationsAssembly=ProjetoHQApi.WebApi 
+2025-04-21 16:36:05.554 -03:00 [DBG] Creating DbConnection.
+2025-04-21 16:36:05.581 -03:00 [DBG] Created DbConnection. (25ms).
+2025-04-21 16:36:05.586 -03:00 [DBG] Migrating using database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:05.590 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:19.783 -03:00 [DBG] An error occurred using the connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:20.300 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:35.306 -03:00 [DBG] An error occurred using the connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:35.822 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:49.830 -03:00 [DBG] An error occurred using the connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:36:50.339 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:37:04.377 -03:00 [DBG] An error occurred using the connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:37:04.896 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:37:05.336 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:37:05.344 -03:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2025-04-21 16:37:05.353 -03:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (7ms).
+2025-04-21 16:37:05.356 -03:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (14ms).
+2025-04-21 16:37:05.365 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:40:28.120 -03:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2025-04-21 16:40:28.425 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserRole<string>' as the properties are already covered by the index {'UserId', 'RoleId'}.
+2025-04-21 16:40:28.428 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserToken<string>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}.
+2025-04-21 16:40:28.577 -03:00 [DBG] Entity Framework Core 8.0.15 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.15' with options: MigrationsAssembly=ProjetoHQApi.WebApi 
+2025-04-21 16:40:28.585 -03:00 [DBG] Creating DbConnection.
+2025-04-21 16:40:28.615 -03:00 [DBG] Created DbConnection. (27ms).
+2025-04-21 16:40:28.620 -03:00 [DBG] Migrating using database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.625 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.878 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.885 -03:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2025-04-21 16:40:28.891 -03:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (5ms).
+2025-04-21 16:40:28.893 -03:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (10ms).
+2025-04-21 16:40:28.899 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:40:28.920 -03:00 [INF] Executed DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:40:28.923 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.930 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (4ms).
+2025-04-21 16:40:28.933 -03:00 [DBG] Creating DbCommand for 'ExecuteScalar'.
+2025-04-21 16:40:28.934 -03:00 [DBG] Created DbCommand for 'ExecuteScalar' (1ms).
+2025-04-21 16:40:28.935 -03:00 [DBG] Initialized DbCommand for 'ExecuteScalar' (2ms).
+2025-04-21 16:40:28.936 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.938 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.939 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:40:28.951 -03:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:40:28.953 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.954 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (1ms).
+2025-04-21 16:40:28.956 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.957 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.958 -03:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2025-04-21 16:40:28.958 -03:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2025-04-21 16:40:28.959 -03:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2025-04-21 16:40:28.960 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:40:28.963 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:40:28.964 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.965 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (1ms).
+2025-04-21 16:40:28.967 -03:00 [DBG] Creating DbCommand for 'ExecuteScalar'.
+2025-04-21 16:40:28.967 -03:00 [DBG] Created DbCommand for 'ExecuteScalar' (0ms).
+2025-04-21 16:40:28.968 -03:00 [DBG] Initialized DbCommand for 'ExecuteScalar' (1ms).
+2025-04-21 16:40:28.969 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.970 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.971 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:40:28.973 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:40:28.975 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.976 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (0ms).
+2025-04-21 16:40:28.985 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.986 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:28.987 -03:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2025-04-21 16:40:28.988 -03:00 [DBG] Created DbCommand for 'ExecuteReader' (0ms).
+2025-04-21 16:40:28.989 -03:00 [DBG] Initialized DbCommand for 'ExecuteReader' (2ms).
+2025-04-21 16:40:28.991 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-04-21 16:40:28.995 -03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-04-21 16:40:28.999 -03:00 [DBG] Closing data reader to 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:29.000 -03:00 [DBG] A data reader for 'projetohq' on server 'GROGU' is being disposed after spending 3ms reading results.
+2025-04-21 16:40:29.002 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:29.002 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (0ms).
+2025-04-21 16:40:29.012 -03:00 [INF] No migrations were applied. The database is already up to date.
+2025-04-21 16:40:29.015 -03:00 [DBG] 'ApplicationDbContext' disposed.
+2025-04-21 16:40:29.018 -03:00 [DBG] Disposing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:40:29.020 -03:00 [DBG] Disposed connection to database '' on server '' (1ms).
+2025-04-21 16:40:29.102 -03:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2025-04-21 16:40:29.168 -03:00 [DBG] Hosting starting
+2025-04-21 16:40:29.192 -03:00 [INF] User profile is available. Using 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-04-21 16:40:29.199 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2.xml'.
+2025-04-21 16:40:29.206 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-4680a80e-0f95-44c5-ab74-c21095ddcc68.xml'.
+2025-04-21 16:40:29.208 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-9292a49c-61df-409f-b366-1c969e6ab443.xml'.
+2025-04-21 16:40:29.209 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-d2935096-e862-4dd9-9bc4-dc3d8a4c2585.xml'.
+2025-04-21 16:40:29.210 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-d3fb4c2b-8d50-4b74-abe4-e746f9b5f1fe.xml'.
+2025-04-21 16:40:29.218 -03:00 [DBG] Found key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2}.
+2025-04-21 16:40:29.225 -03:00 [DBG] Found key {4680a80e-0f95-44c5-ab74-c21095ddcc68}.
+2025-04-21 16:40:29.226 -03:00 [DBG] Found key {9292a49c-61df-409f-b366-1c969e6ab443}.
+2025-04-21 16:40:29.227 -03:00 [DBG] Found key {d2935096-e862-4dd9-9bc4-dc3d8a4c2585}.
+2025-04-21 16:40:29.228 -03:00 [DBG] Found key {d3fb4c2b-8d50-4b74-abe4-e746f9b5f1fe}.
+2025-04-21 16:40:29.233 -03:00 [DBG] Considering key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2} with expiration date 2025-05-07 19:48:27Z as default key.
+2025-04-21 16:40:29.237 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-21 16:40:29.239 -03:00 [DBG] Decrypting secret element using Windows DPAPI.
+2025-04-21 16:40:29.241 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-21 16:40:29.243 -03:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2025-04-21 16:40:29.247 -03:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2025-04-21 16:40:29.251 -03:00 [DBG] Using key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2} as the default key.
+2025-04-21 16:40:29.252 -03:00 [DBG] Key ring with default key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2} was loaded during application startup.
+2025-04-21 16:40:29.300 -03:00 [WRN] The WebRootPath was not found: C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi\wwwroot. Static files may be unavailable.
+2025-04-21 16:40:29.391 -03:00 [DBG] Using development certificate: CN=localhost (Thumbprint: 78E8F008170718F524C798245E441F65AAF477A8)
+2025-04-21 16:40:29.424 -03:00 [DBG] Created directory watcher for 'C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi'.
+2025-04-21 16:40:29.428 -03:00 [DBG] Created file watcher for 'C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi\ProjetoHQAPI.pfx'.
+2025-04-21 16:40:29.430 -03:00 [WRN] Overriding address(es) 'https://localhost:9001, http://localhost:5000'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-04-21 16:40:29.468 -03:00 [INF] Now listening on: https://localhost:9001
+2025-04-21 16:40:29.470 -03:00 [DBG] Loaded hosting startup assembly ProjetoHQApi.WebApi
+2025-04-21 16:40:29.470 -03:00 [DBG] Loaded hosting startup assembly Microsoft.AspNetCore.Watch.BrowserRefresh
+2025-04-21 16:40:29.471 -03:00 [DBG] Loaded hosting startup assembly Microsoft.WebTools.BrowserLink.Net
+2025-04-21 16:40:29.472 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-21 16:40:29.473 -03:00 [INF] Hosting environment: Development
+2025-04-21 16:40:29.473 -03:00 [INF] Content root path: C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi
+2025-04-21 16:40:29.474 -03:00 [DBG] Hosting started
+2025-04-21 16:40:29.520 -03:00 [DBG] Connection id "0HNC11HFL1P6F" accepted.
+2025-04-21 16:40:29.522 -03:00 [DBG] Connection id "0HNC11HFL1P6F" started.
+2025-04-21 16:40:29.529 -03:00 [DBG] Connection id "0HNC11HFL1P6G" accepted.
+2025-04-21 16:40:29.531 -03:00 [DBG] Connection id "0HNC11HFL1P6G" started.
+2025-04-21 16:40:29.564 -03:00 [DBG] Connection id "0HNC11HFL1P6F" received FIN.
+2025-04-21 16:40:29.564 -03:00 [DBG] Connection id "0HNC11HFL1P6G" received FIN.
+2025-04-21 16:40:29.582 -03:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ProcessAuthenticationWithTelemetryAsync(Boolean isAsync, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-04-21 16:40:29.582 -03:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ProcessAuthenticationWithTelemetryAsync(Boolean isAsync, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-04-21 16:40:29.610 -03:00 [DBG] Connection id "0HNC11HFL1P6F" stopped.
+2025-04-21 16:40:29.610 -03:00 [DBG] Connection id "0HNC11HFL1P6G" stopped.
+2025-04-21 16:40:29.613 -03:00 [DBG] Connection id "0HNC11HFL1P6G" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-21 16:40:29.613 -03:00 [DBG] Connection id "0HNC11HFL1P6F" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-21 16:40:29.767 -03:00 [DBG] Connection id "0HNC11HFL1P6H" accepted.
+2025-04-21 16:40:29.769 -03:00 [DBG] Connection id "0HNC11HFL1P6H" started.
+2025-04-21 16:40:29.801 -03:00 [DBG] Connection 0HNC11HFL1P6H established using the following protocol: "Tls13"
+2025-04-21 16:40:29.865 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/swagger/index.html - null null
+2025-04-21 16:40:29.959 -03:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2025-04-21 16:40:29.977 -03:00 [DBG] No candidates found for the request path '/swagger/index.html'
+2025-04-21 16:40:29.979 -03:00 [DBG] Request did not match any endpoints
+2025-04-21 16:40:30.067 -03:00 [DBG] Response markup is scheduled to include browser refresh script injection.
+2025-04-21 16:40:30.082 -03:00 [DBG] Response markup was updated to include browser refresh script injection.
+2025-04-21 16:40:30.086 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/swagger/index.html - 200 null text/html;charset=utf-8 229.4583ms
+2025-04-21 16:40:30.093 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/_framework/aspnetcore-browser-refresh.js - null null
+2025-04-21 16:40:30.100 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/_framework/aspnetcore-browser-refresh.js - 200 13774 application/javascript; charset=utf-8 6.8383ms
+2025-04-21 16:40:30.188 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/_vs/browserLink - null null
+2025-04-21 16:40:30.224 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/_vs/browserLink - 200 null text/javascript; charset=UTF-8 35.7347ms
+2025-04-21 16:40:30.885 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/swagger/v1/swagger.json - null null
+2025-04-21 16:40:30.887 -03:00 [DBG] No candidates found for the request path '/swagger/v1/swagger.json'
+2025-04-21 16:40:30.887 -03:00 [DBG] Request did not match any endpoints
+2025-04-21 16:40:31.012 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 127.9971ms
+2025-04-21 16:41:01.691 -03:00 [DBG] Connection id "0HNC11HFL1P6I" accepted.
+2025-04-21 16:41:01.692 -03:00 [DBG] Connection id "0HNC11HFL1P6I" received FIN.
+2025-04-21 16:41:01.698 -03:00 [DBG] Connection id "0HNC11HFL1P6I" started.
+2025-04-21 16:41:01.703 -03:00 [DBG] Connection id "0HNC11HFL1P6J" accepted.
+2025-04-21 16:41:01.704 -03:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ProcessAuthenticationWithTelemetryAsync(Boolean isAsync, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-04-21 16:41:01.704 -03:00 [DBG] Connection id "0HNC11HFL1P6J" started.
+2025-04-21 16:41:01.707 -03:00 [DBG] Connection id "0HNC11HFL1P6I" stopped.
+2025-04-21 16:41:01.708 -03:00 [DBG] Connection id "0HNC11HFL1P6I" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-21 16:41:01.714 -03:00 [DBG] Connection 0HNC11HFL1P6J established using the following protocol: "Tls13"
+2025-04-21 16:41:01.720 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:9001/api/Desejo - application/json 280
+2025-04-21 16:41:01.727 -03:00 [DBG] 1 candidate(s) found for the request path '/api/Desejo'
+2025-04-21 16:41:01.729 -03:00 [DBG] Endpoint 'ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi)' with route pattern 'api/Desejo' is valid for the request path '/api/Desejo'
+2025-04-21 16:41:01.731 -03:00 [DBG] Request matched endpoint 'ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi)'
+2025-04-21 16:41:01.734 -03:00 [DBG] Static files was skipped as the request already matched an endpoint.
+2025-04-21 16:41:01.735 -03:00 [DBG] Static files was skipped as the request already matched an endpoint.
+2025-04-21 16:41:01.750 -03:00 [DBG] AuthenticationScheme: Identity.Application was not authenticated.
+2025-04-21 16:41:01.878 -03:00 [DBG] Successfully validated the token.
+2025-04-21 16:41:01.882 -03:00 [DBG] AuthenticationScheme: Bearer was successfully authenticated.
+2025-04-21 16:41:01.888 -03:00 [DBG] Authorization was successful.
+2025-04-21 16:41:01.890 -03:00 [INF] Executing endpoint 'ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi)'
+2025-04-21 16:41:01.922 -03:00 [INF] Route matched with {action = "Post", controller = "Desejo"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand, System.Threading.CancellationToken) on controller ProjetoHQApi.WebApi.Controllers.v1.DesejoController (ProjetoHQApi.WebApi).
+2025-04-21 16:41:01.925 -03:00 [DBG] Execution plan of authorization filters (in the following order): ["None"]
+2025-04-21 16:41:01.928 -03:00 [DBG] Execution plan of resource filters (in the following order): ["None"]
+2025-04-21 16:41:01.930 -03:00 [DBG] Execution plan of action filters (in the following order): ["Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000)","Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000)"]
+2025-04-21 16:41:01.932 -03:00 [DBG] Execution plan of exception filters (in the following order): ["None"]
+2025-04-21 16:41:01.934 -03:00 [DBG] Execution plan of result filters (in the following order): ["Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000)"]
+2025-04-21 16:41:01.938 -03:00 [DBG] Executing controller factory for controller ProjetoHQApi.WebApi.Controllers.v1.DesejoController (ProjetoHQApi.WebApi)
+2025-04-21 16:41:01.940 -03:00 [DBG] Executed controller factory for controller ProjetoHQApi.WebApi.Controllers.v1.DesejoController (ProjetoHQApi.WebApi)
+2025-04-21 16:41:01.955 -03:00 [DBG] Attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand' ...
+2025-04-21 16:41:01.959 -03:00 [DBG] Attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand' using the name '' in request data ...
+2025-04-21 16:41:01.962 -03:00 [DBG] Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonInputFormatter' for content type 'application/json'.
+2025-04-21 16:41:01.973 -03:00 [DBG] Connection id "0HNC11HFL1P6J", Request id "0HNC11HFL1P6J:00000001": started reading request body.
+2025-04-21 16:41:01.975 -03:00 [DBG] Connection id "0HNC11HFL1P6J", Request id "0HNC11HFL1P6J:00000001": done reading request body.
+2025-04-21 16:41:01.988 -03:00 [DBG] JSON input formatter succeeded, deserializing to type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'
+2025-04-21 16:41:01.989 -03:00 [DBG] Done attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'.
+2025-04-21 16:41:01.991 -03:00 [DBG] Done attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'.
+2025-04-21 16:41:01.992 -03:00 [DBG] Attempting to validate the bound parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand' ...
+2025-04-21 16:41:02.002 -03:00 [DBG] Done attempting to validate the bound parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'.
+2025-04-21 16:41:02.004 -03:00 [DBG] Attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-04-21 16:41:02.006 -03:00 [DBG] Done attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-04-21 16:41:02.007 -03:00 [DBG] Attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-04-21 16:41:02.009 -03:00 [DBG] Done attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-04-21 16:41:02.033 -03:00 [DBG] Entity Framework Core 8.0.15 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.15' with options: MigrationsAssembly=ProjetoHQApi.WebApi 
+2025-04-21 16:45:41.469 -03:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2025-04-21 16:45:41.845 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserRole<string>' as the properties are already covered by the index {'UserId', 'RoleId'}.
+2025-04-21 16:45:41.847 -03:00 [DBG] The index {'UserId'} was not created on entity type 'IdentityUserToken<string>' as the properties are already covered by the index {'UserId', 'LoginProvider', 'Name'}.
+2025-04-21 16:45:42.004 -03:00 [DBG] Entity Framework Core 8.0.15 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.15' with options: MigrationsAssembly=ProjetoHQApi.WebApi 
+2025-04-21 16:45:42.012 -03:00 [DBG] Creating DbConnection.
+2025-04-21 16:45:42.039 -03:00 [DBG] Created DbConnection. (25ms).
+2025-04-21 16:45:42.046 -03:00 [DBG] Migrating using database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:42.050 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.838 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.845 -03:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2025-04-21 16:45:45.849 -03:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (4ms).
+2025-04-21 16:45:45.851 -03:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (8ms).
+2025-04-21 16:45:45.856 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:45:45.872 -03:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:45:45.876 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.882 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (3ms).
+2025-04-21 16:45:45.884 -03:00 [DBG] Creating DbCommand for 'ExecuteScalar'.
+2025-04-21 16:45:45.885 -03:00 [DBG] Created DbCommand for 'ExecuteScalar' (0ms).
+2025-04-21 16:45:45.886 -03:00 [DBG] Initialized DbCommand for 'ExecuteScalar' (1ms).
+2025-04-21 16:45:45.887 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.888 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.889 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:45:45.899 -03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:45:45.900 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.901 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (0ms).
+2025-04-21 16:45:45.903 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.903 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.904 -03:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2025-04-21 16:45:45.905 -03:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2025-04-21 16:45:45.906 -03:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2025-04-21 16:45:45.907 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:45:45.908 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-04-21 16:45:45.910 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.910 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (0ms).
+2025-04-21 16:45:45.912 -03:00 [DBG] Creating DbCommand for 'ExecuteScalar'.
+2025-04-21 16:45:45.913 -03:00 [DBG] Created DbCommand for 'ExecuteScalar' (0ms).
+2025-04-21 16:45:45.914 -03:00 [DBG] Initialized DbCommand for 'ExecuteScalar' (2ms).
+2025-04-21 16:45:45.915 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.916 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.917 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:45:45.919 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-04-21 16:45:45.921 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.922 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (0ms).
+2025-04-21 16:45:45.931 -03:00 [DBG] Opening connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.932 -03:00 [DBG] Opened connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.933 -03:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2025-04-21 16:45:45.934 -03:00 [DBG] Created DbCommand for 'ExecuteReader' (0ms).
+2025-04-21 16:45:45.935 -03:00 [DBG] Initialized DbCommand for 'ExecuteReader' (1ms).
+2025-04-21 16:45:45.936 -03:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-04-21 16:45:45.939 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-04-21 16:45:45.942 -03:00 [DBG] Closing data reader to 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.944 -03:00 [DBG] A data reader for 'projetohq' on server 'GROGU' is being disposed after spending 2ms reading results.
+2025-04-21 16:45:45.945 -03:00 [DBG] Closing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.947 -03:00 [DBG] Closed connection to database 'projetohq' on server 'GROGU' (2ms).
+2025-04-21 16:45:45.957 -03:00 [INF] No migrations were applied. The database is already up to date.
+2025-04-21 16:45:45.959 -03:00 [DBG] 'ApplicationDbContext' disposed.
+2025-04-21 16:45:45.961 -03:00 [DBG] Disposing connection to database 'projetohq' on server 'GROGU'.
+2025-04-21 16:45:45.963 -03:00 [DBG] Disposed connection to database '' on server '' (1ms).
+2025-04-21 16:45:46.019 -03:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2025-04-21 16:45:46.078 -03:00 [DBG] Hosting starting
+2025-04-21 16:45:46.101 -03:00 [INF] User profile is available. Using 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-04-21 16:45:46.108 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2.xml'.
+2025-04-21 16:45:46.110 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-4680a80e-0f95-44c5-ab74-c21095ddcc68.xml'.
+2025-04-21 16:45:46.111 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-9292a49c-61df-409f-b366-1c969e6ab443.xml'.
+2025-04-21 16:45:46.112 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-d2935096-e862-4dd9-9bc4-dc3d8a4c2585.xml'.
+2025-04-21 16:45:46.114 -03:00 [DBG] Reading data from file 'C:\Users\bestl\AppData\Local\ASP.NET\DataProtection-Keys\key-d3fb4c2b-8d50-4b74-abe4-e746f9b5f1fe.xml'.
+2025-04-21 16:45:46.118 -03:00 [DBG] Found key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2}.
+2025-04-21 16:45:46.121 -03:00 [DBG] Found key {4680a80e-0f95-44c5-ab74-c21095ddcc68}.
+2025-04-21 16:45:46.122 -03:00 [DBG] Found key {9292a49c-61df-409f-b366-1c969e6ab443}.
+2025-04-21 16:45:46.123 -03:00 [DBG] Found key {d2935096-e862-4dd9-9bc4-dc3d8a4c2585}.
+2025-04-21 16:45:46.124 -03:00 [DBG] Found key {d3fb4c2b-8d50-4b74-abe4-e746f9b5f1fe}.
+2025-04-21 16:45:46.128 -03:00 [DBG] Considering key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2} with expiration date 2025-05-07 19:48:27Z as default key.
+2025-04-21 16:45:46.132 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-21 16:45:46.134 -03:00 [DBG] Decrypting secret element using Windows DPAPI.
+2025-04-21 16:45:46.136 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2025-04-21 16:45:46.137 -03:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2025-04-21 16:45:46.140 -03:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2025-04-21 16:45:46.143 -03:00 [DBG] Using key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2} as the default key.
+2025-04-21 16:45:46.144 -03:00 [DBG] Key ring with default key {2e3e65d6-28e1-4c7a-a8b8-aafc71d522f2} was loaded during application startup.
+2025-04-21 16:45:46.187 -03:00 [WRN] The WebRootPath was not found: C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi\wwwroot. Static files may be unavailable.
+2025-04-21 16:45:46.259 -03:00 [DBG] Using development certificate: CN=localhost (Thumbprint: 78E8F008170718F524C798245E441F65AAF477A8)
+2025-04-21 16:45:46.289 -03:00 [DBG] Created directory watcher for 'C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi'.
+2025-04-21 16:45:46.292 -03:00 [DBG] Created file watcher for 'C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi\ProjetoHQAPI.pfx'.
+2025-04-21 16:45:46.294 -03:00 [WRN] Overriding address(es) 'https://localhost:9001, http://localhost:5000'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-04-21 16:45:46.325 -03:00 [INF] Now listening on: https://localhost:9001
+2025-04-21 16:45:46.327 -03:00 [DBG] Loaded hosting startup assembly ProjetoHQApi.WebApi
+2025-04-21 16:45:46.327 -03:00 [DBG] Loaded hosting startup assembly Microsoft.AspNetCore.Watch.BrowserRefresh
+2025-04-21 16:45:46.328 -03:00 [DBG] Loaded hosting startup assembly Microsoft.WebTools.BrowserLink.Net
+2025-04-21 16:45:46.329 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-21 16:45:46.329 -03:00 [INF] Hosting environment: Development
+2025-04-21 16:45:46.330 -03:00 [INF] Content root path: C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.WebApi
+2025-04-21 16:45:46.331 -03:00 [DBG] Hosting started
+2025-04-21 16:45:46.374 -03:00 [DBG] Connection id "0HNC11KE2PNEJ" accepted.
+2025-04-21 16:45:46.375 -03:00 [DBG] Connection id "0HNC11KE2PNEJ" started.
+2025-04-21 16:45:46.398 -03:00 [DBG] Connection id "0HNC11KE2PNEJ" received FIN.
+2025-04-21 16:45:46.406 -03:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ProcessAuthenticationWithTelemetryAsync(Boolean isAsync, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-04-21 16:45:46.426 -03:00 [DBG] Connection id "0HNC11KE2PNEJ" stopped.
+2025-04-21 16:45:46.429 -03:00 [DBG] Connection id "0HNC11KE2PNEJ" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-21 16:45:46.574 -03:00 [DBG] Connection id "0HNC11KE2PNEK" accepted.
+2025-04-21 16:45:46.576 -03:00 [DBG] Connection id "0HNC11KE2PNEK" started.
+2025-04-21 16:45:46.598 -03:00 [DBG] Connection 0HNC11KE2PNEK established using the following protocol: "Tls13"
+2025-04-21 16:45:46.653 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/swagger/index.html - null null
+2025-04-21 16:45:46.737 -03:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2025-04-21 16:45:46.752 -03:00 [DBG] No candidates found for the request path '/swagger/index.html'
+2025-04-21 16:45:46.755 -03:00 [DBG] Request did not match any endpoints
+2025-04-21 16:45:46.838 -03:00 [DBG] Response markup is scheduled to include browser refresh script injection.
+2025-04-21 16:45:46.852 -03:00 [DBG] Response markup was updated to include browser refresh script injection.
+2025-04-21 16:45:46.855 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/swagger/index.html - 200 null text/html;charset=utf-8 208.4652ms
+2025-04-21 16:45:46.860 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/_framework/aspnetcore-browser-refresh.js - null null
+2025-04-21 16:45:46.866 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/_framework/aspnetcore-browser-refresh.js - 200 13774 application/javascript; charset=utf-8 5.9383ms
+2025-04-21 16:45:46.948 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/_vs/browserLink - null null
+2025-04-21 16:45:46.985 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/_vs/browserLink - 200 null text/javascript; charset=UTF-8 37.6744ms
+2025-04-21 16:45:47.588 -03:00 [INF] Request starting HTTP/2 GET https://localhost:9001/swagger/v1/swagger.json - null null
+2025-04-21 16:45:47.591 -03:00 [DBG] No candidates found for the request path '/swagger/v1/swagger.json'
+2025-04-21 16:45:47.593 -03:00 [DBG] Request did not match any endpoints
+2025-04-21 16:45:47.691 -03:00 [INF] Request finished HTTP/2 GET https://localhost:9001/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 102.4846ms
+2025-04-21 16:45:53.998 -03:00 [DBG] Connection id "0HNC11KE2PNEL" accepted.
+2025-04-21 16:45:53.998 -03:00 [DBG] Connection id "0HNC11KE2PNEL" received FIN.
+2025-04-21 16:45:54.000 -03:00 [DBG] Connection id "0HNC11KE2PNEL" started.
+2025-04-21 16:45:54.000 -03:00 [DBG] Connection id "0HNC11KE2PNEM" accepted.
+2025-04-21 16:45:54.002 -03:00 [DBG] Failed to authenticate HTTPS connection.
+System.IO.IOException: Received an unexpected EOF or 0 bytes from the transport stream.
+   at System.Net.Security.SslStream.ReceiveHandshakeFrameAsync[TIOAdapter](CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ForceAuthenticationAsync[TIOAdapter](Boolean receiveFirst, Byte[] reAuthenticationData, CancellationToken cancellationToken)
+   at System.Net.Security.SslStream.ProcessAuthenticationWithTelemetryAsync(Boolean isAsync, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Https.Internal.HttpsConnectionMiddleware.OnConnectionAsync(ConnectionContext context)
+2025-04-21 16:45:54.003 -03:00 [DBG] Connection id "0HNC11KE2PNEM" started.
+2025-04-21 16:45:54.005 -03:00 [DBG] Connection id "0HNC11KE2PNEL" stopped.
+2025-04-21 16:45:54.006 -03:00 [DBG] Connection id "0HNC11KE2PNEL" sending FIN because: "The Socket transport's send loop completed gracefully."
+2025-04-21 16:45:54.008 -03:00 [DBG] Connection 0HNC11KE2PNEM established using the following protocol: "Tls13"
+2025-04-21 16:45:54.012 -03:00 [INF] Request starting HTTP/1.1 POST https://localhost:9001/api/Desejo - application/json 280
+2025-04-21 16:45:54.017 -03:00 [DBG] 1 candidate(s) found for the request path '/api/Desejo'
+2025-04-21 16:45:54.019 -03:00 [DBG] Endpoint 'ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi)' with route pattern 'api/Desejo' is valid for the request path '/api/Desejo'
+2025-04-21 16:45:54.020 -03:00 [DBG] Request matched endpoint 'ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi)'
+2025-04-21 16:45:54.022 -03:00 [DBG] Static files was skipped as the request already matched an endpoint.
+2025-04-21 16:45:54.023 -03:00 [DBG] Static files was skipped as the request already matched an endpoint.
+2025-04-21 16:45:54.032 -03:00 [DBG] AuthenticationScheme: Identity.Application was not authenticated.
+2025-04-21 16:45:54.118 -03:00 [DBG] Successfully validated the token.
+2025-04-21 16:45:54.120 -03:00 [DBG] AuthenticationScheme: Bearer was successfully authenticated.
+2025-04-21 16:45:54.124 -03:00 [DBG] Authorization was successful.
+2025-04-21 16:45:54.126 -03:00 [INF] Executing endpoint 'ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi)'
+2025-04-21 16:45:54.149 -03:00 [INF] Route matched with {action = "Post", controller = "Desejo"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand, System.Threading.CancellationToken) on controller ProjetoHQApi.WebApi.Controllers.v1.DesejoController (ProjetoHQApi.WebApi).
+2025-04-21 16:45:54.152 -03:00 [DBG] Execution plan of authorization filters (in the following order): ["None"]
+2025-04-21 16:45:54.153 -03:00 [DBG] Execution plan of resource filters (in the following order): ["None"]
+2025-04-21 16:45:54.155 -03:00 [DBG] Execution plan of action filters (in the following order): ["Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000)","Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000)"]
+2025-04-21 16:45:54.156 -03:00 [DBG] Execution plan of exception filters (in the following order): ["None"]
+2025-04-21 16:45:54.157 -03:00 [DBG] Execution plan of result filters (in the following order): ["Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000)"]
+2025-04-21 16:45:54.159 -03:00 [DBG] Executing controller factory for controller ProjetoHQApi.WebApi.Controllers.v1.DesejoController (ProjetoHQApi.WebApi)
+2025-04-21 16:45:54.161 -03:00 [DBG] Executed controller factory for controller ProjetoHQApi.WebApi.Controllers.v1.DesejoController (ProjetoHQApi.WebApi)
+2025-04-21 16:45:54.172 -03:00 [DBG] Attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand' ...
+2025-04-21 16:45:54.176 -03:00 [DBG] Attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand' using the name '' in request data ...
+2025-04-21 16:45:54.178 -03:00 [DBG] Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonInputFormatter' for content type 'application/json'.
+2025-04-21 16:45:54.187 -03:00 [DBG] Connection id "0HNC11KE2PNEM", Request id "0HNC11KE2PNEM:00000001": started reading request body.
+2025-04-21 16:45:54.188 -03:00 [DBG] Connection id "0HNC11KE2PNEM", Request id "0HNC11KE2PNEM:00000001": done reading request body.
+2025-04-21 16:45:54.201 -03:00 [DBG] JSON input formatter succeeded, deserializing to type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'
+2025-04-21 16:45:54.202 -03:00 [DBG] Done attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'.
+2025-04-21 16:45:54.203 -03:00 [DBG] Done attempting to bind parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'.
+2025-04-21 16:45:54.204 -03:00 [DBG] Attempting to validate the bound parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand' ...
+2025-04-21 16:45:54.212 -03:00 [DBG] Done attempting to validate the bound parameter 'command' of type 'ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommand'.
+2025-04-21 16:45:54.214 -03:00 [DBG] Attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-04-21 16:45:54.215 -03:00 [DBG] Done attempting to bind parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-04-21 16:45:54.216 -03:00 [DBG] Attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken' ...
+2025-04-21 16:45:54.217 -03:00 [DBG] Done attempting to validate the bound parameter 'cancellationToken' of type 'System.Threading.CancellationToken'.
+2025-04-21 16:45:54.232 -03:00 [DBG] Entity Framework Core 8.0.15 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.15' with options: MigrationsAssembly=ProjetoHQApi.WebApi 
+2025-04-21 16:46:12.447 -03:00 [ERR] ERROR : 'Ocorreu um erro ao excluir a criar o desejo de id 3fa85f64-5717-4562-b3fc-2c963f66afa6 
+    at System.Uri.CreateThis(String uri, Boolean dontEscape, UriKind uriKind, UriCreationOptions& creationOptions)
+   at System.Uri..ctor(String uriString)
+   at HtmlAgilityPack.HtmlWeb.Load(String url, String method)
+   at HtmlAgilityPack.HtmlWeb.Load(String url)
+   at ProjetoHQApi.Application.UseCases.Desejos.Commands.CreateDesejoCommandHandler.Handle(CreateDesejoCommand request, CancellationToken cancellationToken) in C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\ProjetoHQAPI\ProjetoHQAPI.Application\UseCases\Desejos\Commands\CreateDesejoCommand.cs:line 71'
+2025-04-21 16:46:12.456 -03:00 [DBG] List of registered output formatters, in the following order: ["Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter"]
+2025-04-21 16:46:12.459 -03:00 [DBG] No information found on request to perform content negotiation.
+2025-04-21 16:46:12.460 -03:00 [DBG] Attempting to select an output formatter without using a content type as no explicit content types were specified for the response.
+2025-04-21 16:46:12.460 -03:00 [DBG] Attempting to select the first formatter in the output formatters list which can write the result.
+2025-04-21 16:46:12.462 -03:00 [DBG] Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter' and content type '' to write the response.
+2025-04-21 16:46:12.463 -03:00 [INF] Executing OkObjectResult, writing value of type 'null'.
+2025-04-21 16:46:12.467 -03:00 [INF] Executed action ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi) in 18306.1726ms
+2025-04-21 16:46:12.468 -03:00 [INF] Executed endpoint 'ProjetoHQApi.WebApi.Controllers.v1.DesejoController.Post (ProjetoHQApi.WebApi)'
+2025-04-21 16:46:12.471 -03:00 [DBG] Connection id "0HNC11KE2PNEM" completed keep alive response.
+2025-04-21 16:46:12.472 -03:00 [DBG] 'ApplicationDbContext' disposed.
+2025-04-21 16:46:12.474 -03:00 [INF] Request finished HTTP/1.1 POST https://localhost:9001/api/Desejo - 204 null null 18462.2265ms

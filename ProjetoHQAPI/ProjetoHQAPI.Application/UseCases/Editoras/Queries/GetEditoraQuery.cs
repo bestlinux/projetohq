@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Domain.Entities;
+using ProjetoHQApi.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using System;
@@ -15,7 +15,7 @@ namespace ProjetoHQApi.Application.UseCases.Editoras.Queries
 {
     public class GetEditoraQuery : IRequest<IReadOnlyCollection<GetEditoraResponse>>
     {
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
     }
 
     public class GetEditoraQueryQueryHandler(IEditoraRepository editoraRepository, IMapper mapper) : IRequestHandler<GetEditoraQuery, IReadOnlyCollection<GetEditoraResponse>>
@@ -25,9 +25,14 @@ namespace ProjetoHQApi.Application.UseCases.Editoras.Queries
 
         public async Task<IReadOnlyCollection<GetEditoraResponse>> Handle(GetEditoraQuery request, CancellationToken cancellationToken)
         {
-            var editora = await _editoraRepository.GetAllAsync(cancellationToken);
+            IEnumerable<Editora>? editoras = null;
 
-            return editora.Select(_mapper.Map<GetEditoraResponse>).ToList();
+            if (request.Nome is not null)
+                editoras = await _editoraRepository.LocalizaTodasEditorasPorNome(request.Nome, cancellationToken);
+            else
+                editoras = await _editoraRepository.GetAllAsync(cancellationToken);
+
+            return editoras.Select(_mapper.Map<GetEditoraResponse>).ToList();
         }
     }
 }

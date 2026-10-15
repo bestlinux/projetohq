@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using ProjetoHQApi.Application.UseCases.Editoras.Queries;
 using ProjetoHQApi.Application.UseCases.Frases.Queries;
@@ -15,8 +15,8 @@ namespace ProjetoHQApi.Application.UseCases.Frases.Queries
 {
     public class GetFrasesQuery : IRequest<IReadOnlyCollection<GetFraseResponse>>
     {
-        public string NomeHQ { get; set; }
-        public string Autor { get; set; }
+        public string? NomeHQ { get; set; }
+        public string? Autor { get; set; }
     }
 
     public class GetAllFrasesQueryHandler(IFraseRepository frasesRepository, IMapper mapper) : IRequestHandler<GetFrasesQuery, IReadOnlyCollection<GetFraseResponse>>
@@ -26,9 +26,14 @@ namespace ProjetoHQApi.Application.UseCases.Frases.Queries
 
         public async Task<IReadOnlyCollection<GetFraseResponse>> Handle(GetFrasesQuery request, CancellationToken cancellationToken)
         {
-            var frase = await _frasesRepository.GetAllAsync(cancellationToken);
+            IEnumerable<Frase>? frases = null;
 
-            return frase.Select(_mapper.Map<GetFraseResponse>).ToList();
+            if (request is not null && (!string.IsNullOrWhiteSpace(request.Autor) || !string.IsNullOrWhiteSpace(request.NomeHQ)))
+                frases = await _frasesRepository.LocalizaTodasFrasesPorNomeHQAutor(request.NomeHQ, request.Autor, cancellationToken);
+            else
+                frases = await _frasesRepository.GetAllAsync(cancellationToken);
+
+            return frases.Select(_mapper.Map<GetFraseResponse>).ToList();
         }
     }
 }

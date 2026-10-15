@@ -4,6 +4,7 @@ using System;
 using ProjetoHQApi.Application.Services;
 using System.Text.Json.Serialization;
 using ProjetoHQApi.Infrastructure.Persistence.Contexts;
+using ProjetoHQApi.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ProjetoHQApi.Domain.Entities;
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
 builder.Services.ConfigureApplicationApp();
+builder.Services.ConfigureSharedInfrastructure();
 
 builder.Services.AddCors(options =>
 {
@@ -105,6 +107,37 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseStaticFiles();
+
+var capasPath = @"C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\projetohqrepositorio\Capas";
+if (Directory.Exists(capasPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(capasPath),
+        RequestPath = "/capas"
+    });
+}
+
+var desejosPath = @"C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\projetohqrepositorio\Desejos";
+if (Directory.Exists(desejosPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(desejosPath),
+        RequestPath = "/desejos-capas"
+    });
+}
+
+var frasesPath = @"C:\Users\bestl\OneDrive\PROJETOHQATUAL\projetohq\projetohqrepositorio\Frases";
+if (Directory.Exists(frasesPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(frasesPath),
+        RequestPath = "/frases-imagens"
+    });
+}
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

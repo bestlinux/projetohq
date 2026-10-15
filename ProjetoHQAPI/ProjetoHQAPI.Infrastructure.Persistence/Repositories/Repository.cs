@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Infrastructure.Persistence.Contexts;
+using ProjetoHQApi.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,9 +33,9 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repository
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
         {
-            var entities = await DbSet.ToListAsync(cancellationToken);
+            var entities = await DbSet.AsNoTracking().ToListAsync(cancellationToken);
             return entities;
         }
 
@@ -54,8 +54,11 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repository
         public async Task RemoveAsync(Guid? id)
         {
             var entity = await DbSet.FindAsync(id);
-            DbSet.Remove(entity);
-            await _db.SaveChangesAsync();
+            if (entity != null)
+            {
+                DbSet.Remove(entity);
+                await _db.SaveChangesAsync();
+            }
         }
 
         public void Dispose()

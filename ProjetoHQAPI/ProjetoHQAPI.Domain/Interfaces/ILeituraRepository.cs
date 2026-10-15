@@ -11,6 +11,6 @@ namespace ProjetoHQApi.Domain.Interfaces
     {
         Task<bool> IsExistsTituloAndAnoInLeituraAsync(string titulo, string ano);
 
-        Task<IEnumerable<Leitura>> LocalizaTodasLeituras(string titulo);
+        Task<IEnumerable<Leitura>> LocalizaTodasLeiturasPorTitulo(string titulo, CancellationToken cancellation);
     }
 }

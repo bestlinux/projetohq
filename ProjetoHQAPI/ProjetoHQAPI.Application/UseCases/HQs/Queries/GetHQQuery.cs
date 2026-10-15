@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Domain.Entities;
+using ProjetoHQApi.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using System;
@@ -15,21 +15,21 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Queries
 {
     public class GetHQQuery : IRequest<IReadOnlyCollection<GetHQResponse>>
     {
-        public string Editora { get; set; }
+        public string? Editora { get; set; }
 
-        public string Titulo { get; set; }
+        public string? Titulo { get; set; }
 
-        public string AnoLancamento { get; set; }
+        public string? AnoLancamento { get; set; }
 
-        public int NumeroEdicao { get; set; }
+        public int? NumeroEdicao { get; set; }
 
-        public int Categoria { get; set; }
+        public int? Categoria { get; set; }
 
-        public int Genero { get; set; }
+        public int? Genero { get; set; }
 
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
-        public int Formato { get; set; }
+        public int? Formato { get; set; }
 
     }
 
@@ -40,9 +40,41 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Queries
 
         public async Task<IReadOnlyCollection<GetHQResponse>> Handle(GetHQQuery request, CancellationToken cancellationToken)
         {
-            var leitura = await _hqRepository.GetAllAsync(cancellationToken);
+            var hqs = await _hqRepository.GetAllAsync(cancellationToken);
 
-            return leitura.Select(_mapper.Map<GetHQResponse>).ToList();
+            if (request != null)
+            {
+                if (!string.IsNullOrWhiteSpace(request.Editora))
+                {
+                    hqs = hqs.Where(h => h.Editora != null && h.Editora.Contains(request.Editora, StringComparison.OrdinalIgnoreCase));
+                }
+                if (!string.IsNullOrWhiteSpace(request.Titulo))
+                {
+                    hqs = hqs.Where(h => h.Titulo != null && h.Titulo.Contains(request.Titulo, StringComparison.OrdinalIgnoreCase));
+                }
+                if (request.NumeroEdicao.HasValue && request.NumeroEdicao.Value > 0)
+                {
+                    hqs = hqs.Where(h => h.NumeroEdicao == request.NumeroEdicao.Value);
+                }
+                if (request.Categoria.HasValue && request.Categoria.Value > 0)
+                {
+                    hqs = hqs.Where(h => h.Categoria == request.Categoria.Value);
+                }
+                if (request.Genero.HasValue && request.Genero.Value > 0)
+                {
+                    hqs = hqs.Where(h => h.Genero == request.Genero.Value);
+                }
+                if (request.Status.HasValue && request.Status.Value > 0)
+                {
+                    hqs = hqs.Where(h => h.Status == request.Status.Value);
+                }
+                if (request.Formato.HasValue && request.Formato.Value > 0)
+                {
+                    hqs = hqs.Where(h => h.Formato == request.Formato.Value);
+                }
+            }
+
+            return hqs.Select(_mapper.Map<GetHQResponse>).ToList();
         }
     }
 }

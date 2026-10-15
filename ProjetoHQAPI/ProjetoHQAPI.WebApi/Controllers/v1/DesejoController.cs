@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,6 +12,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using System.IO;
+using ProjetoHQApi.Application.Constantes;
 
 namespace ProjetoHQApi.WebApi.Controllers.v1
 {
@@ -60,11 +63,53 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
+        /// <summary>
+        /// DELETE api/controller/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new DeleteDesejoByIdCommand { DesejoId = id }, cancellationToken);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// GET api/desejo/capa/{id}
+        /// Carrega a imagem da capa a partir do ID/nome de arquivo em projetohqrepositorio\Desejos
+        /// </summary>
+        [HttpGet("capa/{id}")]
+        [AllowAnonymous]
+        public IActionResult GetCapa(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest("ID da capa é obrigatório");
+            }
+
+            // Remove qualquer tentativa de path traversal
+            string fileName = Path.GetFileName(id);
+
+            // Verifica primeiro com o nome exato
+            string fullPath = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS, fileName);
+            if (System.IO.File.Exists(fullPath))
+            {
+                return PhysicalFile(fullPath, "image/jpeg");
+            }
+
+            // Se não encontrou e não tinha extensão .jpg, tenta adicionando .jpg
+            if (!fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
+            {
+                string pathWithJpg = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS, fileName + ".jpg");
+                if (System.IO.File.Exists(pathWithJpg))
+                {
+                    return PhysicalFile(pathWithJpg, "image/jpeg");
+                }
+            }
+
+            return NotFound();
         }
     }
 }

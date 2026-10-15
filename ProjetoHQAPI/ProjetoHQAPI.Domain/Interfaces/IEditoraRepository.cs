@@ -11,5 +11,7 @@ namespace ProjetoHQApi.Domain.Interfaces
     public interface IEditoraRepository : IRepository<Editora>
     {
         Task<bool> IsUniqueEditoraAsync(string editora);
+
+        Task<IEnumerable<Editora>> LocalizaTodasEditorasPorNome(string nome, CancellationToken cancellationToken);
     }
 }

@@ -16,8 +16,7 @@ namespace ProjetoHQApi.Application.UseCases.Desejos.Queries
 {
     public class GetDesejoQuery : IRequest<IReadOnlyCollection<GetDesejoResponse>>
     {
-        public string Titulo { get; set; }
-        public string Editora { get; set; }
+        public string? Titulo { get; set; }
     }
 
     public class GetAllDesejoQueryHandler(IDesejoRepository desejoRepository, IMapper mapper) : IRequestHandler<GetDesejoQuery, IReadOnlyCollection<GetDesejoResponse>>
@@ -27,7 +26,12 @@ namespace ProjetoHQApi.Application.UseCases.Desejos.Queries
 
         public async Task<IReadOnlyCollection<GetDesejoResponse>> Handle(GetDesejoQuery request, CancellationToken cancellationToken)
         {
-            var desejo = await _desejoRepository.GetAllAsync(cancellationToken);
+            IEnumerable<Desejo>? desejo = null;
+
+            if (request.Titulo is not null)
+                desejo = await _desejoRepository.LocalizaTodosDesejosPorTitulo(request.Titulo, cancellationToken);
+            else
+                desejo = await _desejoRepository.GetAllAsync(cancellationToken);
 
             return desejo.Select(_mapper.Map<GetDesejoResponse>).ToList();
         }
