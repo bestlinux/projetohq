@@ -162,7 +162,7 @@ namespace ProjetoHQApi.Application.UseCases.Desejos.Commands
                     desejo.DataPublicacao = myWriter.ToString();
                 }
 
-                if (await _desejoRepository.IsExistsTituloAndAnoInDesejoAsync(request.Titulo, desejo.DataPublicacao))
+                if (await _desejoRepository.IsExistsTituloAndAnoInDesejo(request.Titulo, desejo.DataPublicacao))
                 {
                     await _mediator.Publish(new ErrorNotification
                     {
@@ -254,9 +254,9 @@ namespace ProjetoHQApi.Application.UseCases.Desejos.Commands
                 await _desejoRepository.AddAsync(desejo);
                 await _unitOfWork.Commit(cancellationToken);
 
-                await _mediator.Publish(new ColecaoActionNotification
+                await _mediator.Publish(new DesejoActionNotification
                 {
-                    ColecaoId = request.DesejoId,
+                    DesejoId = request.DesejoId,
                     Action = ActionNotification.Created
                 }, cancellationToken);
             }
@@ -264,7 +264,7 @@ namespace ProjetoHQApi.Application.UseCases.Desejos.Commands
             {
                 await _mediator.Publish(new ErrorNotification
                 {
-                    Error = "Ocorreu um erro ao excluir a criar o desejo de id " + request.DesejoId,
+                    Error = "Ocorreu um erro ao criar o desejo de id " + request.DesejoId,
                     Stack = ex.StackTrace,
                 }, cancellationToken);
                 return null;

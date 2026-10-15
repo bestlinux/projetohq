@@ -43,6 +43,12 @@
             <param name="id"></param>
             <param name="cancellationToken"></param>
             <returns></returns>
+            <summary>
+            DELETE api/controller/5
+            </summary>
+            <param name="id"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.EditoraController.GetAll(ProjetoHQApi.Application.UseCases.Editoras.Queries.GetEditoraQuery,System.Threading.CancellationToken)">
             <summary>
@@ -177,6 +183,18 @@
             <inheritdoc />
         </member>
         <member name="M:ProjetoHQApi.WebApi.Migrations.Identity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ProjetoHQApi.WebApi.Migrations.AtualizaColunasAuditoria">
+            <inheritdoc />
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Migrations.AtualizaColunasAuditoria.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Migrations.AtualizaColunasAuditoria.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Migrations.AtualizaColunasAuditoria.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

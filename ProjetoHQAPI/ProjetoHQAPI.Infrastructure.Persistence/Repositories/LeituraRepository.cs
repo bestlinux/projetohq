@@ -26,11 +26,11 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
                 return false;
         }
 
-        public async Task<IEnumerable<Leitura>> LocalizaTodasLeituras(string titulo)
+        public async Task<IEnumerable<Leitura>> LocalizaTodasLeiturasPorTitulo(string titulo, CancellationToken cancellation)
         {
             return await _db.Leituras.AsNoTracking()
                  .Where(b => EF.Functions.Like(b.Titulo, "%" + titulo + "%"))
-                 .ToListAsync();
+                 .ToListAsync(cancellation);
         }
     }
 }

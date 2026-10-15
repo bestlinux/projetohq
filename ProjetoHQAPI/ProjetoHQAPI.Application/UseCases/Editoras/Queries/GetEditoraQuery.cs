@@ -25,9 +25,14 @@ namespace ProjetoHQApi.Application.UseCases.Editoras.Queries
 
         public async Task<IReadOnlyCollection<GetEditoraResponse>> Handle(GetEditoraQuery request, CancellationToken cancellationToken)
         {
-            var editora = await _editoraRepository.GetAllAsync(cancellationToken);
+            IEnumerable<Editora>? editoras = null;
 
-            return editora.Select(_mapper.Map<GetEditoraResponse>).ToList();
+            if (request.Nome is not null)
+                editoras = await _editoraRepository.LocalizaTodasEditorasPorNome(request.Nome, cancellationToken);
+            else
+                editoras = await _editoraRepository.GetAllAsync(cancellationToken);
+
+            return editoras.Select(_mapper.Map<GetEditoraResponse>).ToList();
         }
     }
 }

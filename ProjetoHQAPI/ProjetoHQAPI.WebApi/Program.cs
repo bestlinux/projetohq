@@ -4,6 +4,7 @@ using System;
 using ProjetoHQApi.Application.Services;
 using System.Text.Json.Serialization;
 using ProjetoHQApi.Infrastructure.Persistence.Contexts;
+using ProjetoHQApi.Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ProjetoHQApi.Domain.Entities;
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
 builder.Services.ConfigureApplicationApp();
+builder.Services.ConfigureSharedInfrastructure();
 
 builder.Services.AddCors(options =>
 {

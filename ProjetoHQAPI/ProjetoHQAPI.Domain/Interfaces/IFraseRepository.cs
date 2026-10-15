@@ -9,5 +9,6 @@ namespace ProjetoHQApi.Domain.Interfaces
 {
     public interface IFraseRepository : IRepository<Frase>
     {
+        Task<IEnumerable<Frase>> LocalizaTodasFrasesPorNomeHQAutor(string nomeHq, string autor, CancellationToken cancellationToken);
     }
 }

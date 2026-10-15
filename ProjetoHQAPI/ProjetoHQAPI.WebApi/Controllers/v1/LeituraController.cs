@@ -71,7 +71,9 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// <param name="command"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put(Guid id, UpdateLeituraCommand command, CancellationToken cancellationToken)
         {
             if (id != command.Id)

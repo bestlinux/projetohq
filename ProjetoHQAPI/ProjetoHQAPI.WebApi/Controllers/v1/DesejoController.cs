@@ -60,7 +60,13 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
+        /// <summary>
+        /// DELETE api/controller/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new DeleteDesejoByIdCommand { DesejoId = id }, cancellationToken);

@@ -13,8 +13,14 @@ using System.Threading.Tasks;
 
 namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
 {
-    public class FraseRepository (ApplicationDbContext context) : Repository<Frase>(context), IFraseRepository
+    public class FraseRepository(ApplicationDbContext context) : Repository<Frase>(context), IFraseRepository
     {
-       
-    }   
+        public async Task<IEnumerable<Frase>> LocalizaTodasFrasesPorNomeHQAutor(string nomeHq, string autor, CancellationToken cancellationToken)
+        {
+            return await _db.Frases.AsNoTracking()
+              .Where(f => EF.Functions.Like(f.Autor, "%" + autor + "%")
+                     && EF.Functions.Like(f.NomeHQ, "%" + nomeHq + "%"))
+               .ToListAsync(cancellationToken);
+        }
+    }
 }

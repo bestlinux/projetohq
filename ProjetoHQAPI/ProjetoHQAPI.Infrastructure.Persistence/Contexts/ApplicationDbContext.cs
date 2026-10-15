@@ -7,16 +7,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
+using ProjetoHQApi.Domain.Interfaces;
 
 namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        private readonly IDateTimeService _dateTime;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDateTimeService dateTime
             ) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            _dateTime = dateTime;
         }
 
         public DbSet<HQ> HQs { get; set; }
@@ -30,7 +33,24 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
         public DbSet<Colecao> Colecao { get; set; }
 
         public DbSet<Leitura> Leituras { get; set; }
-       
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<Entity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.Created = _dateTime.NowUtc;
+                        break;
+
+                    case EntityState.Modified:
+                        entry.Entity.LastModified = _dateTime.NowUtc;
+                        break;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
+        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -21,5 +21,12 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Repositories
             return await _db.Editoras
                 .AllAsync(p => p.Nome != nome);
         }
+
+        public async Task<IEnumerable<Editora>> LocalizaTodasEditorasPorNome(string nome, CancellationToken cancellationToken)
+        {
+            return await _db.Editoras.AsNoTracking()
+                .Where(b => EF.Functions.Like(b.Nome, "%" + nome + "%"))
+                .ToListAsync(cancellationToken);
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace ProjetoHQApi.Application.Services.Notifications
 {
     public class DesejoActionNotification : INotification
     {
-        public Guid? ColecaoId { get; set; }
+        public Guid? DesejoId { get; set; }
 
         public string Descricao { get; set; }
 

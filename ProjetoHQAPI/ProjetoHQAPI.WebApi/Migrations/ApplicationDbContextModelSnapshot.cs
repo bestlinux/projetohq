@@ -230,9 +230,15 @@ namespace ProjetoHQApi.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -255,10 +261,6 @@ namespace ProjetoHQApi.WebApi.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DataPublicacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -277,12 +279,8 @@ namespace ProjetoHQApi.WebApi.Migrations
                     b.Property<int>("Genero")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Licenciador")
                         .IsRequired()
@@ -331,6 +329,12 @@ namespace ProjetoHQApi.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -353,6 +357,12 @@ namespace ProjetoHQApi.WebApi.Migrations
                     b.Property<string>("Autor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NomeHQ")
                         .IsRequired()
@@ -379,10 +389,6 @@ namespace ProjetoHQApi.WebApi.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DataPublicacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -401,12 +407,8 @@ namespace ProjetoHQApi.WebApi.Migrations
                     b.Property<int>("Genero")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Licenciador")
                         .IsRequired()
@@ -462,10 +464,6 @@ namespace ProjetoHQApi.WebApi.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("DataLeitura")
                         .HasColumnType("datetime2");
 
@@ -473,12 +471,8 @@ namespace ProjetoHQApi.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Lido")
                         .HasColumnType("int");

@@ -9,6 +9,8 @@ namespace ProjetoHQApi.Domain.Interfaces
 {
     public interface IDesejoRepository : IRepository<Desejo>
     {
-        Task<bool> IsExistsTituloAndAnoInDesejoAsync(string titulo, string ano);
+        Task<bool> IsExistsTituloAndAnoInDesejo(string titulo, string ano);
+
+        Task<IEnumerable<Desejo>> LocalizaTodosDesejosPorTitulo(string titulo, CancellationToken cancellation);
     }
 }

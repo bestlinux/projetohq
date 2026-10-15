@@ -25,7 +25,12 @@ namespace ProjetoHQApi.Application.UseCases.Leituras.Queries
 
         public async Task<IReadOnlyCollection<GetLeituraResponse>> Handle(GetLeituraQuery request, CancellationToken cancellationToken)
         {
-            var leitura = await _leituraRepository.LocalizaTodasLeituras(request.Titulo);
+            IEnumerable<Leitura>? leitura = null;
+
+            if (request is not null)
+                leitura = await _leituraRepository.LocalizaTodasLeiturasPorTitulo(request.Titulo!, cancellationToken);
+            else
+                leitura = await _leituraRepository.GetAllAsync(cancellationToken);
 
             return leitura.Select(_mapper.Map<GetLeituraResponse>).ToList();
         }
