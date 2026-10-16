@@ -15,117 +15,16 @@ import {
   BookOpen,
   Filter,
   Layers,
-  Sparkles
+  Zap
 } from 'lucide-react';
-import { ImportacaoLegado, ImportacaoLegadoResult, HQ, Editora } from '../types';
+import { ImportacaoLegado, ImportacaoLegadoResult, HQ, Editora, JevColecaoMatch } from '../types';
 import { apiService, getCapaUrl } from '../services/api';
+import { buscarColecaoLocalJev } from '../services/jevEngine';
 import { AddHQModal } from '../components/AddHQModal';
 
 interface LegacyImportPageProps {
   editoras?: Editora[];
   onHQAdded?: (hq: Omit<HQ, 'id'>, coverFile?: File) => Promise<void> | void;
-}
-
-interface ColecaoMatch {
-  hq: HQ;
-  matchType: 'exato' | 'mesmo_titulo_editora' | 'mesmo_titulo' | 'semelhante';
-  score: number;
-  motivo: string;
-}
-
-function normalizeStr(s?: string | null): string {
-  if (!s) return '';
-  return s
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^\w\s]/gi, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function calculateSimilarity(
-  queryTitulo: string,
-  queryEditora: string,
-  queryEdicao: number,
-  hqList: HQ[]
-): ColecaoMatch[] {
-  const normTit = normalizeStr(queryTitulo);
-  const normEd = normalizeStr(queryEditora);
-  const numEd = queryEdicao <= 0 ? 1 : queryEdicao;
-
-  if (!normTit) return [];
-
-  const titWords = new Set(normTit.split(' ').filter(w => w.length > 2));
-  const results: ColecaoMatch[] = [];
-
-  for (const hq of hqList) {
-    const hqTit = normalizeStr(hq.titulo);
-    const hqEd = normalizeStr(hq.editora);
-    const hqNum = (hq.numeroEdicao || 1) <= 0 ? 1 : (hq.numeroEdicao || 1);
-
-    if (!hqTit) continue;
-
-    const isExactTitle = normTit === hqTit;
-    const isEditoraMatch = normEd && hqEd && (normEd === hqEd || normEd.includes(hqEd) || hqEd.includes(normEd));
-    const isEditionMatch = numEd === hqNum;
-
-    // 1. Correspondência Exata (Título, Editora e Edição)
-    if (isExactTitle && isEditoraMatch && isEditionMatch) {
-      results.push({
-        hq,
-        matchType: 'exato',
-        score: 100,
-        motivo: 'Correspondência Exata: Título, Editora e Edição coincidem perfeitamente!'
-      });
-      continue;
-    }
-
-    // 2. Mesmo Título e Mesma Editora (Edição diferente)
-    if (isExactTitle && isEditoraMatch) {
-      results.push({
-        hq,
-        matchType: 'mesmo_titulo_editora',
-        score: 85,
-        motivo: `Mesmo Título e Editora, porém edição #${hqNum}`
-      });
-      continue;
-    }
-
-    // 3. Mesmo Título (Editora ou Edição diferente)
-    if (isExactTitle) {
-      results.push({
-        hq,
-        matchType: 'mesmo_titulo',
-        score: 75,
-        motivo: `Mesmo Título (Editora: ${hq.editora || '—'}, Edição #${hqNum})`
-      });
-      continue;
-    }
-
-    // 4. Título Semelhante (Contém ou palavras em comum)
-    const containsTitle = normTit.includes(hqTit) || hqTit.includes(normTit);
-    const hqWords = hqTit.split(' ').filter(w => w.length > 2);
-    let commonWordCount = 0;
-    for (const w of hqWords) {
-      if (titWords.has(w)) commonWordCount++;
-    }
-
-    const wordRatio = titWords.size > 0 ? commonWordCount / titWords.size : 0;
-
-    if (containsTitle || wordRatio >= 0.5) {
-      const score = Math.round(50 + (containsTitle ? 15 : 0) + (wordRatio * 15) + (isEditionMatch ? 5 : 0) + (isEditoraMatch ? 5 : 0));
-      results.push({
-        hq,
-        matchType: 'semelhante',
-        score,
-        motivo: `Título semelhante (${Math.round(wordRatio * 100)}% das palavras-chave em comum)`
-      });
-    }
-  }
-
-  results.sort((a, b) => b.score - a.score);
-  return results.slice(0, 30);
 }
 
 export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: initialEditoras, onHQAdded }) => {
@@ -162,7 +61,7 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
   const [colecaoSearchTitulo, setColecaoSearchTitulo] = useState('');
   const [colecaoSearchEditora, setColecaoSearchEditora] = useState('');
   const [colecaoSearchEdicao, setColecaoSearchEdicao] = useState<number>(1);
-  const [colecaoMatches, setColecaoMatches] = useState<ColecaoMatch[]>([]);
+  const [colecaoMatches, setColecaoMatches] = useState<JevColecaoMatch[]>([]);
   const [isSearchingColecao, setIsSearchingColecao] = useState(false);
   const [allColecaoHQs, setAllColecaoHQs] = useState<HQ[]>([]);
 
@@ -389,7 +288,7 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
     setSelectedWebItem(null);
   };
 
-  // Buscar na Coleção
+  // Buscar na Coleção (JEV Engine: Sistema 1 Local + API)
   const handleOpenColecaoSearch = async (item?: ImportacaoLegado) => {
     const targetItem = item || (selectedIds.size === 1 ? items.find(i => selectedIds.has(i.id)) : null) || filteredItems[0] || null;
     setActiveColecaoItem(targetItem);
@@ -405,10 +304,22 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
 
     if (tit) {
       setIsSearchingColecao(true);
-      const hqs = await loadColecao();
-      const matches = calculateSimilarity(tit, ed, num, hqs);
-      setColecaoMatches(matches);
-      setIsSearchingColecao(false);
+      try {
+        const apiMatches = await apiService.buscarColecaoJev(tit, ed, num, 30);
+        if (apiMatches && apiMatches.length > 0) {
+          setColecaoMatches(apiMatches);
+        } else {
+          const hqs = await loadColecao();
+          const localMatches = buscarColecaoLocalJev(tit, ed, num, hqs, 30);
+          setColecaoMatches(localMatches);
+        }
+      } catch {
+        const hqs = await loadColecao();
+        const localMatches = buscarColecaoLocalJev(tit, ed, num, hqs, 30);
+        setColecaoMatches(localMatches);
+      } finally {
+        setIsSearchingColecao(false);
+      }
     } else {
       setColecaoMatches([]);
     }
@@ -419,10 +330,39 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
     if (!colecaoSearchTitulo.trim()) return;
 
     setIsSearchingColecao(true);
-    const hqs = await loadColecao();
-    const matches = calculateSimilarity(colecaoSearchTitulo, colecaoSearchEditora, colecaoSearchEdicao, hqs);
-    setColecaoMatches(matches);
-    setIsSearchingColecao(false);
+    try {
+      const apiMatches = await apiService.buscarColecaoJev(
+        colecaoSearchTitulo.trim(),
+        colecaoSearchEditora.trim(),
+        colecaoSearchEdicao,
+        30
+      );
+      if (apiMatches && apiMatches.length > 0) {
+        setColecaoMatches(apiMatches);
+      } else {
+        const hqs = await loadColecao();
+        const localMatches = buscarColecaoLocalJev(
+          colecaoSearchTitulo.trim(),
+          colecaoSearchEditora.trim(),
+          colecaoSearchEdicao,
+          hqs,
+          30
+        );
+        setColecaoMatches(localMatches);
+      }
+    } catch {
+      const hqs = await loadColecao();
+      const localMatches = buscarColecaoLocalJev(
+        colecaoSearchTitulo.trim(),
+        colecaoSearchEditora.trim(),
+        colecaoSearchEdicao,
+        hqs,
+        30
+      );
+      setColecaoMatches(localMatches);
+    } finally {
+      setIsSearchingColecao(false);
+    }
   };
 
   const handleRemoveActiveItemFromQueue = async () => {
@@ -1341,58 +1281,75 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: 12
+                    marginBottom: 12,
+                    flexWrap: 'wrap',
+                    gap: 8
                   }}>
-                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>
-                      ENCONTRADOS NA COLEÇÃO ({colecaoMatches.length}):
-                    </span>
-                    {colecaoMatches.some(m => m.matchType === 'exato') && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>
+                        ENCONTRADOS NA COLEÇÃO ({colecaoMatches.length}):
+                      </span>
+                      <span style={{
+                        fontSize: '0.72rem',
+                        background: 'rgba(99, 102, 241, 0.15)',
+                        color: '#a5b4fc',
+                        padding: '2px 8px',
+                        borderRadius: 12,
+                        fontWeight: 700,
+                        border: '1px solid rgba(99, 102, 241, 0.3)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4
+                      }}>
+                        <Zap size={11} /> JEV Engine (Sistema 1 Local)
+                      </span>
+                    </div>
+                    {colecaoMatches.some(m => m.scoreGeral >= 88) && (
                       <span style={{
                         fontSize: '0.75rem',
-                        background: 'rgba(16, 185, 129, 0.15)',
-                        color: 'var(--accent-emerald)',
+                        background: 'rgba(239, 68, 68, 0.15)',
+                        color: '#f87171',
                         padding: '3px 8px',
                         borderRadius: 6,
                         fontWeight: 700,
-                        border: '1px solid rgba(16, 185, 129, 0.3)'
+                        border: '1px solid rgba(239, 68, 68, 0.4)'
                       }}>
-                        🎯 Correspondência Exata Detectada!
+                        ⚠️ Provável Duplicata Detectada!
                       </span>
                     )}
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {colecaoMatches.map((match, idx) => {
-                      const hq = match.hq;
-                      const coverSrc = hq.thumbCapa || getCapaUrl(hq.capa);
+                      const coverSrc = match.imagem ? getCapaUrl(match.imagem) : undefined;
 
-                      const badgeStyle = match.matchType === 'exato'
-                        ? { bg: 'rgba(16, 185, 129, 0.15)', border: 'rgba(16, 185, 129, 0.3)', color: 'var(--accent-emerald)', label: 'Correspondência Exata' }
-                        : match.matchType === 'mesmo_titulo_editora'
-                          ? { bg: 'rgba(6, 182, 212, 0.15)', border: 'rgba(6, 182, 212, 0.3)', color: 'var(--accent-cyan)', label: 'Mesmo Título & Editora' }
-                          : match.matchType === 'mesmo_titulo'
-                            ? { bg: 'rgba(99, 102, 241, 0.15)', border: 'rgba(99, 102, 241, 0.3)', color: '#818cf8', label: 'Mesmo Título' }
-                            : { bg: 'rgba(245, 158, 11, 0.15)', border: 'rgba(245, 158, 11, 0.3)', color: '#fbbf24', label: 'Título Semelhante' };
+                      const badgeStyle = match.classificacao === 'Duplicata Confirmada'
+                        ? { bg: 'rgba(239, 68, 68, 0.15)', border: 'rgba(239, 68, 68, 0.4)', color: '#f87171', label: '🔴 Duplicata Confirmada' }
+                        : match.classificacao === 'Mesma Série (Outra Edição)'
+                          ? { bg: 'rgba(59, 130, 246, 0.15)', border: 'rgba(59, 130, 246, 0.4)', color: '#60a5fa', label: '🔵 Mesma Série (Outra Edição)' }
+                          : match.classificacao === 'Possível Variante / Reimpressão'
+                            ? { bg: 'rgba(6, 182, 212, 0.15)', border: 'rgba(6, 182, 212, 0.4)', color: '#22d3ee', label: '🔷 Possível Variante / Reimpressão' }
+                            : { bg: 'rgba(245, 158, 11, 0.15)', border: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24', label: '🟡 Semelhante' };
 
                       return (
                         <div
-                          key={hq.id || idx}
+                          key={match.id || idx}
                           style={{
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            padding: '10px 12px',
+                            padding: '12px 14px',
                             borderRadius: 'var(--radius-sm)',
-                            background: match.matchType === 'exato' ? 'rgba(16, 185, 129, 0.06)' : 'rgba(255, 255, 255, 0.02)',
-                            border: `1px solid ${match.matchType === 'exato' ? 'rgba(16, 185, 129, 0.3)' : 'var(--border-subtle)'}`,
+                            background: match.scoreGeral >= 88 ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255, 255, 255, 0.02)',
+                            border: `1px solid ${match.scoreGeral >= 88 ? 'rgba(239, 68, 68, 0.3)' : 'var(--border-subtle)'}`,
                             gap: 12
                           }}
                         >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
                             {/* Cover Thumbnail */}
                             <div style={{
-                              width: 38,
-                              height: 52,
+                              width: 42,
+                              height: 58,
                               borderRadius: 4,
                               background: 'var(--bg-main)',
                               overflow: 'hidden',
@@ -1405,7 +1362,7 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
                               {coverSrc ? (
                                 <img
                                   src={coverSrc}
-                                  alt={hq.titulo}
+                                  alt={match.titulo}
                                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                   onError={(e) => {
                                     (e.target as HTMLElement).style.display = 'none';
@@ -1417,32 +1374,43 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
                             </div>
 
                             {/* Info */}
-                            <div style={{ minWidth: 0 }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                                <h5 style={{ fontSize: '0.88rem', fontWeight: 700, margin: 0, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                  {hq.titulo}
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                                <h5 style={{ fontSize: '0.9rem', fontWeight: 700, margin: 0, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                  {match.titulo}
                                 </h5>
                                 <span style={{
-                                  fontSize: '0.7rem',
-                                  padding: '1px 6px',
-                                  borderRadius: 4,
+                                  fontSize: '0.72rem',
+                                  padding: '2px 8px',
+                                  borderRadius: 6,
                                   background: badgeStyle.bg,
                                   border: `1px solid ${badgeStyle.border}`,
                                   color: badgeStyle.color,
                                   fontWeight: 700
                                 }}>
-                                  {badgeStyle.label}
+                                  {badgeStyle.label} ({match.scoreGeral}%)
                                 </span>
                               </div>
 
-                              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 2 }}>
-                                <span>{hq.editora || 'Independente'} • Edição #{hq.numeroEdicao ?? 1}</span>
-                                {hq.dataPublicacao || hq.dataLancamento ? ` • ${hq.dataPublicacao || hq.dataLancamento}` : ''}
-                                {hq.preco ? ` • ${hq.preco}` : ''}
-                                {hq.lido === 1 ? ' • ✓ Lido' : ''}
+                              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 3 }}>
+                                <span>{match.editora || 'Independente'} • Edição #{match.numeroEdicao ?? 1}</span>
+                                {match.lido === 1 ? ' • ✓ Lido' : ' • 📖 Não lido'}
                               </div>
 
-                              <div style={{ fontSize: '0.72rem', color: badgeStyle.color, marginTop: 2, fontStyle: 'italic' }}>
+                              {/* Probabilistic metrics pills */}
+                              <div style={{ display: 'flex', gap: 6, marginTop: 4, flexWrap: 'wrap' }}>
+                                <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.04)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                                  Título: <strong style={{ color: match.scoreTitulo >= 80 ? '#10b981' : '#f59e0b' }}>{match.scoreTitulo}%</strong>
+                                </span>
+                                <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.04)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                                  Edição: <strong style={{ color: match.scoreEdicao === 100 ? '#10b981' : '#ef4444' }}>{match.scoreEdicao}%</strong>
+                                </span>
+                                <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.04)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                                  Editora: <strong style={{ color: match.scoreEditora >= 80 ? '#10b981' : '#f59e0b' }}>{match.scoreEditora}%</strong>
+                                </span>
+                              </div>
+
+                              <div style={{ fontSize: '0.72rem', color: badgeStyle.color, marginTop: 4, fontStyle: 'italic' }}>
                                 {match.motivo}
                               </div>
                             </div>
@@ -1455,18 +1423,18 @@ export const LegacyImportPage: React.FC<LegacyImportPageProps> = ({ editoras: in
                               onClick={handleRemoveActiveItemFromQueue}
                               className="btn-secondary"
                               style={{
-                                padding: '5px 9px',
-                                fontSize: '0.75rem',
+                                padding: '6px 12px',
+                                fontSize: '0.78rem',
                                 flexShrink: 0,
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: 4,
+                                gap: 5,
                                 color: 'var(--accent-rose)',
-                                borderColor: 'rgba(244, 63, 94, 0.2)'
+                                borderColor: 'rgba(244, 63, 94, 0.3)'
                               }}
                               title="Remover este item da fila de importação legado"
                             >
-                              <Trash2 size={12} />
+                              <Trash2 size={13} />
                               <span>Já tenho</span>
                             </button>
                           )}

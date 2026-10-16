@@ -1,1 +1,8 @@
 projetohqrepositorio/
+
+# Configurações locais e segredos
+appsettings.Local.json
+appsettings.*.local.json
+*.local.json
+.env
+.env.local

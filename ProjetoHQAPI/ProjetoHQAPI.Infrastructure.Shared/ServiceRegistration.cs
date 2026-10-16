@@ -16,6 +16,8 @@ namespace ProjetoHQApi.Infrastructure.Shared
         {
             services.AddTransient<IDateTimeService, DateTimeService>();
             services.AddSingleton<IWebScraperService, WebScraperService>();
+            services.AddScoped<IJevEngineService, JevEngineService>();
+            services.AddScoped<ICuradorService, GeminiCuradorService>();
         }
     }
 }

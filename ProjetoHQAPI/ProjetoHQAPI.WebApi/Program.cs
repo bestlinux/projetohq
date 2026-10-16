@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
 builder.Services.ConfigureApplicationApp();
@@ -105,6 +106,30 @@ using (var scope = app.Services.CreateScope())
                 [Titulo] nvarchar(250) NOT NULL,
                 [Editora] nvarchar(150) NOT NULL,
                 [Edicao] int NOT NULL,
+                [Created] datetime2 NULL,
+                [LastModified] datetime2 NULL
+            );
+        END
+
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Log_Uso_IA' AND xtype='U')
+        BEGIN
+            CREATE TABLE [Log_Uso_IA] (
+                [Id] uniqueidentifier NOT NULL PRIMARY KEY,
+                [DataHora] datetime2 NOT NULL DEFAULT GETUTCDATE(),
+                [Funcionalidade] nvarchar(100) NOT NULL,
+                [Operacao] nvarchar(100) NOT NULL,
+                [Modelo] nvarchar(100) NOT NULL,
+                [OrigemMotor] nvarchar(50) NOT NULL,
+                [PromptTokens] int NOT NULL DEFAULT 0,
+                [CompletionTokens] int NOT NULL DEFAULT 0,
+                [TotalTokens] int NOT NULL DEFAULT 0,
+                [QtdFerramentas] int NOT NULL DEFAULT 0,
+                [LatenciaMs] bigint NOT NULL DEFAULT 0,
+                [Sucesso] bit NOT NULL DEFAULT 1,
+                [CodigoStatus] int NULL,
+                [MensagemErro] nvarchar(MAX) NULL,
+                [CustoEstimadoUSD] decimal(18, 6) NOT NULL DEFAULT 0.0,
+                [CustoEconomizadoUSD] decimal(18, 6) NOT NULL DEFAULT 0.0,
                 [Created] datetime2 NULL,
                 [LastModified] datetime2 NULL
             );

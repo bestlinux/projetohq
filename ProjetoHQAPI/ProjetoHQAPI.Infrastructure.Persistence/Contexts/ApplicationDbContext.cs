@@ -35,6 +35,7 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
         public DbSet<Leitura> Leituras { get; set; }
 
         public DbSet<ImportacaoLegado> Importacao_Legado { get; set; }
+        public DbSet<LogUsoIA> Log_Uso_IA { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { BookOpen, Building2, Heart, CheckCircle2, Settings, Sparkles, Menu, X, ChevronRight, Database, Quote, UploadCloud } from 'lucide-react';
+import { BookOpen, Building2, Heart, CheckCircle2, Settings, Sparkles, Menu, X, ChevronRight, Database, Quote, UploadCloud, Activity } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -72,6 +72,20 @@ export const Navbar: React.FC = () => {
       label: 'Importação Legado',
       subtitle: 'Upload SQLite e busca na Web',
       icon: UploadCloud,
+      end: false
+    },
+    {
+      to: '/curador',
+      label: 'Curador de HQs',
+      subtitle: 'Hub de Inteligência Artificial',
+      icon: Sparkles,
+      end: false
+    },
+    {
+      to: '/relatorio-ia',
+      label: 'Relatório de IA',
+      subtitle: 'Observabilidade OpenTelemetry',
+      icon: Activity,
       end: false
     },
     {

@@ -9,6 +9,7 @@ import { SettingsPage } from './pages/SettingsPage';
 import { EditorasPage } from './pages/EditorasPage';
 import { FrasesPage } from './pages/FrasesPage';
 import { LegacyImportPage } from './pages/LegacyImportPage';
+import { CuradorPage } from './pages/CuradorPage';
 
 export const App: React.FC = () => {
   return (
@@ -23,6 +24,8 @@ export const App: React.FC = () => {
             <Route path="/leituras" element={<LeiturasPage />} />
             <Route path="/frases" element={<FrasesPage />} />
             <Route path="/importacao-legado" element={<LegacyImportPage />} />
+            <Route path="/curador" element={<CuradorPage />} />
+            <Route path="/relatorio-ia" element={<CuradorPage defaultTab="telemetria" />} />
             <Route path="/configuracoes" element={<SettingsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

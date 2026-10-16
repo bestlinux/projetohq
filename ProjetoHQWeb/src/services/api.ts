@@ -1,4 +1,10 @@
-import { HQ, Desejo, Editora, Leitura, Frase, ImportacaoLegado, ImportacaoLegadoResult } from '../types';
+import { 
+  HQ, Desejo, Editora, Leitura, Frase, ImportacaoLegado, ImportacaoLegadoResult,
+  OrdemLeituraResponse, DnaColecaoResponse, RecapNarrativoResponse, QuizAcervoResponse,
+  ChatbotResponse, ChatMessage, ComandoCrudPreview, ComandoCrudResult,
+  ImportacaoLotePreview, ItemLotePreview, ImportacaoLoteSalvarResult,
+  JevColecaoMatch, ResumoTelemetriaIa, LogUsoIAItem
+} from '../types';
 import { INITIAL_HQS, INITIAL_DESEJOS, INITIAL_EDITORAS } from './mockData';
 
 const STORAGE_KEYS = {
@@ -257,7 +263,7 @@ export const apiService = {
   computeEstatisticasLocal(list: HQ[]) {
     const totalLidas = list.filter(h => h.lido === 1).length;
     const editorasSet = new Set(list.map(h => (h.editora || '').trim()).filter(Boolean));
-    const totalPaginas = list.reduce((acc, h) => acc + (Number(h.paginas || h.numeroPaginas) || 0), 0);
+    const totalPaginas = list.reduce((acc, h) => acc + (Number((h as any).paginas || h.numeroPaginas) || 0), 0);
     const valorTotalEstimado = list.reduce((acc, h) => {
       if (!h.preco) return acc;
       if (typeof h.preco === 'number') return acc + h.preco;
@@ -1651,6 +1657,288 @@ export const apiService = {
       throw new Error(errorText || 'Falha ao processar o JSON.');
     }
 
+    return await res.json();
+  },
+
+  async buscarColecaoJev(titulo: string, editora?: string, edicao: number = 1, maxResultados: number = 25): Promise<JevColecaoMatch[]> {
+    try {
+      const baseUrl = getStoredApiUrl();
+      let token = await ensureAuthenticated();
+
+      let res = await fetch(`${baseUrl}/v1/ImportacaoLegado/buscar-colecao-jev`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ titulo, editora, edicao, maxResultados })
+      });
+
+      if (res.status === 401) {
+        setStoredToken(null);
+        token = await ensureAuthenticated();
+        if (token) {
+          res = await fetch(`${baseUrl}/v1/ImportacaoLegado/buscar-colecao-jev`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ titulo, editora, edicao, maxResultados })
+          });
+        }
+      }
+
+      if (res.ok) {
+        return await res.json();
+      }
+      return [];
+    } catch (err) {
+      console.warn('[API] Erro ao buscar semelhantes via JEV Engine:', err);
+      return [];
+    }
+  },
+
+  // ==========================================
+  // CURADOR DE HQS - AGENTES DE IA (GEMINI)
+  // ==========================================
+
+  async curadorOrdemLeitura(query: string, universo?: string): Promise<OrdemLeituraResponse> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/ordem-leitura`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ query, universo })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao gerar ordem cronológica.');
+    }
+    return await res.json();
+  },
+
+  async curadorDnaGaps(): Promise<DnaColecaoResponse> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/dna-gaps`, {
+      method: 'GET',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao analisar DNA da coleção.');
+    }
+    return await res.json();
+  },
+
+  async curadorRecap(titulo: string, numeroEdicao?: number, editora?: string): Promise<RecapNarrativoResponse> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/recap`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ titulo, numeroEdicao, editora })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao gerar recap narrativo.');
+    }
+    return await res.json();
+  },
+
+  async curadorQuiz(quantidade: number = 5): Promise<QuizAcervoResponse> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/quiz?quantidade=${quantidade}`, {
+      method: 'GET',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao gerar quiz do acervo.');
+    }
+    return await res.json();
+  },
+
+  async curadorChatbot(mensagem: string, historico: ChatMessage[]): Promise<ChatbotResponse> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/chatbot`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ mensagem, historico })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao consultar Curador Virtual.');
+    }
+    return await res.json();
+  },
+
+  async curadorPreviewComando(comando: string): Promise<ComandoCrudPreview> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/comando-crud/preview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ comando })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao interpretar comando.');
+    }
+    return await res.json();
+  },
+
+  async curadorExecutarComando(payload: any): Promise<ComandoCrudResult> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/comando-crud/executar`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao executar comando.');
+    }
+    return await res.json();
+  },
+
+  async curadorPreviewLote(textoLote: string): Promise<ImportacaoLotePreview> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/importacao-lote/preview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ textoLote })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao gerar lote assistido.');
+    }
+    return await res.json();
+  },
+
+  async curadorSalvarLote(itens: ItemLotePreview[], destino: 'colecao' | 'desejos' = 'colecao'): Promise<ImportacaoLoteSalvarResult> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/importacao-lote/salvar`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ itens, destino })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao salvar lote.');
+    }
+    return await res.json();
+  },
+
+  // ==========================================
+  // RELATÓRIO DE IA - OBSERVABILIDADE (OPENTELEMETRY)
+  // ==========================================
+
+  async curadorTelemetriaResumo(inicio?: string, fim?: string): Promise<ResumoTelemetriaIa> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const params = new URLSearchParams();
+    if (inicio) params.append('inicio', inicio);
+    if (fim) params.append('fim', fim);
+    const queryString = params.toString() ? `?${params.toString()}` : '';
+
+    const res = await fetch(`${baseUrl}/v1/Curador/telemetria/resumo${queryString}`, {
+      method: 'GET',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao carregar resumo de telemetria.');
+    }
+    return await res.json();
+  },
+
+  async curadorTelemetriaHistorico(limit: number = 50): Promise<LogUsoIAItem[]> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/telemetria/historico?limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao carregar histórico de telemetria.');
+    }
+    return await res.json();
+  },
+
+  async curadorTelemetriaLimpar(): Promise<{ sucesso: boolean; mensagem: string }> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+
+    const res = await fetch(`${baseUrl}/v1/Curador/telemetria/limpar`, {
+      method: 'POST',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Erro ao reiniciar telemetria.');
+    }
     return await res.json();
   }
 };

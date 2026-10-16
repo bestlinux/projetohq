@@ -13,6 +13,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using ProjetoHQApi.Domain.Interfaces;
+
 namespace ProjetoHQApi.WebApi.Controllers.v1
 {
     [ApiController]
@@ -22,10 +24,34 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
     public class ImportacaoLegadoController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IJevEngineService _jevEngine;
 
-        public ImportacaoLegadoController(ApplicationDbContext context)
+        public ImportacaoLegadoController(ApplicationDbContext context, IJevEngineService jevEngine)
         {
             _context = context;
+            _jevEngine = jevEngine;
+        }
+
+        /// <summary>
+        /// Busca por similaridade probabilística no acervo via JEV Engine (Sistema 1 Local).
+        /// Retorna as HQs mais próximas com scores detalhados de Título, Editora e Edição.
+        /// </summary>
+        [HttpPost("buscar-colecao-jev")]
+        public async Task<IActionResult> BuscarColecaoJev([FromBody] JevBuscaRequest request, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(request?.Titulo))
+            {
+                return BadRequest("O título para busca é obrigatório.");
+            }
+
+            var matches = await _jevEngine.BuscarSemelhantesColecaoAsync(
+                request.Titulo,
+                request.Editora,
+                request.Edicao,
+                request.MaxResultados ?? 25,
+                cancellationToken);
+
+            return Ok(matches);
         }
 
         /// <summary>

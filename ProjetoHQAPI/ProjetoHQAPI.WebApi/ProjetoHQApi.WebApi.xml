@@ -20,6 +20,58 @@
             <param name="cancellationToken"></param>
             <returns></returns>
         </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.GerarOrdemLeitura(ProjetoHQApi.Domain.Interfaces.OrdemLeituraRequest,System.Threading.CancellationToken)">
+            <summary>
+            1. Constrói a cronologia ideal de leitura para qualquer saga, personagem ou universo, cruzando com o acervo real.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.AnalisarDnaEGaps(System.Threading.CancellationToken)" -->
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.GerarRecap(ProjetoHQApi.Domain.Interfaces.RecapNarrativoRequest,System.Threading.CancellationToken)">
+            <summary>
+            3. Storyteller / Aquecimento Narrativo Imersivo: narrativa 'Previously on...' contextualizando arcos e acontecimentos anteriores.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.GerarQuiz(System.Int32,System.Threading.CancellationToken)" -->
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.ConsultarChatbot(ProjetoHQApi.Domain.Interfaces.ChatbotRequest,System.Threading.CancellationToken)">
+            <summary>
+            5. Curador Virtual com Roteador Híbrido:
+            - Sistema 1 (JEV Engine Local): Responde em ~2ms consultas determinísticas e estatísticas sem chamada à nuvem.
+            - Sistema 2 (Gemini LLM): Acionado para perguntas profundas, culturais ou criativas.
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.PreviewComandoCrud(ProjetoHQApi.WebApi.Controllers.v1.ComandoCrudInput,System.Threading.CancellationToken)">
+            <summary>
+            6. Assistente de Comandos CRUD:
+            - Sistema 1 (JEV Engine Local): Intercepta comandos de marcar/desmarcar/excluir em ~2ms.
+            - Sistema 2 (Gemini LLM): Processa comandos complexos ou ambíguos.
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.ExecutarComandoCrud(ProjetoHQApi.Domain.Interfaces.ComandoCrudExecutarRequest,System.Threading.CancellationToken)">
+            <summary>
+            6b. Execução confirmada da ação do comando CRUD assistido no banco de dados.
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.PreviewImportacaoLote(ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLoteInput,System.Threading.CancellationToken)">
+            <summary>
+            7. Importação em Lote Assistida: interpreta listas desestruturadas e intervalos numéricos.
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.SalvarImportacaoLote(ProjetoHQApi.Domain.Interfaces.ImportacaoLoteSalvarRequest,System.Threading.CancellationToken)">
+            <summary>
+            7b. Salva os quadrinhos do lote selecionados na coleção ou na lista de desejos.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.ObterResumoTelemetria(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)" -->
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.ObterHistoricoTelemetria(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            8b. Histórico recente de auditoria de chamadas de IA gravadas via OpenTelemetry GenAI Conventions.
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.CuradorController.LimparHistoricoTelemetria(System.Threading.CancellationToken)">
+            <summary>
+            8c. Limpa o histórico de auditoria de IA caso o usuário deseje reiniciar a contagem.
+            </summary>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.DesejoController.GetAll(ProjetoHQApi.Application.UseCases.Desejos.Queries.GetDesejoQuery,System.Threading.CancellationToken)">
             <summary>
             GET: api/controller
@@ -230,6 +282,12 @@
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.BuscaWeb(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
             <summary>
             Realiza busca avançada no site Guia dos Quadrinhos via web scraping
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.BuscarColecaoJev(ProjetoHQApi.Domain.Interfaces.JevBuscaRequest,System.Threading.CancellationToken)">
+            <summary>
+            Busca por similaridade probabilística no acervo via JEV Engine (Sistema 1 Local).
+            Retorna as HQs mais próximas com scores detalhados de Título, Editora e Edição.
             </summary>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.GetAll(System.Threading.CancellationToken)">

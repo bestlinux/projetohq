@@ -32,6 +32,7 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Services
             services.AddScoped<IColecaoRepository, ColecaoRepository>();
             services.AddScoped<IDesejoRepository, DesejoRepository>();
             services.AddScoped<ILeituraRepository, LeituraRepository>();
+            services.AddSingleton<ITelemetriaIaService, TelemetriaIaService>();
 
             #endregion Repositories
         }
