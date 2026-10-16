@@ -1,20 +1,19 @@
 @echo off
-chcp 65001 > nul
-title Parar ProjetoHQ
+title ProjetoHQ - Parar
 cls
 echo ============================================================
-echo           🛑 FINALIZANDO SERVIÇOS DO PROJETOHQ
+echo           FINALIZANDO SERVICOS DO PROJETOHQ
 echo ============================================================
 echo.
 
-echo Parando processo da API .NET...
+echo Encerrando API .NET...
 taskkill /F /IM "ProjetoHQApi.WebApi.exe" /T 2>nul
 
-echo Fechando janelas do ProjetoHQ...
+echo Encerrando janelas do ProjetoHQ...
 taskkill /F /FI "WINDOWTITLE eq ProjetoHQ - Backend API*" /T 2>nul
 taskkill /F /FI "WINDOWTITLE eq ProjetoHQ - Frontend Web*" /T 2>nul
 
 echo.
-echo ✅ Serviços finalizados com sucesso!
-timeout /t 3 > nul
+echo Servicos finalizados com sucesso.
+ping 127.0.0.1 -n 3 > nul
 exit
