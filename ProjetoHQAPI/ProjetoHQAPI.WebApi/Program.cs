@@ -75,8 +75,8 @@ options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -96,6 +96,20 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
+
+    dbContext.Database.ExecuteSqlRaw(@"
+        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Importacao_Legado' AND xtype='U')
+        BEGIN
+            CREATE TABLE [Importacao_Legado] (
+                [Id] uniqueidentifier NOT NULL PRIMARY KEY,
+                [Titulo] nvarchar(250) NOT NULL,
+                [Editora] nvarchar(150) NOT NULL,
+                [Edicao] int NOT NULL,
+                [Created] datetime2 NULL,
+                [LastModified] datetime2 NULL
+            );
+        END
+    ");
 }
 
 // Configure the HTTP request pipeline.

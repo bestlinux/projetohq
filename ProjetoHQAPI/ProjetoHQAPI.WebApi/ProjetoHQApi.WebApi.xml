@@ -120,49 +120,161 @@
             DELETE: api/frases/{id}
             </summary>
         </member>
+        <member name="T:ProjetoHQApi.WebApi.Controllers.v1.HqController">
+            <summary>
+            Gerenciamento completo de HQs (Quadrinhos)
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.#ctor(Microsoft.Extensions.Logging.ILogger{ProjetoHQApi.WebApi.Controllers.v1.HqController},MediatR.IMediator,ProjetoHQApi.Domain.Interfaces.IHQRepository,ProjetoHQApi.Domain.Interfaces.IUnitOfWork)">
+            <summary>
+            Gerenciamento completo de HQs (Quadrinhos)
+            </summary>
+        </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.GetAll(ProjetoHQApi.Application.UseCases.HQs.Queries.GetHQQuery,System.Threading.CancellationToken)">
             <summary>
-            GET: api/controller
+            Obtém lista de HQs com filtros opcionais (título, editora, ano, status lido, paginação e ordenação)
             </summary>
-            <param name="filter"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
+            <param name="filter">Parâmetros de filtro</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Lista de HQs encontradas</returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.Guid,System.Threading.CancellationToken)">
             <summary>
-            GET api/controller/5
+            Obtém uma HQ específica pelo seu ID (GUID)
             </summary>
-            <param name="id"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
-            <summary>
-            GET api/hq/{id}
-            </summary>
+            <param name="id">ID da HQ</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Dados completos da HQ</returns>
         </member>
-        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Get(System.String,System.Threading.CancellationToken)">
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.GetEstatisticas(System.Threading.CancellationToken)">
             <summary>
-            GET api/hq/BuscaPorEditora/{editora}
+            Obtém estatísticas consolidadas da coleção (totais, lidas, não lidas, editoras, páginas e valor estimado)
             </summary>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Resumo estatístico da coleção de quadrinhos</returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Busca(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Realiza busca rápida por termo nos campos título, editora, personagens e licenciador
+            </summary>
+            <param name="termo">Termo a ser buscado</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Lista de HQs que contêm o termo</returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.GetByEditora(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todas as HQs publicadas por uma editora específica
+            </summary>
+            <param name="editora">Nome da editora</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Lista de HQs da editora</returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.BuscaPorEditora(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Verifica se existem HQs cadastradas para a editora especificada
+            </summary>
+            <param name="editora">Nome da editora</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Verdadeiro se existir ao menos uma HQ da editora</returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Post(System.Text.Json.JsonElement,System.Threading.CancellationToken)">
             <summary>
-            POST api/hq (aceita tanto objeto único quanto array de comandos)
+            Cria uma nova HQ ou importa um lote de HQs
             </summary>
+            <param name="payload">Objeto único ou array de objetos CreateHQCommand</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>ID gerado da HQ</returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Put(System.Nullable{System.Guid},ProjetoHQApi.Application.UseCases.HQs.Commands.UpdateHQCommand,System.Threading.CancellationToken)">
             <summary>
-            PUT api/hq/{id}
+            Atualiza uma HQ existente
             </summary>
+            <param name="id">ID da HQ (opcional na rota se vier no corpo)</param>
+            <param name="command">Dados atualizados da HQ</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>ID da HQ atualizada</returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.ToggleLido(System.Guid,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Alterna ou define rapidamente o status de leitura da HQ (Lido / Não Lido)
+            </summary>
+            <param name="id">ID da HQ</param>
+            <param name="lido">Novo valor de status (opcional: 1 para lido, 0 para não lido; se omitido, inverte o status atual)</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Resultado da alteração</returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.UploadCapa(System.Guid,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
+            <summary>
+            Realiza o upload de imagem de capa para a HQ
+            </summary>
+            <param name="id">ID da HQ</param>
+            <param name="file">Arquivo de imagem (JPEG, PNG ou WEBP)</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Informações da capa salva</returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.Delete(System.Guid,System.Threading.CancellationToken)">
             <summary>
-            DELETE api/hq/{id}
+            Exclui uma HQ pelo ID
             </summary>
+            <param name="id">ID da HQ</param>
+            <param name="cancellationToken">Token de cancelamento</param>
+            <returns>Sucesso da exclusão</returns>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.GetCapa(System.String)">
             <summary>
-            GET api/hq/capa/{id}
-            Carrega a imagem da capa a partir do ID/nome de arquivo em projetohqrepositorio\Capas
+            Obtém a imagem física da capa de uma HQ armazenada no repositório local
+            </summary>
+            <param name="id">ID ou nome do arquivo da capa</param>
+            <returns>Arquivo físico da imagem</returns>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.HqController.BuscaWeb(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Realiza busca avançada no site Guia dos Quadrinhos via web scraping
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.GetAll(System.Threading.CancellationToken)">
+            <summary>
+            Lista todos os registros pendentes na tabela Importacao_Legado
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.GetById(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Obtém um registro específico por ID
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.Create(ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoDto,System.Threading.CancellationToken)">
+            <summary>
+            Cria um registro avulso na tabela Importacao_Legado
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.Update(System.Guid,ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoDto,System.Threading.CancellationToken)">
+            <summary>
+            Atualiza um registro existente na tabela Importacao_Legado
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.Delete(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Exclui um registro da tabela Importacao_Legado
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.ClearAll(System.Threading.CancellationToken)">
+            <summary>
+            Limpa todos os registros pendentes de Importacao_Legado
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.BatchDelete(System.Collections.Generic.List{System.Guid},System.Threading.CancellationToken)">
+            <summary>
+            Exclui múltiplos registros da tabela Importacao_Legado em lote
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.UploadJson(Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
+            <summary>
+            Upload de arquivo .json (FormData) exportado do SQLite antigo
+            </summary>
+        </member>
+        <member name="M:ProjetoHQApi.WebApi.Controllers.v1.ImportacaoLegadoController.ProcessarJson(System.Text.Json.JsonElement,System.Threading.CancellationToken)">
+            <summary>
+            Processa array JSON diretamente enviado no corpo da requisição
             </summary>
         </member>
         <member name="M:ProjetoHQApi.WebApi.Controllers.v1.LeituraController.GetAll(ProjetoHQApi.Application.UseCases.Leituras.Queries.GetLeituraQuery,System.Threading.CancellationToken)">

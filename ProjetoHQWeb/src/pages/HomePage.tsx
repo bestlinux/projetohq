@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Plus, BookOpen, CheckCircle2, Flame, Sparkles, RefreshCw, Database, X } from 'lucide-react';
+import { Search, Plus, BookOpen, CheckCircle2, Flame, Sparkles, RefreshCw, Database, X, DollarSign } from 'lucide-react';
 import { HQ, Editora } from '../types';
 import { apiService, getCapaUrl } from '../services/api';
 import { HQCard } from '../components/HQCard';
@@ -19,22 +19,43 @@ export const HomePage: React.FC = () => {
   const [visibleCount, setVisibleCount] = useState(48);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [estatisticas, setEstatisticas] = useState<{
+    totalHQs: number;
+    totalLidas: number;
+    totalNaoLidas: number;
+    totalEditoras: number;
+    totalPaginas: number;
+    valorTotalEstimado: number;
+  } | null>(null);
 
   useEffect(() => {
-    loadData();
+    // 1. Instant Cache Render: exibe imediatamente o acervo se já houver em memória/cache
+    const cached = apiService.getCachedHQs();
+    if (cached && cached.length > 0) {
+      setHqs(cached);
+      setEstatisticas(apiService.computeEstatisticasLocal(cached));
+      setIsLoading(false);
+      // Sincroniza em segundo plano sem travar a interface
+      loadData(false, true);
+    } else {
+      loadData(false, false);
+    }
   }, []);
 
-  const loadData = async (forceRefresh = false) => {
+  const loadData = async (forceRefresh = false, background = false) => {
     if (forceRefresh) setIsRefreshing(true);
-    else setIsLoading(true);
+    else if (!background) setIsLoading(true);
+    else setIsRefreshing(true);
 
     try {
+      // Busca HQs e Editoras (as estatísticas são calculadas instantaneamente na lista sem requisição redundante)
       const [hqList, edList] = await Promise.all([
         apiService.getHQs(forceRefresh),
         apiService.getEditoras()
       ]);
       setHqs(hqList);
       setEditoras(edList);
+      setEstatisticas(apiService.computeEstatisticasLocal(hqList));
     } catch (err) {
       console.error(err);
     } finally {
@@ -56,8 +77,17 @@ export const HomePage: React.FC = () => {
     }
   };
 
-  const handleAddHQ = async (newHQData: Omit<HQ, 'id'>) => {
+  const handleAddHQ = async (newHQData: Omit<HQ, 'id'>, coverFile?: File) => {
     const created = await apiService.addHQ(newHQData);
+    if (coverFile) {
+      try {
+        const uploadRes = await apiService.uploadCapa(created.id, coverFile);
+        created.capa = uploadRes.capa;
+        created.thumbCapa = uploadRes.url;
+      } catch (err) {
+        console.warn('Erro ao subir capa no cadastro:', err);
+      }
+    }
     setHqs(prev => [created, ...prev]);
   };
 
@@ -166,6 +196,10 @@ export const HomePage: React.FC = () => {
             <span style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <RefreshCw size={14} className="animate-spin" /> Conectando à API e carregando quadrinhos do SQL Server...
             </span>
+          ) : isRefreshing ? (
+            <span style={{ color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <RefreshCw size={14} className="animate-spin" /> 🟢 <strong>Base SQL Server Online:</strong> {hqs.length} quadrinhos na tela (sincronizando atualizações em segundo plano...)
+            </span>
           ) : hqs.length > 50 ? (
             <span style={{ color: 'var(--text-main)' }}>
               🟢 <strong>Base SQL Server Online (GROGU):</strong> {hqs.length} quadrinhos carregados em tempo real do banco de dados.
@@ -225,6 +259,20 @@ export const HomePage: React.FC = () => {
             <div className="stat-label">Editoras</div>
           </div>
         </div>
+
+        {estatisticas && estatisticas.valorTotalEstimado > 0 && (
+          <div className="stat-card">
+            <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: 'var(--accent-emerald)' }}>
+              <DollarSign size={22} />
+            </div>
+            <div>
+              <div className="stat-value">
+                {estatisticas.valorTotalEstimado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })}
+              </div>
+              <div className="stat-label">Valor Estimado</div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Search Input */}
@@ -352,9 +400,14 @@ export const HomePage: React.FC = () => {
       {/* HQ Details Modal */}
       <HQModal
         hq={selectedHQ}
+        editoras={editoras}
         onClose={() => setSelectedHQ(null)}
         onToggleRead={(id) => handleToggleRead(null, id)}
         onRemove={(id) => handleRemoveHQ(id)}
+        onUpdate={(updated) => {
+          setHqs(prev => prev.map(h => h.id === updated.id ? updated : h));
+          setSelectedHQ(updated);
+        }}
         onMoveToWishlist={(hq) => handleMoveToWishlist(hq)}
       />
 

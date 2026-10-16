@@ -1,4 +1,4 @@
-﻿using ProjetoHQApi.Domain.Common;
+using ProjetoHQApi.Domain.Common;
 using ProjetoHQApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -34,6 +34,8 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
 
         public DbSet<Leitura> Leituras { get; set; }
 
+        public DbSet<ImportacaoLegado> Importacao_Legado { get; set; }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<Entity>())
@@ -42,6 +44,7 @@ namespace ProjetoHQApi.Infrastructure.Persistence.Contexts
                 {
                     case EntityState.Added:
                         entry.Entity.Created = _dateTime.NowUtc;
+                        entry.Entity.LastModified = _dateTime.NowUtc;
                         break;
 
                     case EntityState.Modified:

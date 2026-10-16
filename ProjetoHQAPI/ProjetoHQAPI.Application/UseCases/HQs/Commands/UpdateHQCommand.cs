@@ -35,6 +35,8 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
 
         public string? ThumbCapa { get; set; }
 
+        public string? Capa { get; set; }
+
         public string? Preco { get; set; }
 
         public string? Licenciador { get; set; }
@@ -84,6 +86,7 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Commands
             if (command.Status > 0) hq.Status = command.Status;
             if (command.Formato > 0) hq.Formato = command.Formato;
             if (!string.IsNullOrWhiteSpace(command.ThumbCapa)) hq.ThumbCapa = command.ThumbCapa;
+            if (!string.IsNullOrWhiteSpace(command.Capa)) hq.Capa = command.Capa;
             if (!string.IsNullOrWhiteSpace(command.LinkDetalhes)) hq.LinkDetalhes = command.LinkDetalhes;
             if (!string.IsNullOrWhiteSpace(command.Preco)) hq.Preco = command.Preco;
             if (!string.IsNullOrWhiteSpace(command.Licenciador)) hq.Licenciador = command.Licenciador;

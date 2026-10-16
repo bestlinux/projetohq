@@ -70,7 +70,6 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// DELETE api/leitura/{id}
         /// </summary>
         [HttpDelete("{id:guid}")]
-        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
@@ -82,7 +81,6 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// PUT api/leitura/{id}
         /// </summary>
         [HttpPut("{id:guid}")]
-        [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put([FromRoute] Guid? id, [FromBody] UpdateLeituraCommand command, CancellationToken cancellationToken)

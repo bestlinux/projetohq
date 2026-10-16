@@ -1,4 +1,4 @@
-import { HQ, Desejo, Editora, Leitura, Frase } from '../types';
+import { HQ, Desejo, Editora, Leitura, Frase, ImportacaoLegado, ImportacaoLegadoResult } from '../types';
 import { INITIAL_HQS, INITIAL_DESEJOS, INITIAL_EDITORAS } from './mockData';
 
 const STORAGE_KEYS = {
@@ -113,11 +113,14 @@ function getLocal<T>(key: string, initial: T): T {
 }
 
 function setLocal<T>(key: string, val: T): void {
-  try {
-    localStorage.setItem(key, JSON.stringify(val));
-  } catch (err) {
-    console.warn(`[Storage] Não foi possível persistir no localStorage (limite de cota ou memória):`, err);
-  }
+  // Desacoplado da thread principal para não bloquear a renderização com grandes conjuntos de dados (>3.000 itens)
+  setTimeout(() => {
+    try {
+      localStorage.setItem(key, JSON.stringify(val));
+    } catch {
+      // Limite de cota de 5MB atingido no navegador - mantido no memoryCache
+    }
+  }, 10);
 }
 
 // In-memory cache to support large datasets (>4MB) without crashing localStorage quotas
@@ -127,20 +130,32 @@ let memoryCacheDesejos: Desejo[] | null = null;
 let memoryCacheLeituras: Leitura[] | null = null;
 let memoryCacheFrases: Frase[] | null = null;
 
+let activeLoginPromise: Promise<string | null> | null = null;
+
 export const ensureAuthenticated = async (): Promise<string | null> => {
   let token = getStoredToken();
   if (token) return token;
 
-  // Tentativa de login automático transparente com a conta padrão
-  try {
-    const loginResult = await apiService.login('bestlinux@gmail.com', '200314Amor@');
-    if (loginResult.success && loginResult.token) {
-      return loginResult.token;
-    }
-  } catch (err) {
-    console.warn('[Auth] Tentativa de login automático falhou:', err);
+  if (activeLoginPromise) {
+    return activeLoginPromise;
   }
-  return null;
+
+  // Deduplicação: se múltiplas chamadas pedirem autenticação ao mesmo tempo, compartilham a mesma Promise
+  activeLoginPromise = (async () => {
+    try {
+      const loginResult = await apiService.login('bestlinux@gmail.com', '200314Amor@');
+      if (loginResult.success && loginResult.token) {
+        return loginResult.token;
+      }
+    } catch (err) {
+      console.warn('[Auth] Tentativa de login automático falhou:', err);
+    } finally {
+      activeLoginPromise = null;
+    }
+    return null;
+  })();
+
+  return activeLoginPromise;
 };
 
 export const apiService = {
@@ -225,6 +240,40 @@ export const apiService = {
 
   isAuthenticated(): boolean {
     return !!getStoredToken();
+  },
+
+  getCachedHQs(): HQ[] | null {
+    if (memoryCacheHQs && memoryCacheHQs.length > 0) {
+      return memoryCacheHQs;
+    }
+    const local = getLocal<HQ[]>(STORAGE_KEYS.HQS, []);
+    if (local && local.length > 0) {
+      memoryCacheHQs = local;
+      return local;
+    }
+    return null;
+  },
+
+  computeEstatisticasLocal(list: HQ[]) {
+    const totalLidas = list.filter(h => h.lido === 1).length;
+    const editorasSet = new Set(list.map(h => (h.editora || '').trim()).filter(Boolean));
+    const totalPaginas = list.reduce((acc, h) => acc + (Number(h.paginas || h.numeroPaginas) || 0), 0);
+    const valorTotalEstimado = list.reduce((acc, h) => {
+      if (!h.preco) return acc;
+      if (typeof h.preco === 'number') return acc + h.preco;
+      const clean = String(h.preco).replace(/R\$/gi, '').replace(/\$/g, '').trim().replace(/\./g, '').replace(',', '.');
+      const val = parseFloat(clean);
+      return acc + (isNaN(val) ? 0 : val);
+    }, 0);
+
+    return {
+      totalHQs: list.length,
+      totalLidas,
+      totalNaoLidas: list.length - totalLidas,
+      totalEditoras: editorasSet.size,
+      totalPaginas,
+      valorTotalEstimado: Math.round(valorTotalEstimado * 100) / 100
+    };
   },
 
   // HQs
@@ -314,13 +363,11 @@ export const apiService = {
         const baseUrl = getStoredApiUrl();
         const token = await ensureAuthenticated();
         if (token) {
-          await fetch(`${baseUrl}/hq/${hqId}`, {
-            method: 'PUT',
+          await fetch(`${baseUrl}/hq/${hqId}/lido?lido=${item.lido}`, {
+            method: 'PATCH',
             headers: {
-              'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(item)
+            }
           });
         }
       } catch {
@@ -329,6 +376,69 @@ export const apiService = {
       return item;
     }
     throw new Error('HQ não encontrada');
+  },
+
+  async uploadCapa(hqId: string, file: File): Promise<{ id: string; capa: string; url: string }> {
+    const baseUrl = getStoredApiUrl();
+    const token = await ensureAuthenticated();
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch(`${baseUrl}/hq/${hqId}/capa`, {
+      method: 'POST',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: formData
+    });
+
+    if (!res.ok) {
+      throw new Error(`Erro ao enviar capa: ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    
+    // Atualiza localmente
+    const list = memoryCacheHQs || getLocal<HQ[]>(STORAGE_KEYS.HQS, INITIAL_HQS);
+    const found = list.find(h => h.id === hqId);
+    if (found) {
+      found.capa = data.capa;
+      found.thumbCapa = data.url;
+      setLocal(STORAGE_KEYS.HQS, [...list]);
+    }
+    return data;
+  },
+
+  async getEstatisticas(): Promise<{
+    totalHQs: number;
+    totalLidas: number;
+    totalNaoLidas: number;
+    totalEditoras: number;
+    totalPaginas: number;
+    valorTotalEstimado: number;
+  }> {
+    // Se já temos a lista carregada em memória, calcula instantaneamente sem bater no backend
+    const list = memoryCacheHQs || getLocal<HQ[]>(STORAGE_KEYS.HQS, []);
+    if (list && list.length > 0) {
+      return this.computeEstatisticasLocal(list);
+    }
+
+    try {
+      const baseUrl = getStoredApiUrl();
+      const token = await ensureAuthenticated();
+      const res = await fetch(`${baseUrl}/hq/estatisticas`, {
+        headers: {
+          'Accept': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (err) {
+      console.warn('Erro ao carregar estatísticas do backend:', err);
+    }
+    return this.computeEstatisticasLocal(INITIAL_HQS);
   },
 
   async addHQ(hq: Omit<HQ, 'id'>): Promise<HQ> {
@@ -358,6 +468,86 @@ export const apiService = {
       // Saved locally
     }
     return newHQ;
+  },
+
+  async updateHQ(hq: HQ): Promise<HQ> {
+    const list = memoryCacheHQs || getLocal<HQ[]>(STORAGE_KEYS.HQS, INITIAL_HQS);
+    const updated = list.map(item => item.id === hq.id ? hq : item);
+    memoryCacheHQs = updated;
+    setLocal(STORAGE_KEYS.HQS, updated);
+
+    try {
+      const baseUrl = getStoredApiUrl();
+      const token = await ensureAuthenticated();
+      if (token) {
+        await fetch(`${baseUrl}/hq/${hq.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(hq)
+        });
+      }
+    } catch (err) {
+      console.warn('Erro ao atualizar HQ no backend:', err);
+    }
+    return hq;
+  },
+
+  async buscaWeb(params: {
+    titulo: string;
+    editora?: string;
+    categoria?: number;
+    genero?: number;
+    status?: number;
+    formato?: number;
+    numeroEdicao?: number;
+    anoLancamento?: string;
+  }): Promise<HQ[]> {
+    try {
+      const baseUrl = getStoredApiUrl();
+      const token = await ensureAuthenticated();
+      const tit = encodeURIComponent(params.titulo.trim());
+      const ed = encodeURIComponent((params.editora || 'Todas').trim());
+      const cat = params.categoria ?? 0;
+      const gen = params.genero ?? 0;
+      const st = params.status ?? 0;
+      const form = params.formato ?? 0;
+      const num = params.numeroEdicao ?? 0;
+      const ano = params.anoLancamento ? encodeURIComponent(params.anoLancamento.trim()) : '';
+
+      const url = `${baseUrl}/hq/BuscaWeb/${tit}/${ed}/${cat}/${gen}/${st}/${form}/${num}/${ano}`;
+      const res = await fetch(url, {
+        headers: {
+          'Accept': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          return data.map((item: any) => ({
+            id: item.id || crypto.randomUUID(),
+            titulo: item.titulo || params.titulo,
+            editora: item.editora || params.editora || 'Independente',
+            numeroEdicao: item.numeroEdicao || 1,
+            dataPublicacao: item.dataPublicacao || item.anoLancamento,
+            thumbCapa: getCapaUrl(item.capa) || item.thumbCapa,
+            capa: item.capa,
+            lido: 0,
+            preco: item.preco || '',
+            numeroPaginas: item.numeroPaginas || 0,
+            personagens: item.personagens || '',
+            desenhosRoteirosArteFinalCores: item.desenhosRoteirosArteFinalCores || '',
+            linkDetalhes: item.linkDetalhes
+          }));
+        }
+      }
+    } catch (err) {
+      console.warn('Erro ao buscar HQs na web:', err);
+    }
+    return [];
   },
 
   async removeHQ(hqId: string): Promise<void> {
@@ -1207,5 +1397,260 @@ export const apiService = {
       console.warn('[API] Erro ao excluir Frase na API:', err);
     }
     return true;
+  },
+
+  // ==========================================
+  // IMPORTACAO LEGADO
+  // ==========================================
+  async getImportacoesLegado(): Promise<ImportacaoLegado[]> {
+    try {
+      const baseUrl = getStoredApiUrl();
+      let token = await ensureAuthenticated();
+
+      let res = await fetch(`${baseUrl}/v1/ImportacaoLegado`, {
+        headers: {
+          'Accept': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        signal: AbortSignal.timeout(30000)
+      });
+
+      if (res.status === 401) {
+        setStoredToken(null);
+        token = await ensureAuthenticated();
+        if (token) {
+          res = await fetch(`${baseUrl}/v1/ImportacaoLegado`, {
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            signal: AbortSignal.timeout(30000)
+          });
+        }
+      }
+
+      if (res.ok) {
+        return await res.json();
+      }
+      return [];
+    } catch (err) {
+      console.warn('[API] Erro ao carregar Importacao Legado:', err);
+      return [];
+    }
+  },
+
+  async updateImportacaoLegado(id: string, data: { titulo: string; editora: string; edicao: number }): Promise<boolean> {
+    try {
+      const baseUrl = getStoredApiUrl();
+      let token = await ensureAuthenticated();
+
+      let res = await fetch(`${baseUrl}/v1/ImportacaoLegado/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.status === 401) {
+        setStoredToken(null);
+        token = await ensureAuthenticated();
+        if (token) {
+          res = await fetch(`${baseUrl}/v1/ImportacaoLegado/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+          });
+        }
+      }
+
+      return res.ok;
+    } catch (err) {
+      console.warn('[API] Erro ao atualizar item de Importação Legado:', err);
+      return false;
+    }
+  },
+
+  async deleteImportacaoLegado(id: string): Promise<boolean> {
+    try {
+      const baseUrl = getStoredApiUrl();
+      let token = await ensureAuthenticated();
+
+      let res = await fetch(`${baseUrl}/v1/ImportacaoLegado/${id}`, {
+        method: 'DELETE',
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
+      });
+
+      if (res.status === 401) {
+        setStoredToken(null);
+        token = await ensureAuthenticated();
+        if (token) {
+          res = await fetch(`${baseUrl}/v1/ImportacaoLegado/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+        }
+      }
+
+      return res.ok;
+    } catch (err) {
+      console.warn('[API] Erro ao excluir item de Importação Legado:', err);
+      return false;
+    }
+  },
+
+  async deleteMultipleImportacaoLegado(ids: string[]): Promise<boolean> {
+    if (!ids || ids.length === 0) return true;
+    try {
+      const baseUrl = getStoredApiUrl();
+      let token = await ensureAuthenticated();
+
+      let res = await fetch(`${baseUrl}/v1/ImportacaoLegado/batch-delete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify(ids)
+      });
+
+      if (res.status === 401) {
+        setStoredToken(null);
+        token = await ensureAuthenticated();
+        if (token) {
+          res = await fetch(`${baseUrl}/v1/ImportacaoLegado/batch-delete`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(ids)
+          });
+        }
+      }
+
+      if (res.ok) return true;
+
+      // Fallback para exclusão sequencial se a rota em lote não responder
+      const results = await Promise.all(ids.map(id => apiService.deleteImportacaoLegado(id)));
+      return results.some(r => r);
+    } catch (err) {
+      console.warn('[API] Erro ao excluir lote de itens de Importação Legado, usando fallback:', err);
+      const results = await Promise.all(ids.map(id => apiService.deleteImportacaoLegado(id)));
+      return results.some(r => r);
+    }
+  },
+
+  async clearAllImportacoesLegado(): Promise<boolean> {
+    try {
+      const baseUrl = getStoredApiUrl();
+      let token = await ensureAuthenticated();
+
+      let res = await fetch(`${baseUrl}/v1/ImportacaoLegado/limpar-tudo`, {
+        method: 'DELETE',
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
+      });
+
+      if (res.status === 401) {
+        setStoredToken(null);
+        token = await ensureAuthenticated();
+        if (token) {
+          res = await fetch(`${baseUrl}/v1/ImportacaoLegado/limpar-tudo`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+        }
+      }
+
+      return res.ok;
+    } catch (err) {
+      console.warn('[API] Erro ao limpar fila de Importação Legado:', err);
+      return false;
+    }
+  },
+
+  async uploadJsonLegado(file: File): Promise<ImportacaoLegadoResult> {
+    const baseUrl = getStoredApiUrl();
+    let token = await ensureAuthenticated();
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    let res = await fetch(`${baseUrl}/v1/ImportacaoLegado/upload-json`, {
+      method: 'POST',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: formData
+    });
+
+    if (res.status === 401) {
+      setStoredToken(null);
+      token = await ensureAuthenticated();
+      if (token) {
+        res = await fetch(`${baseUrl}/v1/ImportacaoLegado/upload-json`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+      }
+    }
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText || 'Falha ao processar o arquivo JSON.');
+    }
+
+    return await res.json();
+  },
+
+  async processarJsonLegado(items: any[]): Promise<ImportacaoLegadoResult> {
+    const baseUrl = getStoredApiUrl();
+    let token = await ensureAuthenticated();
+
+    let res = await fetch(`${baseUrl}/v1/ImportacaoLegado/processar-json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(items)
+    });
+
+    if (res.status === 401) {
+      setStoredToken(null);
+      token = await ensureAuthenticated();
+      if (token) {
+        res = await fetch(`${baseUrl}/v1/ImportacaoLegado/processar-json`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(items)
+        });
+      }
+    }
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText || 'Falha ao processar o JSON.');
+    }
+
+    return await res.json();
   }
 };

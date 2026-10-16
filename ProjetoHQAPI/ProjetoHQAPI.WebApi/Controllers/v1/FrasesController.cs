@@ -116,7 +116,6 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// PUT: api/frases/{id}
         /// </summary>
         [HttpPut("{id:guid}")]
-        [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put([FromRoute] Guid? id, [FromBody] UpdateFraseCommand command, CancellationToken cancellationToken)
@@ -138,7 +137,6 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
         /// DELETE: api/frases/{id}
         /// </summary>
         [HttpDelete("{id:guid}")]
-        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)

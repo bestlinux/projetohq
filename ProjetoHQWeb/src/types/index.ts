@@ -66,3 +66,21 @@ export interface UserToken {
   expiration: string;
 }
 
+export interface ImportacaoLegado {
+  id: string;
+  titulo: string;
+  editora: string;
+  edicao: number;
+  created?: string;
+  lastModified?: string;
+}
+
+export interface ImportacaoLegadoResult {
+  success: boolean;
+  totalLidos: number;
+  jaCadastrados: number;
+  novosImportados: number;
+  duplicadosIgnorados: number;
+  mensagem: string;
+}
+

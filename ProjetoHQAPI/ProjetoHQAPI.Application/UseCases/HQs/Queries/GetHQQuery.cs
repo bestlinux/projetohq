@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ProjetoHQApi.Domain.Interfaces;
-using ProjetoHQApi.Application.UseCases.Leituras.Queries;
-using ProjetoHQApi.Application.UseCases.HQs.Queries;
 
 namespace ProjetoHQApi.Application.UseCases.HQs.Queries
 {
@@ -31,6 +29,17 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Queries
 
         public int? Formato { get; set; }
 
+        public int? Lido { get; set; }
+
+        public string? Search { get; set; }
+
+        public int? Page { get; set; }
+
+        public int? PageSize { get; set; }
+
+        public string? OrderBy { get; set; }
+
+        public bool? OrderDesc { get; set; }
     }
 
     public class GetAllHQsQueryHandler(IHQRepository hqRepository, IMapper mapper) : IRequestHandler<GetHQQuery, IReadOnlyCollection<GetHQResponse>>
@@ -44,6 +53,17 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Queries
 
             if (request != null)
             {
+                if (!string.IsNullOrWhiteSpace(request.Search))
+                {
+                    var term = request.Search.Trim();
+                    hqs = hqs.Where(h =>
+                        (h.Titulo != null && h.Titulo.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                        (h.Editora != null && h.Editora.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                        (h.Personagens != null && h.Personagens.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                        (h.Licenciador != null && h.Licenciador.Contains(term, StringComparison.OrdinalIgnoreCase))
+                    );
+                }
+
                 if (!string.IsNullOrWhiteSpace(request.Editora))
                 {
                     hqs = hqs.Where(h => h.Editora != null && h.Editora.Contains(request.Editora, StringComparison.OrdinalIgnoreCase));
@@ -51,6 +71,10 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Queries
                 if (!string.IsNullOrWhiteSpace(request.Titulo))
                 {
                     hqs = hqs.Where(h => h.Titulo != null && h.Titulo.Contains(request.Titulo, StringComparison.OrdinalIgnoreCase));
+                }
+                if (!string.IsNullOrWhiteSpace(request.AnoLancamento))
+                {
+                    hqs = hqs.Where(h => h.DataPublicacao != null && h.DataPublicacao.Contains(request.AnoLancamento, StringComparison.OrdinalIgnoreCase));
                 }
                 if (request.NumeroEdicao.HasValue && request.NumeroEdicao.Value > 0)
                 {
@@ -71,6 +95,31 @@ namespace ProjetoHQApi.Application.UseCases.HQs.Queries
                 if (request.Formato.HasValue && request.Formato.Value > 0)
                 {
                     hqs = hqs.Where(h => h.Formato == request.Formato.Value);
+                }
+                if (request.Lido.HasValue)
+                {
+                    hqs = hqs.Where(h => h.Lido == request.Lido.Value);
+                }
+
+                // Sorting
+                if (!string.IsNullOrWhiteSpace(request.OrderBy))
+                {
+                    var isDesc = request.OrderDesc ?? false;
+                    hqs = request.OrderBy.ToLowerInvariant() switch
+                    {
+                        "titulo" => isDesc ? hqs.OrderByDescending(h => h.Titulo) : hqs.OrderBy(h => h.Titulo),
+                        "editora" => isDesc ? hqs.OrderByDescending(h => h.Editora) : hqs.OrderBy(h => h.Editora),
+                        "ano" or "datapublicacao" => isDesc ? hqs.OrderByDescending(h => h.DataPublicacao) : hqs.OrderBy(h => h.DataPublicacao),
+                        "edicao" or "numeroedicao" => isDesc ? hqs.OrderByDescending(h => h.NumeroEdicao) : hqs.OrderBy(h => h.NumeroEdicao),
+                        "lido" => isDesc ? hqs.OrderByDescending(h => h.Lido) : hqs.OrderBy(h => h.Lido),
+                        _ => hqs
+                    };
+                }
+
+                // Pagination (only if requested)
+                if (request.Page.HasValue && request.Page.Value > 0 && request.PageSize.HasValue && request.PageSize.Value > 0)
+                {
+                    hqs = hqs.Skip((request.Page.Value - 1) * request.PageSize.Value).Take(request.PageSize.Value);
                 }
             }
 

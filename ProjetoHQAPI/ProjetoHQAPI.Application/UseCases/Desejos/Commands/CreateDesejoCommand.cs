@@ -202,22 +202,52 @@ namespace ProjetoHQApi.Application.UseCases.Desejos.Commands
 
                 }
 
-                string capaBancoDados = Guid.NewGuid().ToString() + ConstantesProjetoHQ.FORMATO_IMAGEM;
-
-                WebClient client1 = new();
-                Stream stream = client1.OpenRead(capaEndereco.ToString());
-                Bitmap bitmap; bitmap = new Bitmap(stream);
-
-                if (bitmap != null)
+                string? base64Capa = null;
+                if (capaNode != null)
                 {
-                    bitmap.Save(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS + capaBancoDados, ImageFormat.Jpeg);
+                    var imgWithBase64 = capaNode.Descendants("img")
+                        .FirstOrDefault(x => !string.IsNullOrEmpty(x.GetAttributeValue("data-base64", null)));
+                    base64Capa = imgWithBase64?.GetAttributeValue("data-base64", null);
                 }
 
-                stream.Flush();
-                stream.Close();
-                client1.Dispose();
+                string capaBancoDados = Guid.NewGuid().ToString() + ConstantesProjetoHQ.FORMATO_IMAGEM;
+                string capaFilePath = Path.Combine(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS, capaBancoDados);
 
-                desejo.Capa = capaBancoDados;
+                if (!string.IsNullOrEmpty(base64Capa) && base64Capa.Contains(","))
+                {
+                    try
+                    {
+                        var rawBase64 = base64Capa.Substring(base64Capa.IndexOf(",") + 1);
+                        var imgBytes = Convert.FromBase64String(rawBase64);
+                        if (!Directory.Exists(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS))
+                            Directory.CreateDirectory(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS);
+
+                        await File.WriteAllBytesAsync(capaFilePath, imgBytes, cancellationToken);
+                        desejo.Capa = capaBancoDados;
+                    }
+                    catch
+                    {
+                        // Ignore base64 save failure
+                    }
+                }
+                else if (!string.IsNullOrEmpty(capaEndereco))
+                {
+                    try
+                    {
+                        using var client1 = new WebClient();
+                        client1.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+                        var imgBytes = client1.DownloadData(capaEndereco);
+                        if (!Directory.Exists(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS))
+                            Directory.CreateDirectory(ConstantesProjetoHQ.DIRETORIO_IMAGENS_DESEJOS);
+
+                        await File.WriteAllBytesAsync(capaFilePath, imgBytes, cancellationToken);
+                        desejo.Capa = capaBancoDados;
+                    }
+                    catch
+                    {
+                        // Ignore external download failure so Desejo import does not fail
+                    }
+                }
 
                 var roteiroNode = doc1.DocumentNode.SelectNodes("//*[@*[contains(@id, 'texto_pag_detalhe')]]");
 

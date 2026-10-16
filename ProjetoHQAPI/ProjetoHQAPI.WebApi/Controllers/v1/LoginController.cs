@@ -1,4 +1,4 @@
-﻿using ApiConsultorio.Domain.Entities;
+using ApiConsultorio.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -84,8 +84,8 @@ namespace ProjetoHQApi.WebApi.Controllers.v1
             var expiration = DateTime.Now.AddHours(24);
 
             JwtSecurityToken token = new JwtSecurityToken(
-               issuer: null,
-               audience: null,
+               issuer: _configuration["Jwt:Issuer"],
+               audience: _configuration["Jwt:Audience"],
                claims: claims,
                expires: expiration,
                signingCredentials: creds);
